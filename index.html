@@ -6,7 +6,53 @@
     <title>AdViz</title>
   </head>
   <body>
-    <h1>header1</h1>
-    <p>Hier kann irgend ein Bla Bla stehen.</p>
+    <!--1st screen login-->
+    <section id="login" class="login-section">
+      <div class="container">
+          <div class="row">
+            <h1>welcome to adViz!</h1>
+          </div>
+          <form>
+            <label for="username">username:</label>
+            <input type="text" id="username" name="username"><br><br>
+            <label for="password">password:</label>
+            <input type="text" id="password" name="password"><br><br>
+            <input type="submit" value="login">
+          </form>
+          <a class="next" href="#mapscreen">next screen</a> <!--The <a> tag defines a hyperlink, which is used to link from one page to another.-->
+        </div>
+      </div>
+    </section>
+
+    <!--2nd screen mainscreen with map-->
+    <section id="mapscreen" class="map-screen">
+      <div class="container">
+        <div class="row">
+          <button type="button">show mine</button> 
+          <button type="button">show all</button> 
+          <button type="button">add new</button> 
+        </div>
+        <div class="row">
+          <ul> <!--the style=inline part was an attempt to display the list NEXT to the map but I'm not getting it to work :(-->
+            <li>Alice</li>
+            <li>Bob</li>
+            <li>Cat</li>
+          </ul> <!-- this is apparently only possible with a working js script https://switch2osm.org/using-tiles/getting-started-with-leaflet/-->
+          <iframe src="https://www.openstreetmap.org/?mlat=52.5088&mlon=13.3927#map=13/52.5088/13.3927" title="map with address markers" style="display:inline"></iframe> 
+        </div>
+      </div>
+      <a class="btn" href="#addnewaddress">next screen</a>
+    </section>
+
+    <!-- 3rd screen add new address-->
+    <section id="addnewaddress" class="add-new-address">
+
+    </section>
+
+    <!-- 4th screen update/delete address-->
+    <section id="updatedeleteaddress" class="update-delete-address">
+
+    </section>
+    
   </body>
 </html>
