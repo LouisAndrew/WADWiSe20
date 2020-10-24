@@ -21,7 +21,7 @@ form.styled {
 }
 
 form.styled label {
-  width: 320px;
+  width: 370px;
   margin: 6px 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -38,7 +38,14 @@ form.styled label input {
 }
 
 form.styled label input[type='checkbox'] {
-  margin-right: 150px;
+  margin-right: 110px;
+  cursor: pointer;
+}
+
+form.styled label select {
+  border: 1px solid #c8c8c8;
+  width: 218px;
+  padding: 4px 8px;
   cursor: pointer;
 }
 

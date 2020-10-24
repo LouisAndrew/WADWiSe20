@@ -56,43 +56,67 @@
     <section id="addnewaddress" class="add-new-address">
       <div class="container modal">
         <form class="address-form styled">
+
+          <!-- title -->
+          <label for="title">
+            Titel
+            <input type="text" name="title" id="title" required>
+          </label>
+
+          <!-- gender -->
+          <label for="gender">
+            Geschlecht
+            <select name="gender" id="gender" required>
+              <option value="M">M</option>
+              <option value="W">W</option>
+              <option value="D">D</option>
+            </select>
+          </label>
+
           <!-- first name -->
           <label for="first-name">
             Vorname
-            <input type="text" name="first-name" id="first-name">
+            <input type="text" name="first-name" id="first-name" required>
           </label>
           <!-- last name -->
           <label for="last-name">
             Name
-            <input type="text" name="last-name" id="last-name">
+            <input type="text" name="last-name" id="last-name" required>
           </label>
           <!-- street -->
           <label for="street">
-            Straße
-            <input type="text" name="street" id="street">
+            Straße + Hausnr.
+            <input type="text" name="street" id="street" required>
           </label>
           <!-- zip -->
           <label for="zip">
             PLZ
-            <input type="number" name="zip" id="zip">
+            <input type="number" name="zip" id="zip" required>
           </label>
           <!-- city -->
           <label for="city">
             Stadt
-            <input type="text" name="city" id="city">
+            <input type="text" name="city" id="city" required>
           </label>
           <!-- country -->
           <label for="country">
             Land
-            <input type="text" name="country" id="country">
+            <input type="text" name="country" id="country" required>
+          </label>
+          <!-- email -->
+          <label for="email">
+            Email
+            <input type="email" name="email" id="email" required>
           </label>
           <!-- private -->
           <label for="private">
             Privat
-            <input type="checkbox" name="private" id="private">
+            <input type="checkbox" name="private" id="private required">
           </label>
+
           <!-- submit button -->
           <button class="primary" type='submit'>Add</button>
+
         </form>
       </div>
     </section>
@@ -102,41 +126,64 @@
       <!-- same as above. -->
       <div class="container modal">
         <form class="address-form styled">
+
+          <!-- title -->
+          <label for="title">
+            Titel
+            <input type="text" name="title" id="title" required value="Herr">
+          </label>
+
+          <!-- gender -->
+          <label for="gender">
+            Geschlecht
+            <select name="gender" id="gender" required>
+              <option value="M">M</option>
+              <option value="W">W</option>
+              <option value="D">D</option>
+            </select>
+          </label>
+
           <!-- first name -->
           <label for="first-name">
             Vorname
-            <input type="text" name="first-name" id="first-name">
+            <input type="text" name="first-name" id="first-name" required value="John">
           </label>
           <!-- last name -->
           <label for="last-name">
             Name
-            <input type="text" name="last-name" id="last-name">
+            <input type="text" name="last-name" id="last-name" required value="Doe">
           </label>
           <!-- street -->
           <label for="street">
-            Straße
-            <input type="text" name="street" id="street">
+            Straße + Hausnr.
+            <input type="text" name="street" id="street" required value="Musterstr. 12">
           </label>
           <!-- zip -->
           <label for="zip">
             PLZ
-            <input type="number" name="zip" id="zip">
+            <input type="number" name="zip" id="zip" required value="123456">
           </label>
           <!-- city -->
           <label for="city">
             Stadt
-            <input type="text" name="city" id="city">
+            <input type="text" name="city" id="city" required value="Berlin">
           </label>
           <!-- country -->
           <label for="country">
             Land
-            <input type="text" name="country" id="country">
+            <input type="text" name="country" id="country" required value="Deutschland">
+          </label>
+          <!-- email -->
+          <label for="email">
+            Email
+            <input type="email" name="email" id="email" required value="john.doe@jjjjj.com">
           </label>
           <!-- private -->
           <label for="private">
             Privat
-            <input type="checkbox" name="private" id="private">
+            <input type="checkbox" name="private" id="private required" checked>
           </label>
+
           <!-- submit button -->
           <div class="buttons">
             <!-- update button -->
@@ -144,6 +191,7 @@
             <!-- delete button -->
             <button class="primary">Delete</button>
           </div>
+          
         </form>
       </div>
     </section>

@@ -1,5 +1,6 @@
 body,
-input {
+input,
+select {
 	font-family: 'Nunito', sans-serif;
 }
 

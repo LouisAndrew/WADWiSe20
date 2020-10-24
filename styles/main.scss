@@ -22,7 +22,7 @@ form.styled {
 
 	label {
 		// design based
-		width: 320px;
+		width: 370px;
 		margin: 6px 0;
 
 		// uniform spacing on label values and input fields
@@ -36,7 +36,14 @@ form.styled {
 		}
 
 		input[type='checkbox'] {
-			margin-right: 150px;
+			margin-right: 110px;
+			cursor: pointer;
+		}
+
+		select {
+			border: 1px solid $white-darker-shade;
+			width: 218px;
+			padding: 4px 8px;
 			cursor: pointer;
 		}
 	}
