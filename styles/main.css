@@ -10,22 +10,7 @@ button.primary {
   background-color: #607d8b;
 }
 
-#addnewaddress {
-  margin-top: 32px;
-}
-
-#addnewaddress .container {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  background-color: #fafafa;
-  -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2);
-          box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  padding: 24px;
-}
-
-#addnewaddress .container form {
+form.styled {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -35,7 +20,7 @@ button.primary {
           flex-direction: column;
 }
 
-#addnewaddress .container form label {
+form.styled label {
   width: 320px;
   margin: 6px 0;
   display: -webkit-box;
@@ -46,18 +31,60 @@ button.primary {
           justify-content: space-between;
 }
 
-#addnewaddress .container form label input {
+form.styled label input {
   width: 200px;
   padding: 4px 8px;
+  border: 1px solid #c8c8c8;
 }
 
-#addnewaddress .container form label input[type='checkbox'] {
+form.styled label input[type='checkbox'] {
   margin-right: 150px;
   cursor: pointer;
 }
 
-#addnewaddress .container form button {
+form.styled button {
   width: 100%;
   margin-top: 8px;
+}
+
+.container.modal {
+  background-color: #fafafa;
+  -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
+          box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+#addnewaddress {
+  margin-top: 32px;
+}
+
+#addnewaddress .container {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+#updatedeleteaddress {
+  margin-top: 32px;
+}
+
+#updatedeleteaddress .container {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+#updatedeleteaddress .container .buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#updatedeleteaddress .container .buttons button {
+  width: 45%;
 }
 /*# sourceMappingURL=main.css.map */

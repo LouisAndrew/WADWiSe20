@@ -54,8 +54,8 @@
 
     <!-- 3rd screen add new address-->
     <section id="addnewaddress" class="add-new-address">
-      <div class="container">
-        <form class="address-form">
+      <div class="container modal">
+        <form class="address-form styled">
           <!-- first name -->
           <label for="first-name">
             Vorname
@@ -99,7 +99,53 @@
 
     <!-- 4th screen update/delete address-->
     <section id="updatedeleteaddress" class="update-delete-address">
-
+      <!-- same as above. -->
+      <div class="container modal">
+        <form class="address-form styled">
+          <!-- first name -->
+          <label for="first-name">
+            Vorname
+            <input type="text" name="first-name" id="first-name">
+          </label>
+          <!-- last name -->
+          <label for="last-name">
+            Name
+            <input type="text" name="last-name" id="last-name">
+          </label>
+          <!-- street -->
+          <label for="street">
+            Straße
+            <input type="text" name="street" id="street">
+          </label>
+          <!-- zip -->
+          <label for="zip">
+            PLZ
+            <input type="number" name="zip" id="zip">
+          </label>
+          <!-- city -->
+          <label for="city">
+            Stadt
+            <input type="text" name="city" id="city">
+          </label>
+          <!-- country -->
+          <label for="country">
+            Land
+            <input type="text" name="country" id="country">
+          </label>
+          <!-- private -->
+          <label for="private">
+            Privat
+            <input type="checkbox" name="private" id="private">
+          </label>
+          <!-- submit button -->
+          <div class="buttons">
+            <!-- update button -->
+            <button class="primary">Update</button>
+            <!-- delete button -->
+            <button class="primary">Delete</button>
+          </div>
+        </form>
+      </div>
     </section>
     
   </body>
