@@ -7,6 +7,12 @@
     
     <link rel="stylesheet" href="/main.css">
     <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/> <!-- I put this in for openstreetmap, the library leaflet needs it-->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script> <!--same here just for leaflet--> 
 
     <!-- google font (optional) -->
     <!-- usage: https://fonts.google.com/specimen/Nunito?query=nu&sidebar.open=true&selection.family=Nunito:wght@400;600;700 -->
@@ -45,8 +51,26 @@
             <li>Alice</li>
             <li>Bob</li>
             <li>Cat</li>
-          </ul> <!-- this is apparently only possible with a working js script https://switch2osm.org/using-tiles/getting-started-with-leaflet/-->
-          <iframe src="https://www.openstreetmap.org/?mlat=52.5088&mlon=13.3927#map=13/52.5088/13.3927" title="map with address markers" style="display:inline"></iframe> 
+          </ul> 
+          <div id="map"></div>
+          <script>
+            // initialize Leaflet
+            var map = L.map('map').setView({lon: 13.39293, lat: 52.54181}, 10); //the last number is the zoomlevel. took me forever to find it
+      
+            // add the OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              maxZoom: 19,
+              attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+            }).addTo(map);
+      
+            // show the scale bar on the lower left corner
+            L.control.scale().addTo(map);
+      
+            // show a marker on the map
+            L.marker({lon: 13.39293, lat: 52.54181}).bindPopup('either Alice, Bob or Cat').addTo(map);
+            L.marker({lon: 13.38862, lat: 52.53862}).bindPopup('someone else').addTo(map);
+            L.marker({lon: 13.42956, lat: 52.51677}).bindPopup('idk').addTo(map);
+          </script>
         </div>
       </div>
       <a class="btn" href="#addnewaddress">next screen</a>
