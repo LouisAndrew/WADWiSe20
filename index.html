@@ -2,7 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8">
+
+    <!-- created folder for styling! -->
+    
     <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/styles/main.css">
+
+    <!-- google font (optional) -->
+    <!-- usage: https://fonts.google.com/specimen/Nunito?query=nu&sidebar.open=true&selection.family=Nunito:wght@400;600;700 -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <title>AdViz</title>
   </head>
   <body>
@@ -46,12 +54,146 @@
 
     <!-- 3rd screen add new address-->
     <section id="addnewaddress" class="add-new-address">
+      <div class="container modal">
+        <form class="address-form styled">
 
+          <!-- title -->
+          <label for="title">
+            Titel
+            <input type="text" name="title" id="title" required>
+          </label>
+
+          <!-- gender -->
+          <label for="gender">
+            Geschlecht
+            <select name="gender" id="gender" required>
+              <option value="M">M</option>
+              <option value="W">W</option>
+              <option value="D">D</option>
+            </select>
+          </label>
+
+          <!-- first name -->
+          <label for="first-name">
+            Vorname
+            <input type="text" name="first-name" id="first-name" required>
+          </label>
+          <!-- last name -->
+          <label for="last-name">
+            Name
+            <input type="text" name="last-name" id="last-name" required>
+          </label>
+          <!-- street -->
+          <label for="street">
+            Straße + Hausnr.
+            <input type="text" name="street" id="street" required>
+          </label>
+          <!-- zip -->
+          <label for="zip">
+            PLZ
+            <input type="number" name="zip" id="zip" required>
+          </label>
+          <!-- city -->
+          <label for="city">
+            Stadt
+            <input type="text" name="city" id="city" required>
+          </label>
+          <!-- country -->
+          <label for="country">
+            Land
+            <input type="text" name="country" id="country" required>
+          </label>
+          <!-- email -->
+          <label for="email">
+            Email
+            <input type="email" name="email" id="email" required>
+          </label>
+          <!-- private -->
+          <label for="private">
+            Privat
+            <input type="checkbox" name="private" id="private required">
+          </label>
+
+          <!-- submit button -->
+          <button class="primary" type='submit'>Add</button>
+
+        </form>
+      </div>
     </section>
 
     <!-- 4th screen update/delete address-->
     <section id="updatedeleteaddress" class="update-delete-address">
+      <!-- same as above. -->
+      <div class="container modal">
+        <form class="address-form styled">
 
+          <!-- title -->
+          <label for="title">
+            Titel
+            <input type="text" name="title" id="title" required value="Herr">
+          </label>
+
+          <!-- gender -->
+          <label for="gender">
+            Geschlecht
+            <select name="gender" id="gender" required>
+              <option value="M">M</option>
+              <option value="W">W</option>
+              <option value="D">D</option>
+            </select>
+          </label>
+
+          <!-- first name -->
+          <label for="first-name">
+            Vorname
+            <input type="text" name="first-name" id="first-name" required value="John">
+          </label>
+          <!-- last name -->
+          <label for="last-name">
+            Name
+            <input type="text" name="last-name" id="last-name" required value="Doe">
+          </label>
+          <!-- street -->
+          <label for="street">
+            Straße + Hausnr.
+            <input type="text" name="street" id="street" required value="Musterstr. 12">
+          </label>
+          <!-- zip -->
+          <label for="zip">
+            PLZ
+            <input type="number" name="zip" id="zip" required value="123456">
+          </label>
+          <!-- city -->
+          <label for="city">
+            Stadt
+            <input type="text" name="city" id="city" required value="Berlin">
+          </label>
+          <!-- country -->
+          <label for="country">
+            Land
+            <input type="text" name="country" id="country" required value="Deutschland">
+          </label>
+          <!-- email -->
+          <label for="email">
+            Email
+            <input type="email" name="email" id="email" required value="john.doe@jjjjj.com">
+          </label>
+          <!-- private -->
+          <label for="private">
+            Privat
+            <input type="checkbox" name="private" id="private required" checked>
+          </label>
+
+          <!-- submit button -->
+          <div class="buttons">
+            <!-- update button -->
+            <button class="primary">Update</button>
+            <!-- delete button -->
+            <button class="primary">Delete</button>
+          </div>
+          
+        </form>
+      </div>
     </section>
     
   </body>
