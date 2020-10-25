@@ -94,4 +94,6 @@ form.styled button {
 #updatedeleteaddress .container .buttons button {
   width: 45%;
 }
+
+#map { height: 180px; }
 /*# sourceMappingURL=main.css.map */
