@@ -27,10 +27,10 @@
             <h1>welcome to adViz!</h1>
           </div>
           <form>
-            <label for="username">username:</label>
-            <input type="text" id="username" name="username"><br><br>
-            <label for="password">password:</label>
-            <input type="text" id="password" name="password"><br><br>
+            <label for="username" >username:</label>
+            <input type="text" id="username" name="username" required><br><br>
+            <label for="password" >password:</label>
+            <input type="text" id="password" name="password" required><br><br>
             <input type="submit" value="login">
           </form>
           <a class="next" href="#mapscreen">next screen</a> <!--The <a> tag defines a hyperlink, which is used to link from one page to another.-->
@@ -102,40 +102,53 @@
             Vorname
             <input type="text" name="first-name" id="first-name" required>
           </label>
+
           <!-- last name -->
           <label for="last-name">
             Name
             <input type="text" name="last-name" id="last-name" required>
           </label>
+
           <!-- street -->
           <label for="street">
             Straße + Hausnr.
             <input type="text" name="street" id="street" required>
           </label>
+
           <!-- zip -->
           <label for="zip">
             PLZ
             <input type="number" name="zip" id="zip" required>
           </label>
+
           <!-- city -->
           <label for="city">
             Stadt
             <input type="text" name="city" id="city" required>
           </label>
+
           <!-- country -->
           <label for="country">
             Land
             <input type="text" name="country" id="country" required>
           </label>
+
           <!-- email -->
           <label for="email">
             Email
-            <input type="email" name="email" id="email" required>
+            <input type="email" name="email" id="email">
           </label>
+
+          <!-- others -->
+          <label for="others">
+            Sonstiges
+            <input type="text" name="others" id="others">
+          </label>
+
           <!-- private -->
           <label for="private">
             Privat
-            <input type="checkbox" name="private" id="private required">
+            <input type="checkbox" name="private" id="private" required checked>
           </label>
 
           <!-- submit button -->
@@ -202,10 +215,15 @@
             Email
             <input type="email" name="email" id="email" required value="john.doe@jjjjj.com">
           </label>
+          <!-- others -->
+          <label for="others">
+            Sonstiges
+            <input type="text" name="others" id="others">
+          </label>
           <!-- private -->
           <label for="private">
             Privat
-            <input type="checkbox" name="private" id="private required" checked>
+            <input type="checkbox" name="private" id="private" required checked>
           </label>
 
           <!-- submit button -->
@@ -219,6 +237,6 @@
         </form>
       </div>
     </section>
-    
+
   </body>
 </html>
