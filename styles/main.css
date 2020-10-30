@@ -62,6 +62,10 @@ form.styled button {
 	padding: 24px;
 }
 
+.flex-container{
+	display: flex;
+}
+
 #addnewaddress {
 	margin-top: 32px;
 }
@@ -97,5 +101,6 @@ form.styled button {
 
 #map {
 	height: 180px;
+	width: 45%;
 }
 /*# sourceMappingURL=main.css.map */

@@ -46,13 +46,15 @@
           <button type="button">show all</button> 
           <button type="button">add new</button> 
         </div>
-        <div class="row">
+        <div class="flex-container">
+          <div id="contactlist">
           <ul> <!--the style=inline part was an attempt to display the list NEXT to the map but I'm not getting it to work :(-->
             <li>Alice</li>
             <li>Bob</li>
             <li>Cat</li>
           </ul> 
-          <div id="map"></div>
+        </div>
+        <div id="map">
           <script>
             // initialize Leaflet
             var map = L.map('map').setView({lon: 13.39293, lat: 52.54181}, 10); //the last number is the zoomlevel. took me forever to find it
@@ -71,6 +73,7 @@
             L.marker({lon: 13.38862, lat: 52.53862}).bindPopup('someone else').addTo(map);
             L.marker({lon: 13.42956, lat: 52.51677}).bindPopup('idk').addTo(map);
           </script>
+          </div>
         </div>
       </div>
       <a class="btn" href="#addnewaddress">next screen</a>
