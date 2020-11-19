@@ -1,3 +1,26 @@
+// App div element.
+let app
+
+// Screen(s) element.
+let loginScreen
+let mapScreen
+let addNewAddress
+let updateAddress
+
+let contactList
+
+window.onload = () => {
+    app = document.getElementById('app')
+
+    loginScreen = document.getElementById('login')
+    mapScreen = document.getElementById('mapscreen')
+    addNewAddress = document.getElementById('addnewaddress')
+    updateAddress = document.getElementById('updatedeleteaddress')
+
+    contactList = document.getElementById('contactlist')
+    welcome()
+}
+
 // User datas:: to another file?
 
 /**
@@ -29,17 +52,6 @@ const users = [normalo, admina]
 
 // screens function
 
-// App div element.
-const app = document.getElementById('app')
-
-// Screen(s) element.
-const login = document.getElementById('login')
-const mapScreen = document.getElementById('mapscreen')
-const addNewAddress = document.getElementById('addnewaddress')
-const updateAddress = document.getElementById('updatedeleteaddress')
-
-const contactList = document.getElementById('contactlist')
-
 /**
  * Function to display when page first loads.
  * Displays login page
@@ -50,7 +62,31 @@ const welcome = () => {
     addNewAddress.style.display = 'none'
     updateAddress.style.display = 'none'
 
-    login.style.display = 'block'
+    loginScreen.style.display = 'block'
+
+    // function to handle loginform
+    const loginForm = document.querySelector('#login form')
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault()
+
+        // get the form input values here.
+        const password = document.getElementById('password').value
+        const username = document.getElementById('username').value
+
+        // wait for return value from login function
+        const loginSuccesful = login(password, username)
+
+        if (loginSuccesful) {
+            // hardcoded isAdmin to true
+            main(username, true)
+        } else {
+            const LOGIN_FAILED_MSG = 'Username or password is wrong'
+            const loginError = document.getElementById('login-error')
+
+            loginError.textContent = LOGIN_FAILED_MSG
+            loginError.style.margin = '4px 0'
+        }
+    })
 }
 
 /**
@@ -60,10 +96,16 @@ const welcome = () => {
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
 const main = (username, isAdmin) => {
+    // show map
+    loginScreen.style.display = 'none'
+    addNewAddress.style.display = 'none'
+    updateAddress.style.display = 'none'
+
+    mapScreen.style.display = 'block'
+
     // Show hello message
     // show log out button
     // show contact list
-    // show map
     // show buttons.
     // handle when user logged in is an admin => more permissions, more rights..
 }
@@ -112,9 +154,11 @@ const myContactsScreen = () => {}
  * Invoked when user filled the username + password field and clicked on login button.
  * @param password string: password inputted by the user.
  * @param username string: username of the user.
+ * @returns true, if the login is successful
  */
 const login = (password, username) => {
     // catch error when password, username is not right.
+    return username === 'Louis'
 }
 
 /**
