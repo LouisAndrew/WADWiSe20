@@ -9,7 +9,7 @@ let updateAddress
 
 let contactList
 
-window.onload = () => {
+window.onload = function () {
     app = document.getElementById('app')
 
     loginScreen = document.getElementById('login')
@@ -28,6 +28,12 @@ window.onload = () => {
  */
 const normalo = {}
 const admina = {}
+
+// Userbase is an object..
+let userBase = {
+    normalo,
+    admina,
+}
 
 /**
  *
@@ -56,7 +62,7 @@ const users = [normalo, admina]
  * Function to display when page first loads.
  * Displays login page
  */
-const welcome = () => {
+const welcome = function () {
     // example on how to render login page on SPA.
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'none'
@@ -95,7 +101,7 @@ const welcome = () => {
  * @param {string} username string: username of the logged in user.
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
-const main = (username, isAdmin) => {
+const main = function (username, isAdmin) {
     // show map
     loginScreen.style.display = 'none'
     addNewAddress.style.display = 'none'
@@ -115,13 +121,13 @@ const main = (username, isAdmin) => {
  * Additonal field for isAdmin: Admin should be able to add contact ALSO for normalo user.
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
-const addContactScreen = (isAdmin) => {}
+const addContactScreen = function (isAdmin) {}
 
 /**
  * Shows delete / update contact screen
  * @param {user} user: given data (from backend?)
  */
-const updateContactScreen = ({
+const updateContactScreen = function ({
     title,
     gender,
     firstName,
@@ -132,7 +138,7 @@ const updateContactScreen = ({
     email,
     others,
     isPrivate,
-}) => {}
+}) {}
 
 /**
  * Shows all contact screen.
@@ -140,12 +146,12 @@ const updateContactScreen = ({
  * If the user is a "normal" user: show ALL public users.
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
-const allContactsScreen = (isAdmin) => {}
+const allContactsScreen = function (isAdmin) {}
 
 /**
  * Shows all private contacts of this user.
  */
-const myContactsScreen = () => {}
+const myContactsScreen = function () {}
 
 // Functionalities
 
@@ -156,15 +162,15 @@ const myContactsScreen = () => {}
  * @param username string: username of the user.
  * @returns true, if the login is successful
  */
-const login = (password, username) => {
+const login = function (password, username) {
     // catch error when password, username is not right.
-    return username === 'Louis'
+    return username === 'Louis' || username === 'Julia' // for mocking purposes
 }
 
 /**
  * Logs current user out.
  */
-const logout = () => {
+const logout = function () {
     // show login page.
 }
 
@@ -172,7 +178,7 @@ const logout = () => {
  * Shows "Add Contact screen"
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
-const addNewContact = (isAdmin) => {
+const addNewContact = function (isAdmin) {
     // calls addContactScreen
 }
 
@@ -180,19 +186,19 @@ const addNewContact = (isAdmin) => {
  * Shows "All contacts screen."
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
-const showAllContacts = (isAdmin) => {}
+const showAllContacts = function (isAdmin) {}
 
 /**
  * Shows "My contacts"
  */
-const showMyContacts = () => {}
+const showMyContacts = function () {}
 
 /**
  * Add a contact into current user's contact list.
  *
  * @param {user} user: given values from input fields
  */
-const addContact = ({
+const addContact = function ({
     title,
     gender,
     firstName,
@@ -203,9 +209,9 @@ const addContact = ({
     email,
     others,
     isPrivate,
-}) => {}
+}) {}
 
 /**
  * Save user datas to localstorage?
  */
-const saveContact = () => {}
+const saveContact = function () {}
