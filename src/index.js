@@ -108,6 +108,9 @@ const main = function (username, isAdmin) {
     updateAddress.style.display = 'none'
 
     mapScreen.style.display = 'block'
+    document.getElementById('logoutbtn').addEventListener('click', (e) => {
+        welcome()
+    })
 
     // Show hello message
     // show log out button
@@ -121,7 +124,13 @@ const main = function (username, isAdmin) {
  * Additonal field for isAdmin: Admin should be able to add contact ALSO for normalo user.
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
-const addContactScreen = function (isAdmin) {}
+const addContactScreen = function (isAdmin) {
+    loginScreen.style.display = 'none'
+    addNewAddress.style.display = 'block'
+    updateAddress.style.display = 'none'
+
+    mapScreen.style.display = 'none'
+}
 
 /**
  * Shows delete / update contact screen
