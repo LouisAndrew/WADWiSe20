@@ -108,6 +108,16 @@ const main = function (username, isAdmin) {
     updateAddress.style.display = 'none'
 
     mapScreen.style.display = 'block'
+
+    document.getElementById('showminebtn').addEventListener('click', (e) => {
+        myContactsScreen()
+    })
+    document.getElementById('showallbtn').addEventListener('click', (e) => {
+        allContactsScreen()
+    })
+    document.getElementById('addnewbtn').addEventListener('click', (e) => {
+        addContactScreen()
+    })
     document.getElementById('logoutbtn').addEventListener('click', (e) => {
         welcome()
     })
@@ -126,10 +136,11 @@ const main = function (username, isAdmin) {
  */
 const addContactScreen = function (isAdmin) {
     loginScreen.style.display = 'none'
+    mapScreen.style.display = 'none'
     addNewAddress.style.display = 'block'
     updateAddress.style.display = 'none'
 
-    mapScreen.style.display = 'none'
+
 }
 
 /**
