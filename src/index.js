@@ -1,10 +1,39 @@
+// App div element.
+let app
+
+// Screen(s) element.
+let loginScreen
+let mapScreen
+let addNewAddress
+let updateAddress
+
+let contactList
+
+window.onload = function () {
+    app = document.getElementById('app')
+
+    loginScreen = document.getElementById('login')
+    mapScreen = document.getElementById('mapscreen')
+    addNewAddress = document.getElementById('addnewaddress')
+    updateAddress = document.getElementById('updatedeleteaddress')
+
+    contactList = document.getElementById('contactlist')
+    welcome()
+}
+
 // User datas:: to another file?
 
 /**
  * Hard coded users. Both has 2 more contacts..
  */
-const normalo = {};
-const admina = {};
+const normalo = {}
+const admina = {}
+
+// Userbase is an object..
+let userBase = {
+    normalo,
+    admina,
+}
 
 /**
  *
@@ -25,7 +54,7 @@ const admina = {};
 /**
  * Hard coded users. (normalo, admina)
  */
-const users = [normalo, admina];
+const users = [normalo, admina]
 
 // screens function
 
@@ -33,7 +62,38 @@ const users = [normalo, admina];
  * Function to display when page first loads.
  * Displays login page
  */
-const welcome = () => {};
+const welcome = function () {
+    // example on how to render login page on SPA.
+    mapScreen.style.display = 'none'
+    addNewAddress.style.display = 'none'
+    updateAddress.style.display = 'none'
+
+    loginScreen.style.display = 'block'
+
+    // function to handle loginform
+    const loginForm = document.querySelector('#login form')
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault()
+
+        // get the form input values here.
+        const password = document.getElementById('password').value
+        const username = document.getElementById('username').value
+
+        // wait for return value from login function
+        const loginSuccesful = login(password, username)
+
+        if (loginSuccesful) {
+            // hardcoded isAdmin to true
+            main(username, true)
+        } else {
+            const LOGIN_FAILED_MSG = 'Username or password is wrong'
+            const loginError = document.getElementById('login-error')
+
+            loginError.textContent = LOGIN_FAILED_MSG
+            loginError.style.margin = '4px 0'
+        }
+    })
+}
 
 /**
  * Function to show main page.
@@ -41,38 +101,44 @@ const welcome = () => {};
  * @param {string} username string: username of the logged in user.
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
-const main = (username, isAdmin) => {
-  // Show hello message
-  // show log out button
-  // show contact list
-  // show map
-  // show buttons.
-  // handle when user logged in is an admin => more permissions, more rights..
-};
+const main = function (username, isAdmin) {
+    // show map
+    loginScreen.style.display = 'none'
+    addNewAddress.style.display = 'none'
+    updateAddress.style.display = 'none'
+
+    mapScreen.style.display = 'block'
+
+    // Show hello message
+    // show log out button
+    // show contact list
+    // show buttons.
+    // handle when user logged in is an admin => more permissions, more rights..
+}
 
 /**
  * Shows new contact screen.
  * Additonal field for isAdmin: Admin should be able to add contact ALSO for normalo user.
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
-const addContactScreen = (isAdmin) => {};
+const addContactScreen = function (isAdmin) {}
 
 /**
  * Shows delete / update contact screen
  * @param {user} user: given data (from backend?)
  */
-const updateContactScreen = ({
-  title,
-  gender,
-  firstName,
-  lastName,
-  zip,
-  city,
-  country,
-  email,
-  others,
-  isPrivate,
-}) => {};
+const updateContactScreen = function ({
+    title,
+    gender,
+    firstName,
+    lastName,
+    zip,
+    city,
+    country,
+    email,
+    others,
+    isPrivate,
+}) {}
 
 /**
  * Shows all contact screen.
@@ -80,12 +146,12 @@ const updateContactScreen = ({
  * If the user is a "normal" user: show ALL public users.
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
-const allContactsScreen = (isAdmin) => {};
+const allContactsScreen = function (isAdmin) {}
 
 /**
  * Shows all private contacts of this user.
  */
-const myContactsScreen = () => {};
+const myContactsScreen = function () {}
 
 // Functionalities
 
@@ -94,56 +160,58 @@ const myContactsScreen = () => {};
  * Invoked when user filled the username + password field and clicked on login button.
  * @param password string: password inputted by the user.
  * @param username string: username of the user.
+ * @returns true, if the login is successful
  */
-const login = (password, username) => {
-  // catch error when password, username is not right.
-};
+const login = function (password, username) {
+    // catch error when password, username is not right.
+    return username === 'Louis' || username === 'Julia' // for mocking purposes
+}
 
 /**
  * Logs current user out.
  */
-const logout = () => {
-  // show login page.
-};
+const logout = function () {
+    // show login page.
+}
 
 /**
  * Shows "Add Contact screen"
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
-const addNewContact = (isAdmin) => {
-  // calls addContactScreen
-};
+const addNewContact = function (isAdmin) {
+    // calls addContactScreen
+}
 
 /**
  * Shows "All contacts screen."
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
-const showAllContacts = (isAdmin) => {};
+const showAllContacts = function (isAdmin) {}
 
 /**
  * Shows "My contacts"
  */
-const showMyContacts = () => {};
+const showMyContacts = function () {}
 
 /**
  * Add a contact into current user's contact list.
  *
  * @param {user} user: given values from input fields
  */
-const addContact = ({
-  title,
-  gender,
-  firstName,
-  lastName,
-  zip,
-  city,
-  country,
-  email,
-  others,
-  isPrivate,
-}) => {};
+const addContact = function ({
+    title,
+    gender,
+    firstName,
+    lastName,
+    zip,
+    city,
+    country,
+    email,
+    others,
+    isPrivate,
+}) {}
 
 /**
  * Save user datas to localstorage?
  */
-const saveContact = () => {};
+const saveContact = function () {}

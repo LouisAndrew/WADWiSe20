@@ -12,6 +12,10 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin="" /> <!-- I put this in for openstreetmap, the library leaflet needs it-->
+
+  <!-- main javascript file -->
+  <script src="src/index.js"></script>
+
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
@@ -24,6 +28,10 @@
 </head>
 
 <body>
+
+  <!-- main div, this is where all of the window(s) / screen(s) is going to be mounted on. -->
+  <div id="app"></div>
+
   <!--1st screen login-->
   <section id="login" class="login-section">
     <div class="container">
@@ -34,7 +42,8 @@
         <label for="username">username:</label>
         <input type="text" id="username" name="username" required><br><br>
         <label for="password">password:</label>
-        <input type="text" id="password" name="password" required><br><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <div id='login-error' class="error"></div>
         <input type="submit" value="login">
       </form>
       <a class="next" href="#mapscreen">next screen</a>
