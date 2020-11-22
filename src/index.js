@@ -1,3 +1,6 @@
+// import screens from './screens'
+// console.log(screens)
+
 // App div element.
 let app
 
@@ -26,8 +29,68 @@ window.onload = function () {
 /**
  * Hard coded users. Both has 2 more contacts..
  */
-const normalo = {}
-const admina = {}
+const normalo = {
+    username: 'Louis',
+    password: 'aaa',
+    contacts: [alice, bob],
+}
+const admina = {
+    username: 'Julia',
+    password: 'aaa',
+    contacts: [cat, daniel],
+}
+
+const alice = {
+    title: 'Frau',
+    gender: 'W',
+    firstName: 'Alice',
+    lastName: 'A',
+    street: 'Musterstr. 1',
+    zip: 123456,
+    city: 'Berlin',
+    country: 'Deutschland',
+    others: '',
+    private: true,
+}
+
+const bob = {
+    title: 'Herr',
+    gender: 'M',
+    firstName: 'Bob',
+    lastName: 'B',
+    street: 'Spainstr. 2',
+    zip: 456221,
+    city: 'Madrid',
+    country: 'Spanien',
+    others: '',
+    private: false,
+}
+
+const cat = {
+    title: '',
+    gender: 'D',
+    firstName: 'Cat',
+    lastName: 'C',
+    street: 'Katzenstr. 2',
+    zip: 123421,
+    city: 'München',
+    country: 'Deutschland',
+    others: '',
+    private: true,
+}
+
+const daniel = {
+    title: 'Herr',
+    gender: 'M',
+    firstName: 'Daniel',
+    lastName: 'D',
+    street: 'Time Square',
+    zip: 213412,
+    city: 'New York',
+    country: 'USA',
+    others: '',
+    private: true,
+}
 
 // Userbase is an object..
 let userBase = {
@@ -139,16 +202,19 @@ const addContactScreen = function (username, isAdmin) {
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'block'
     updateAddress.style.display = 'none'
-    
-    const addNewAddressForm = document.querySelector('#address-form styled')
+
+    // Hatte hier die falsche querySelector parameter eingegeben
+    const addNewAddressForm = document.querySelector('#addnewaddress form')
     addNewAddressForm.addEventListener('submit', (e) => {
         if (checkNewContact()) {
             addContact()
-        }else{}
+        } else {
+        }
     })
 
-    addNewAddressForm.getElementById('cancelbtn').addEventListener('click', (e) => {
-        welcome()
+    // hier auch
+    document.getElementById('cancelbtn').addEventListener('click', (e) => {
+        main(username, isAdmin)
         //main(username, isAdmin)
     })
 }
@@ -225,11 +291,9 @@ const showMyContacts = function () {}
 
 /**
  * Check contents of AddNewContactForm bevore submitting is allowed
- * @param {*} param0 
+ * @param {*} param0
  */
-const checkNewContact = function (){
-
-}
+const checkNewContact = function () {}
 
 /**
  * Add a contact into current user's contact list.
