@@ -215,22 +215,22 @@ const addContactScreen = function (username, isAdmin) {
     const addNewAddressForm = document.querySelector('#addnewaddress form')
 
     // form elements
-    const titleField = addNewAddressForm.getElementById('title')
-    const genderField = addNewAddressForm.getElementById('gender')
-    const firstNameField = addNewAddressForm.getElementById('first-name')
-    const lastNameField = addNewAddressForm.getElementById('last-name')
+    const titleField = addNewAddressForm.getElementById('title').value
+    const genderField = addNewAddressForm.getElementById('gender').value
+    const firstNameField = addNewAddressForm.getElementById('first-name').value
+    const lastNameField = addNewAddressForm.getElementById('last-name').value
     const streetField = addNewAddressForm.getElementById('street').value
-    const zipField = addNewAddressForm.getElementById('zip')
-    const cityField = addNewAddressForm.getElementById('city')
-    const countryField = addNewAddressForm.getElementById('country')
-    const emailField = addNewAddressForm.getElementById('email')
-    const othersField = addNewAddressForm.getElementById('others')
-    const isPrivateField = addNewAddressForm.getElementById('private')
+    const zipField = addNewAddressForm.getElementById('zip').value
+    const cityField = addNewAddressForm.getElementById('city').value
+    const countryField = addNewAddressForm.getElementById('country').value
+    const emailField = addNewAddressForm.getElementById('email').value
+    const othersField = addNewAddressForm.getElementById('others').value
+    const isPrivateField = addNewAddressForm.getElementById('private').value
 
     document.getElementById('addbtn').addEventListener('click', (e) => {
         // preventDefault: prevent the page from refreshing itself.
         e.preventDefault()
-        if (checkNewContact({streetField, zipField, cityField, countryField})) {
+        if (checkNewContact(streetField, zipField, cityField, countryField)) {
             addContact()
         } else {
             main(currUser.username, currUser.isAdmin)
@@ -410,10 +410,37 @@ const clearContactListChildren = (el) => {
 }
 
 /**
- * Check contents of AddNewContactForm bevore submitting is allowed
- * @param {*} param0
+ * Check contents of Addressfields in AddNewContactForm bevore submitting is allowed
+ * @param street: contents of streetfield
+ * @param zip: contents of zipfield
+ * @param city: contents of cityfield
+ * @param country: contents of countryfield
  */
-const checkNewContact = function ({street,zip,city,country}) {}
+const checkNewContact = function(street,zip,city,country) {
+    const Http = new XMLHttpRequest();
+    // URl for nominatim search API https://nominatim.org/release-docs/develop/api/Search/
+    const url = 'https://nominatim.openstreetmap.org/search?';
+    // we're going for a structured search here. free-form query would also be an option, but I assume more prone to error?
+    //let freeformquery = "q="+country+"/"+city+"/"+zip+"/"+street;
+    let queryParameter = "street="+street+"&city="+city+"&country="+country+"&postalcode="+zip;
+    //I cose this format because it's shortest and quickly returns the coordinates of lat and long, which we could use for updating markers on the map
+    const format = '&geocodejson'
+    
+    //
+    var responseObjekt;
+
+    Http.open('GET', url+queryParameter+format);
+    Http.send();
+    Http.onreadystatechange = function(){
+        if(this.readyState==4 && this.status==200){
+            console.log(Http.responseText);
+            responseObject=this.responseXML;
+            return true
+        }else{
+            return false
+        }
+    }
+}
 
 /**
  * Add a contact into current user's contact list.
