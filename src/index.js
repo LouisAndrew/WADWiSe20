@@ -207,21 +207,39 @@ const addContactScreen = function (username, isAdmin) {
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'block'
     updateAddress.style.display = 'none'
+    document.getElementById('updatebtn').style.display='none'
+    document.getElementById('deletebtn').style.display='none'
+    document.getElementById('addbtn').style.display="block"
 
     // Hatte hier die falsche querySelector parameter eingegeben
     const addNewAddressForm = document.querySelector('#addnewaddress form')
-    addNewAddressForm.addEventListener('submit', (e) => {
+
+    // form elements
+    const titleField = addNewAddressForm.getElementById('title')
+    const genderField = addNewAddressForm.getElementById('gender')
+    const firstNameField = addNewAddressForm.getElementById('first-name')
+    const lastNameField = addNewAddressForm.getElementById('last-name')
+    const streetField = addNewAddressForm.getElementById('street').value
+    const zipField = addNewAddressForm.getElementById('zip')
+    const cityField = addNewAddressForm.getElementById('city')
+    const countryField = addNewAddressForm.getElementById('country')
+    const emailField = addNewAddressForm.getElementById('email')
+    const othersField = addNewAddressForm.getElementById('others')
+    const isPrivateField = addNewAddressForm.getElementById('private')
+
+    document.getElementById('addbtn').addEventListener('click', (e) => {
         // preventDefault: prevent the page from refreshing itself.
         e.preventDefault()
-        if (checkNewContact()) {
+        if (checkNewContact({streetField, zipField, cityField, countryField})) {
             addContact()
         } else {
+            main(currUser.username, currUser.isAdmin)
         }
     })
 
     // hier auch
     document.getElementById('cancelbtn').addEventListener('click', (e) => {
-        main(username, isAdmin)
+        main(currUser.username, currUser.isAdmin)
     })
 }
 
@@ -249,6 +267,7 @@ const updateContact = function (
     loginScreen.style.display = 'none'
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'block'
+    document.getElementById('addbtn').style.display='none'
     updateAddress.style.display = 'none'
 
     // form elements
@@ -293,7 +312,7 @@ const updateContact = function (
  */
 const login = function (password, username) {
     // catch error when password, username is not right.
-    return username === 'Louis' || username === 'Julia' // for mocking purposes
+    return username === 'Louis' || username === 'Julia' // TODO: add userbase query here
 }
 
 /**
@@ -394,7 +413,7 @@ const clearContactListChildren = (el) => {
  * Check contents of AddNewContactForm bevore submitting is allowed
  * @param {*} param0
  */
-const checkNewContact = function () {}
+const checkNewContact = function ({street,zip,city,country}) {}
 
 /**
  * Add a contact into current user's contact list.

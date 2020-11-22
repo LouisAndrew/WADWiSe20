@@ -103,4 +103,8 @@ form.styled button {
 	height: 180px;
 	width: 45%;
 }
+#cancelbtn {
+	color: #fff;
+	background-color: #c7ad37;
+}
 /*# sourceMappingURL=main.css.map */

@@ -62,13 +62,7 @@
         <button id="logoutbtn" type="button">log out</button>
       </div>
       <div class="flex-container">
-        <!-- removed div as it is not needed. -->
         <ul id="contactlist">
-          <!-- removed contactlist mockup(s) -->
-          <!-- the style=inline part was an attempt to display the list NEXT to the map but I'm not getting it to work :(
-          <li>Alice</li>
-          <li>Bob</li>
-          <li>Cat</li> -->
         </ul>
         <div id="map">
           <script>
@@ -170,7 +164,11 @@
         </label>
 
         <!-- submit button -->
-        <button class="primary" type='submit'>Add</button>
+        <button id='addbtn' class="primary" type='submit'>Add</button>
+        <!-- update button -->
+        <button id='updatebtn' class="primary">Update</button>
+        <!-- delete button -->
+        <button id='deletebtn' class="primary">Delete</button>
         <div id='addaddress-error' class="error"></div>
         <!-- cancel button-->
         <button id='cancelbtn' class="primary" type="button">Cancel</button>
@@ -179,6 +177,7 @@
     </div>
   </section>
 
+  <!--I think this is deletable, no?-->
   <!-- 4th screen update/delete address-->
   <section id="updatedeleteaddress" class="update-delete-address">
     <!-- same as above. -->
@@ -204,37 +203,37 @@
         <!-- first name -->
         <label for="first-name">
           Vorname
-          <input type="text" name="first-name" id="first-name" required value="John">
+          <input type="text" name="first-name" id="first-name" required>
         </label>
         <!-- last name -->
         <label for="last-name">
           Name
-          <input type="text" name="last-name" id="last-name" required value="Doe">
+          <input type="text" name="last-name" id="last-name" required>
         </label>
         <!-- street -->
         <label for="street">
           Straße + Hausnr.
-          <input type="text" name="street" id="street" required value="Musterstr. 12">
+          <input type="text" name="street" id="street" required>
         </label>
         <!-- zip -->
         <label for="zip">
           PLZ
-          <input type="number" name="zip" id="zip" required value="123456">
+          <input type="number" name="zip" id="zip" required>
         </label>
         <!-- city -->
         <label for="city">
           Stadt
-          <input type="text" name="city" id="city" required value="Berlin">
+          <input type="text" name="city" id="city" required>
         </label>
         <!-- country -->
         <label for="country">
           Land
-          <input type="text" name="country" id="country" required value="Deutschland">
+          <input type="text" name="country" id="country" required>
         </label>
         <!-- email -->
         <label for="email">
           Email
-          <input type="email" name="email" id="email" value="john.doe@jjjjj.com">
+          <input type="email" name="email" id="email">
         </label>
         <!-- others -->
         <label for="others">
@@ -250,14 +249,14 @@
         <!-- submit button -->
         <div class="buttons">
           <!-- update button -->
-          <button class="primary">Update</button>
+          <button id='updateebtn' class="primary">Update</button>
           <!-- delete button -->
-          <button class="primary">Delete</button>
-        </div>
+          <button id='deleteebtn' class="primary">Delete</button>
+        </div>      
 
       </form>
     </div>
-  </section>
+  </section> 
 
 </body>
 
