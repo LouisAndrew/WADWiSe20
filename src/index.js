@@ -106,8 +106,20 @@ const main = function (username, isAdmin) {
     loginScreen.style.display = 'none'
     addNewAddress.style.display = 'none'
     updateAddress.style.display = 'none'
-
     mapScreen.style.display = 'block'
+
+    document.getElementById('showminebtn').addEventListener('click', (e) => {
+        myContactsScreen(username)
+    })
+    document.getElementById('showallbtn').addEventListener('click', (e) => {
+        allContactsScreen(username, isAdmin)
+    })
+    document.getElementById('addnewbtn').addEventListener('click', (e) => {
+        addContactScreen(username, isAdmin)
+    })
+    document.getElementById('logoutbtn').addEventListener('click', (e) => {
+        welcome()
+    })
 
     // Show hello message
     // show log out button
@@ -120,8 +132,26 @@ const main = function (username, isAdmin) {
  * Shows new contact screen.
  * Additonal field for isAdmin: Admin should be able to add contact ALSO for normalo user.
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
+ * @param {string} username: identifier of user
  */
-const addContactScreen = function (isAdmin) {}
+const addContactScreen = function (username, isAdmin) {
+    loginScreen.style.display = 'none'
+    mapScreen.style.display = 'none'
+    addNewAddress.style.display = 'block'
+    updateAddress.style.display = 'none'
+    
+    const addNewAddressForm = document.querySelector('#address-form styled')
+    addNewAddressForm.addEventListener('submit', (e) => {
+        if (checkNewContact()) {
+            addContact()
+        }else{}
+    })
+
+    addNewAddressForm.getElementById('cancelbtn').addEventListener('click', (e) => {
+        welcome()
+        //main(username, isAdmin)
+    })
+}
 
 /**
  * Shows delete / update contact screen
@@ -192,6 +222,14 @@ const showAllContacts = function (isAdmin) {}
  * Shows "My contacts"
  */
 const showMyContacts = function () {}
+
+/**
+ * Check contents of AddNewContactForm bevore submitting is allowed
+ * @param {*} param0 
+ */
+const checkNewContact = function (){
+
+}
 
 /**
  * Add a contact into current user's contact list.
