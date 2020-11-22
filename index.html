@@ -14,12 +14,14 @@
     crossorigin="" /> <!-- I put this in for openstreetmap, the library leaflet needs it-->
 
   <!-- main javascript file -->
-  <script src="src/index.js"></script>
+  <script type="module" src="src/index.js"></script>
 
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
   <!--same here just for leaflet-->
+
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
 
   <!-- google font (optional) -->
   <!-- usage: https://fonts.google.com/specimen/Nunito?query=nu&sidebar.open=true&selection.family=Nunito:wght@400;600;700 -->
@@ -46,7 +48,7 @@
         <div id='login-error' class="error"></div>
         <input type="submit" value="login">
       </form>
-     </div>
+    </div>
     </div>
   </section>
 
@@ -60,14 +62,14 @@
         <button id="logoutbtn" type="button">log out</button>
       </div>
       <div class="flex-container">
-        <div id="contactlist">
-          <ul>
-            <!--the style=inline part was an attempt to display the list NEXT to the map but I'm not getting it to work :(-->
-            <li>Alice</li>
-            <li>Bob</li>
-            <li>Cat</li>
-          </ul>
-        </div>
+        <!-- removed div as it is not needed. -->
+        <ul id="contactlist">
+          <!-- removed contactlist mockup(s) -->
+          <!-- the style=inline part was an attempt to display the list NEXT to the map but I'm not getting it to work :(
+          <li>Alice</li>
+          <li>Bob</li>
+          <li>Cat</li> -->
+        </ul>
         <div id="map">
           <script>
             // initialize Leaflet
@@ -171,9 +173,10 @@
         <button class="primary" type='submit'>Add</button>
         <div id='addaddress-error' class="error"></div>
         <!-- cancel button-->
-        <button id='cancelbtn' class="primary" type="button">Cancel</button> <!--can we make this red?-->
+        <button id='cancelbtn' class="primary" type="button">Cancel</button>
+        <!--can we make this red?-->
       </form>
-      </div>
+    </div>
   </section>
 
   <!-- 4th screen update/delete address-->

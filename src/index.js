@@ -1,3 +1,6 @@
+// import screens from './screens'
+// console.log(screens)
+
 // App div element.
 let app
 
@@ -23,16 +26,76 @@ window.onload = function () {
 
 // User datas:: to another file?
 
+const alice = {
+    title: 'Frau',
+    gender: 'W',
+    firstName: 'Alice',
+    lastName: 'A',
+    street: 'Musterstr. 1',
+    zip: 123456,
+    city: 'Berlin',
+    country: 'Deutschland',
+    email: 'alice@in-wonderland.com',
+    others: '',
+    private: true,
+}
+
+const bob = {
+    title: 'Herr',
+    gender: 'M',
+    firstName: 'Bob',
+    lastName: 'B',
+    street: 'Spainstr. 2',
+    zip: 456221,
+    city: 'Madrid',
+    country: 'Spanien',
+    email: 'bob@the-builder.com',
+    others: '',
+    private: false,
+}
+
+const cat = {
+    title: '',
+    gender: 'D',
+    firstName: 'Cat',
+    lastName: 'C',
+    street: 'Katzenstr. 2',
+    zip: 123421,
+    city: 'München',
+    country: 'Deutschland',
+    email: 'cute@cat.com',
+    others: '',
+    private: false,
+}
+
+const daniel = {
+    title: 'Herr',
+    gender: 'M',
+    firstName: 'Daniel',
+    lastName: 'D',
+    street: 'Time Square',
+    zip: 213412,
+    city: 'New York',
+    email: 'daniel@wellington.de',
+    country: 'USA',
+    others: '',
+    private: true,
+}
+
 /**
  * Hard coded users. Both has 2 more contacts..
  */
-const normalo = {}
-const admina = {}
-
-// Userbase is an object..
-let userBase = {
-    normalo,
-    admina,
+const normalo = {
+    username: 'Louis',
+    password: 'aaa',
+    isAdmin: false,
+    contacts: [alice, bob],
+}
+const admina = {
+    username: 'Julia',
+    password: 'aaa',
+    isAdmin: true,
+    contacts: [cat, daniel],
 }
 
 /**
@@ -54,7 +117,7 @@ let userBase = {
 /**
  * Hard coded users. (normalo, admina)
  */
-const users = [normalo, admina]
+let userBase = [normalo, admina]
 
 // screens function
 
@@ -84,7 +147,10 @@ const welcome = function () {
 
         if (loginSuccesful) {
             // hardcoded isAdmin to true
-            main(username, true)
+            const { isAdmin } = getUser(username)
+            // get the info, if the logged in user is an admin.
+
+            main(username, isAdmin)
         } else {
             const LOGIN_FAILED_MSG = 'Username or password is wrong'
             const loginError = document.getElementById('login-error')
@@ -109,23 +175,24 @@ const main = function (username, isAdmin) {
     mapScreen.style.display = 'block'
 
     document.getElementById('showminebtn').addEventListener('click', (e) => {
-        myContactsScreen(username)
+        showMyContacts(username)
     })
     document.getElementById('showallbtn').addEventListener('click', (e) => {
-        allContactsScreen(username, isAdmin)
+        showAllContacts(username, isAdmin)
     })
     document.getElementById('addnewbtn').addEventListener('click', (e) => {
         addContactScreen(username, isAdmin)
     })
+
+    // show log out button
     document.getElementById('logoutbtn').addEventListener('click', (e) => {
         welcome()
     })
 
-    // Show hello message
-    // show log out button
     // show contact list
-    // show buttons.
-    // handle when user logged in is an admin => more permissions, more rights..
+    showMyContacts(username)
+
+    console.log('help')
 }
 
 /**
@@ -139,49 +206,80 @@ const addContactScreen = function (username, isAdmin) {
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'block'
     updateAddress.style.display = 'none'
-    
-    const addNewAddressForm = document.querySelector('#address-form styled')
+
+    // Hatte hier die falsche querySelector parameter eingegeben
+    const addNewAddressForm = document.querySelector('#addnewaddress form')
     addNewAddressForm.addEventListener('submit', (e) => {
+        // preventDefault: prevent the page from refreshing itself.
+        e.preventDefault()
         if (checkNewContact()) {
             addContact()
-        }else{}
+        } else {
+        }
     })
 
-    addNewAddressForm.getElementById('cancelbtn').addEventListener('click', (e) => {
-        welcome()
-        //main(username, isAdmin)
+    // hier auch
+    document.getElementById('cancelbtn').addEventListener('click', (e) => {
+        main(username, isAdmin)
     })
 }
 
 /**
  * Shows delete / update contact screen
- * @param {user} user: given data (from backend?)
+ * @param {Contact} user: given data (from backend?)
+ * @param {User} currUser: current loggedin user, where the data(s) updated would be updated
  */
-const updateContactScreen = function ({
-    title,
-    gender,
-    firstName,
-    lastName,
-    zip,
-    city,
-    country,
-    email,
-    others,
-    isPrivate,
-}) {}
+const updateContact = function (
+    {
+        title,
+        gender,
+        firstName,
+        lastName,
+        zip,
+        street,
+        city,
+        country,
+        email,
+        others,
+        isPrivate,
+    },
+    currUser
+) {
+    loginScreen.style.display = 'none'
+    mapScreen.style.display = 'none'
+    addNewAddress.style.display = 'block'
+    updateAddress.style.display = 'none'
 
-/**
- * Shows all contact screen.
- * If the logged in user is an admin: show ALL users available.
- * If the user is a "normal" user: show ALL public users.
- * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
- */
-const allContactsScreen = function (isAdmin) {}
+    // form elements
+    const titleField = document.getElementById('title')
+    const genderField = document.getElementById('gender')
+    const firstNameField = document.getElementById('first-name')
+    const lastNameField = document.getElementById('last-name')
+    const streetField = document.getElementById('street')
+    const zipField = document.getElementById('zip')
+    const cityField = document.getElementById('city')
+    const countryField = document.getElementById('country')
+    const emailField = document.getElementById('email')
+    const othersField = document.getElementById('others')
+    const isPrivateField = document.getElementById('private')
 
-/**
- * Shows all private contacts of this user.
- */
-const myContactsScreen = function () {}
+    // assigning values
+    titleField.value = title
+    genderField.value = gender
+    firstNameField.value = firstName
+    lastNameField.value = lastName
+    streetField.value = street
+    zipField.value = zip
+    cityField.value = city
+    countryField.value = country
+    emailField.value = email
+    othersField.value = others
+    isPrivateField.value = isPrivate
+
+    document.getElementById('cancelbtn').addEventListener('click', (e) => {
+        main(currUser.username, currUser.isAdmin)
+    })
+}
 
 // Functionalities
 
@@ -215,21 +313,87 @@ const addNewContact = function (isAdmin) {
 /**
  * Shows "All contacts screen."
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
+ * @param {string} username: username of the logged in user
  */
-const showAllContacts = function (isAdmin) {}
+const showAllContacts = function (username, isAdmin) {
+    const currUser = getUser(username)
+
+    // needs to be flatten.
+    const contactsUnflattened = userBase.map((user) =>
+        user.contacts.filter((contact) => {
+            // return the contact even though its private if the contact is already in the contactbook of
+            // current user
+            if (isAdmin || user.username === username) {
+                return contact
+            }
+
+            return !contact.private
+        })
+    )
+
+    // using lodash to flatten the contact arr.
+    // from [[contact1, contact2], [contact3]] -> to: [contact1, contact2, contact3]
+    const contacts = _.flatten(contactsUnflattened)
+
+    renderContacts(contacts, currUser)
+}
 
 /**
  * Shows "My contacts"
+ * @param {string} username: username of the current loggedin user.
  */
-const showMyContacts = function () {}
+const showMyContacts = function (username) {
+    // filter the userbase arr. Looking for the same username!
+    const currUser = getUser(username)
+    if (!currUser) {
+        return
+    }
+
+    const { contacts } = currUser
+
+    renderContacts(contacts, currUser)
+}
+
+/**
+ * function to render contacts provided in the
+ * @param {Contact[]} contacts
+ * @param {User} currUser current loggedin user
+ */
+const renderContacts = (contacts, currUser) => {
+    const contactList = document.getElementById('contactlist')
+
+    clearContactListChildren(contactList)
+
+    contacts.forEach((contact) => {
+        const el = document.createElement('li')
+        el.setAttribute('contactValue', JSON.stringify(contact))
+        el.className = 'contact'
+        el.textContent = contact.firstName
+        contactList.appendChild(el)
+
+        el.addEventListener('click', () => {
+            // const contactValue = e.target.getAttribute('contactValue')
+            console.log(contact)
+            updateContact(contact, currUser)
+        })
+    })
+}
+
+/**
+ * Function to clear all element within the contactlist ul.
+ * Used when the contactlist element needs to be updated.
+ * @param {HTMLElement} el: contact list element.
+ */
+const clearContactListChildren = (el) => {
+    // removing all inner html of contactlist
+    el.innerHTML = ''
+}
 
 /**
  * Check contents of AddNewContactForm bevore submitting is allowed
- * @param {*} param0 
+ * @param {*} param0
  */
-const checkNewContact = function (){
-
-}
+const checkNewContact = function () {}
 
 /**
  * Add a contact into current user's contact list.
@@ -253,3 +417,20 @@ const addContact = function ({
  * Save user datas to localstorage?
  */
 const saveContact = function () {}
+
+/**
+ * Utility function to get a user from the userbase
+ * @param {string} username
+ * @returns {User} when user with the provided username is available within the userbase
+ * @returns {null} when user is not available
+ */
+const getUser = function (username) {
+    const currUserArr = userBase.filter((user) => user.username === username)
+    if (currUserArr.length === 0) {
+        // means user is not available in the userBase
+        return null
+    }
+
+    // if user is available.
+    return currUserArr[0]
+}
