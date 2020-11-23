@@ -1,110 +1,110 @@
 button {
-	border: none;
-	border-radius: 4px;
-	padding: 8px 16px;
-	cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
 }
 
 button.primary {
-	color: #fff;
-	background-color: #607d8b;
+    color: #fff;
+    background-color: #607d8b;
 }
 
 form.styled {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	-ms-flex-direction: column;
-	flex-direction: column;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
 }
 
 form.styled label {
-	width: 370px;
-	margin: 6px 0;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
+    width: 370px;
+    margin: 6px 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
 }
 
 form.styled label input {
-	width: 200px;
-	padding: 4px 8px;
-	border: 1px solid #c8c8c8;
+    width: 200px;
+    padding: 4px 8px;
+    border: 1px solid #c8c8c8;
 }
 
 form.styled label input[type='checkbox'] {
-	margin-right: 110px;
-	cursor: pointer;
+    margin-right: 110px;
+    cursor: pointer;
 }
 
 form.styled label select {
-	border: 1px solid #c8c8c8;
-	width: 218px;
-	padding: 4px 8px;
-	cursor: pointer;
+    border: 1px solid #c8c8c8;
+    width: 218px;
+    padding: 4px 8px;
+    cursor: pointer;
 }
 
 form.styled button {
-	width: 100%;
-	margin-top: 8px;
+    width: 100%;
+    margin-top: 8px;
 }
 
 .container.modal {
-	background-color: #fafafa;
-	-webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
-	box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
-	border-radius: 8px;
-	padding: 24px;
+    background-color: #fafafa;
+    -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 24px;
 }
 
-.flex-container{
-	display: flex;
+.flex-container {
+    display: flex;
 }
 
 #addnewaddress {
-	margin-top: 32px;
+    margin-top: 32px;
 }
 
 #addnewaddress .container {
-	width: -webkit-fit-content;
-	width: -moz-fit-content;
-	width: fit-content;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
 }
 
 #updatedeleteaddress {
-	margin-top: 32px;
+    margin-top: 32px;
 }
 
 #updatedeleteaddress .container {
-	width: -webkit-fit-content;
-	width: -moz-fit-content;
-	width: fit-content;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
 }
 
 #updatedeleteaddress .container .buttons {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
 }
 
 #updatedeleteaddress .container .buttons button {
-	width: 45%;
+    width: 45%;
 }
 
 #map {
-	height: 180px;
-	width: 45%;
+    height: 180px;
+    width: 45%;
 }
 #cancelbtn {
-	color: #fff;
-	background-color: #c7ad37;
+    color: #fff;
+    background-color: #c7ad37;
 }
 /*# sourceMappingURL=main.css.map */

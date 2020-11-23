@@ -5,7 +5,9 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "webpack"
+        "build": "webpack",
+        "start": "webpack-dev-server",
+        "serve": "webpack serve --hot"
     },
     "repository": {
         "type": "git",
@@ -18,8 +20,13 @@
         "url": "https://github.com/julitschkaa/WADWiSe20/issues"
     },
     "homepage": "https://github.com/julitschkaa/WADWiSe20#readme",
-    "dependencies": {
+    "dependencies": {},
+    "devDependencies": {
+        "css-loader": "^5.0.1",
+        "html-webpack-plugin": "^4.5.0",
+        "style-loader": "^2.0.0",
         "webpack": "^5.6.0",
-        "webpack-cli": "^4.2.0"
+        "webpack-cli": "^4.2.0",
+        "webpack-dev-server": "^3.11.0"
     }
 }

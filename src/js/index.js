@@ -1,5 +1,7 @@
 import { helloWorld } from './screens'
 helloWorld()
+
+import '../styles/main.css'
 //delete me just for git checking
 
 // App div element.
