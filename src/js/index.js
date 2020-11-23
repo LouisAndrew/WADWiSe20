@@ -237,13 +237,13 @@ const addContactScreen = function (username, isAdmin) {
         if (checkNewContact(streetField, zipField, cityField, countryField)) {
             addContact()
         } else {
-            main(currUser.username, currUser.isAdmin)
+            main(username, isAdmin)
         }
     })
 
     // hier auch
     document.getElementById('cancelbtn').addEventListener('click', (e) => {
-        main(currUser.username, currUser.isAdmin)
+        main(username, isAdmin)
     })
 }
 
@@ -414,13 +414,26 @@ const clearContactListChildren = (el) => {
 }
 
 /**
+ * Mockup for debugging
+ * @param {*} street 
+ * @param {*} zip 
+ * @param {*} city 
+ * @param {*} country 
+ */
+const checkNewContact = function (street, zip, city, country){
+    console.log("checkNewContact() was called");
+    return true
+
+}
+
+/**
  * Check contents of Addressfields in AddNewContactForm bevore submitting is allowed
  * @param street: contents of streetfield
  * @param zip: contents of zipfield
  * @param city: contents of cityfield
  * @param country: contents of countryfield
  */
-const checkNewContact = function (street, zip, city, country) {
+const realcheckNewContact = function (street, zip, city, country) {
     const Http = new XMLHttpRequest()
     // URl for nominatim search API https://nominatim.org/release-docs/develop/api/Search/
     const url = 'https://nominatim.openstreetmap.org/search?'
