@@ -1,6 +1,8 @@
+// import statements functions perfectly
 import { helloWorld } from './screens'
 helloWorld()
 
+// imported styling here, bcs webpack bundles it down and importing it directly to the html page
 import '../styles/main.css'
 //delete me just for git checking
 
