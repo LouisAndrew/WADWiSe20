@@ -1,5 +1,10 @@
-// import screens from './screens'
-// console.log(screens)
+// import statements functions perfectly
+import { helloWorld } from './screens'
+helloWorld()
+
+// imported styling here, bcs webpack bundles it down and importing it directly to the html page
+import '../styles/main.css'
+//delete me just for git checking
 
 // App div element.
 let app
@@ -206,21 +211,39 @@ const addContactScreen = function (username, isAdmin) {
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'block'
     updateAddress.style.display = 'none'
+    document.getElementById('updatebtn').style.display = 'none'
+    document.getElementById('deletebtn').style.display = 'none'
+    document.getElementById('addbtn').style.display = 'block'
 
     // Hatte hier die falsche querySelector parameter eingegeben
     const addNewAddressForm = document.querySelector('#addnewaddress form')
-    addNewAddressForm.addEventListener('submit', (e) => {
+
+    // form elements
+    const titleField = addNewAddressForm.getElementById('title').value
+    const genderField = addNewAddressForm.getElementById('gender').value
+    const firstNameField = addNewAddressForm.getElementById('first-name').value
+    const lastNameField = addNewAddressForm.getElementById('last-name').value
+    const streetField = addNewAddressForm.getElementById('street').value
+    const zipField = addNewAddressForm.getElementById('zip').value
+    const cityField = addNewAddressForm.getElementById('city').value
+    const countryField = addNewAddressForm.getElementById('country').value
+    const emailField = addNewAddressForm.getElementById('email').value
+    const othersField = addNewAddressForm.getElementById('others').value
+    const isPrivateField = addNewAddressForm.getElementById('private').value
+
+    document.getElementById('addbtn').addEventListener('click', (e) => {
         // preventDefault: prevent the page from refreshing itself.
         e.preventDefault()
-        if (checkNewContact()) {
+        if (checkNewContact(streetField, zipField, cityField, countryField)) {
             addContact()
         } else {
+            main(currUser.username, currUser.isAdmin)
         }
     })
 
     // hier auch
     document.getElementById('cancelbtn').addEventListener('click', (e) => {
-        main(username, isAdmin)
+        main(currUser.username, currUser.isAdmin)
     })
 }
 
@@ -248,6 +271,7 @@ const updateContact = function (
     loginScreen.style.display = 'none'
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'block'
+    document.getElementById('addbtn').style.display = 'none'
     updateAddress.style.display = 'none'
 
     // form elements
@@ -292,7 +316,7 @@ const updateContact = function (
  */
 const login = function (password, username) {
     // catch error when password, username is not right.
-    return username === 'Louis' || username === 'Julia' // for mocking purposes
+    return username === 'Louis' || username === 'Julia' // TODO: add userbase query here
 }
 
 /**
@@ -390,10 +414,45 @@ const clearContactListChildren = (el) => {
 }
 
 /**
- * Check contents of AddNewContactForm bevore submitting is allowed
- * @param {*} param0
+ * Check contents of Addressfields in AddNewContactForm bevore submitting is allowed
+ * @param street: contents of streetfield
+ * @param zip: contents of zipfield
+ * @param city: contents of cityfield
+ * @param country: contents of countryfield
  */
-const checkNewContact = function () {}
+const checkNewContact = function (street, zip, city, country) {
+    const Http = new XMLHttpRequest()
+    // URl for nominatim search API https://nominatim.org/release-docs/develop/api/Search/
+    const url = 'https://nominatim.openstreetmap.org/search?'
+    // we're going for a structured search here. free-form query would also be an option, but I assume more prone to error?
+    //let freeformquery = "q="+country+"/"+city+"/"+zip+"/"+street;
+    let queryParameter =
+        'street=' +
+        street +
+        '&city=' +
+        city +
+        '&country=' +
+        country +
+        '&postalcode=' +
+        zip
+    //I cose this format because it's shortest and quickly returns the coordinates of lat and long, which we could use for updating markers on the map
+    const format = '&geocodejson'
+
+    //
+    var responseObjekt
+
+    Http.open('GET', url + queryParameter + format)
+    Http.send()
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(Http.responseText)
+            responseObject = this.responseXML
+            return true
+        } else {
+            return false
+        }
+    }
+}
 
 /**
  * Add a contact into current user's contact list.
