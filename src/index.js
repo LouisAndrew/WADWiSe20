@@ -1,5 +1,5 @@
-// import screens from './screens'
-// console.log(screens)
+import { helloWorld } from './screens'
+helloWorld()
 //delete me just for git checking
 
 // App div element.
@@ -207,9 +207,9 @@ const addContactScreen = function (username, isAdmin) {
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'block'
     updateAddress.style.display = 'none'
-    document.getElementById('updatebtn').style.display='none'
-    document.getElementById('deletebtn').style.display='none'
-    document.getElementById('addbtn').style.display="block"
+    document.getElementById('updatebtn').style.display = 'none'
+    document.getElementById('deletebtn').style.display = 'none'
+    document.getElementById('addbtn').style.display = 'block'
 
     // Hatte hier die falsche querySelector parameter eingegeben
     const addNewAddressForm = document.querySelector('#addnewaddress form')
@@ -267,7 +267,7 @@ const updateContact = function (
     loginScreen.style.display = 'none'
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'block'
-    document.getElementById('addbtn').style.display='none'
+    document.getElementById('addbtn').style.display = 'none'
     updateAddress.style.display = 'none'
 
     // form elements
@@ -416,27 +416,35 @@ const clearContactListChildren = (el) => {
  * @param city: contents of cityfield
  * @param country: contents of countryfield
  */
-const checkNewContact = function(street,zip,city,country) {
-    const Http = new XMLHttpRequest();
+const checkNewContact = function (street, zip, city, country) {
+    const Http = new XMLHttpRequest()
     // URl for nominatim search API https://nominatim.org/release-docs/develop/api/Search/
-    const url = 'https://nominatim.openstreetmap.org/search?';
+    const url = 'https://nominatim.openstreetmap.org/search?'
     // we're going for a structured search here. free-form query would also be an option, but I assume more prone to error?
     //let freeformquery = "q="+country+"/"+city+"/"+zip+"/"+street;
-    let queryParameter = "street="+street+"&city="+city+"&country="+country+"&postalcode="+zip;
+    let queryParameter =
+        'street=' +
+        street +
+        '&city=' +
+        city +
+        '&country=' +
+        country +
+        '&postalcode=' +
+        zip
     //I cose this format because it's shortest and quickly returns the coordinates of lat and long, which we could use for updating markers on the map
     const format = '&geocodejson'
-    
-    //
-    var responseObjekt;
 
-    Http.open('GET', url+queryParameter+format);
-    Http.send();
-    Http.onreadystatechange = function(){
-        if(this.readyState==4 && this.status==200){
-            console.log(Http.responseText);
-            responseObject=this.responseXML;
+    //
+    var responseObjekt
+
+    Http.open('GET', url + queryParameter + format)
+    Http.send()
+    Http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(Http.responseText)
+            responseObject = this.responseXML
             return true
-        }else{
+        } else {
             return false
         }
     }
