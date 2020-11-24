@@ -359,6 +359,12 @@ const updateContactScreen = function (
             contactIndex
         )
     })
+
+    deleteBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+
+        deleteContact(currUser, contactIndex)
+    })
 }
 
 /**
@@ -385,7 +391,29 @@ const updateContact = function (contact, user, contactIndex) {
     const contactsOriginal = [...user.contacts] // original contacts attribute of the user
     _.pullAt(contactsOriginal, contactIndex) // is another lodash function, to pull an element from an array at the given index.
 
+    console.log(contactsOriginal)
+
     const contactsUpdated = [...contactsOriginal, contact]
+
+    console.log({ contactsUpdated, contactsOriginal })
+
+    _.set(user, 'contacts', contactsUpdated)
+
+    main(user, user.isAdmin)
+}
+
+/**
+ * Function to delete a contact from a user contacts
+ * @param {User} user user, from whom the contact is to be deleted
+ * @param {int} contactIndex index of the to-be-deleted contact
+ */
+const deleteContact = (user, contactIndex) => {
+    const contactsUpdated = [...user.contacts] // original contacts attribute of the user
+    _.pullAt(contactsUpdated, contactIndex) // is another lodash function, to pull an element from an array at the given index.
+
+    // same as above
+
+    console.log(contactsUpdated)
 
     _.set(user, 'contacts', contactsUpdated)
 
