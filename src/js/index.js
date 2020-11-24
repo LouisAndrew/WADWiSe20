@@ -207,30 +207,28 @@ const addContactScreen = function (username, isAdmin) {
     document.getElementById('deletebtn').style.display = 'none'
     document.getElementById('addbtn').style.display = 'block'
 
-    // Hatte hier die falsche querySelector parameter eingegeben
-    const addNewAddressForm = document.querySelector('#addnewaddress form')
-
-    // form elements
-    // changed the querySelector from 'addNewAddressForm.getElementById' to 'document.getElementById'
-    const title = document.getElementById('title').value
-    const gender = document.getElementById('gender').value
-    const firstName = document.getElementById('first-name').value
-    const lastName = document.getElementById('last-name').value
-    const street = document.getElementById('street').value
-    const zip = document.getElementById('zip').value
-    const city = document.getElementById('city').value
-    const country = document.getElementById('country').value
-    const email = document.getElementById('email').value
-    const others = document.getElementById('others').value
-    const isPrivate = document.getElementById('private').value
-
-    // also: removed the 'Field' from variable names, as we already accessing its values
-
     document.getElementById('addbtn').addEventListener('click', (e) => {
         // preventDefault: prevent the page from refreshing itself.
         e.preventDefault()
+
+        // form elements
+        // changed the querySelector from 'addNewAddressForm.getElementById' to 'document.getElementById'
+        const title = document.getElementById('title').value
+        const gender = document.getElementById('gender').value
+        const firstName = document.getElementById('first-name').value
+        const lastName = document.getElementById('last-name').value
+        const street = document.getElementById('street').value
+        const zip = document.getElementById('zip').value
+        const city = document.getElementById('city').value
+        const country = document.getElementById('country').value
+        const email = document.getElementById('email').value
+        const others = document.getElementById('others').value
+        const isPrivate = document.getElementById('private').value === 'on'
+
+        // also: removed the 'Field' from variable names, as we already accessing its values and moved these block from above, bcs we have to wait for the user to
+        // actually finish inputting the values and clicking the add button.
+
         if (checkNewContact(street, zip, city, country)) {
-            console.log('adding')
             addContact(
                 {
                     title,
@@ -259,30 +257,12 @@ const addContactScreen = function (username, isAdmin) {
 }
 
 /**
- * Add a contact into current user's contact list.
- *
- * @param {Contact} contact: given values from input fields
- * @param {User} user: Current logged in user. OR user, whom the contact should be added to (Added by admin)
- */
-const addContact = function (contact, user) {
-    // contact should be added to the user provided.
-    // how: using lodash.set method?
-    user = {
-        ...user,
-        contacts: [...user.contacts, contact],
-    }
-
-    console.log(user)
-
-    main(user.username, user.isAdmin)
-}
-
-/**
  * Shows delete / update contact screen
  * @param {Contact} user: given data (from backend?)
  * @param {User} currUser: current loggedin user, where the data(s) updated would be updated
+ * @param {int} contactIndex: is index of the contact within the contacts attribute of the user (used to update / delete contact.)
  */
-const updateContact = function (
+const updateContactScreen = function (
     {
         title,
         gender,
@@ -296,13 +276,24 @@ const updateContact = function (
         others,
         isPrivate,
     },
-    currUser
+    currUser,
+    contactIndex
 ) {
     loginScreen.style.display = 'none'
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'block'
-    document.getElementById('addbtn').style.display = 'none'
     updateAddress.style.display = 'none'
+
+    document.getElementById('addbtn').style.display = 'none'
+
+    const cancelBtn = document.getElementById('cancelbtn')
+    const updateBtn = document.getElementById('updatebtn')
+    const deleteBtn = document.getElementById('deletebtn')
+
+    // display all of the necessary buttons
+    cancelBtn.style.display = 'block'
+    updateBtn.style.display = 'block'
+    deleteBtn.style.display = 'block'
 
     // form elements
     const titleField = document.getElementById('title')
@@ -328,11 +319,77 @@ const updateContact = function (
     countryField.value = country
     emailField.value = email
     othersField.value = others
-    isPrivateField.value = isPrivate
+    isPrivateField.value = isPrivate === 'on'
 
-    document.getElementById('cancelbtn').addEventListener('click', (e) => {
+    cancelBtn.addEventListener('click', (e) => {
+        e.preventDefault()
         main(currUser.username, currUser.isAdmin)
     })
+
+    updateBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+
+        const titleNewValue = titleField.value
+        const genderNewValue = genderField.value
+        const firstNameNewValue = firstNameField.value
+        const lastNameNewValue = lastNameField.value
+        const streetNewValue = streetField.value
+        const zipNewValue = zipField.value
+        const cityNewValue = cityField.value
+        const countryNewValue = countryField.value
+        const emailNewValue = emailField.value
+        const othersNewValue = othersField.value
+        const isPrivateNewValue = isPrivateField.value === 'on'
+
+        updateContact(
+            {
+                title: titleNewValue,
+                gender: genderNewValue,
+                firstName: firstNameNewValue,
+                lastName: lastNameNewValue,
+                street: streetNewValue,
+                zip: zipNewValue,
+                city: cityNewValue,
+                country: countryNewValue,
+                email: emailNewValue,
+                others: othersNewValue,
+                isPrivate: isPrivateNewValue,
+            },
+            currUser,
+            contactIndex
+        )
+    })
+}
+
+/**
+ * Add a contact into current user's contact list.
+ *
+ * @param {Contact} contact: given values from input fields
+ * @param {User} user: Current logged in user. OR user, whom the contact should be added to (Added by admin)
+ */
+const addContact = function (contact, user) {
+    // contact should be added to the user provided.
+    const contacts = [...user.contacts, contact] // equivalent to: array.push()
+    _.set(user, 'contacts', contacts) // this is a function from lodash. docs: https://lodash.com/docs/4.17.15#set. Used bcs tbh i don't know how to rlly mutate the user object well.
+
+    main(user.username, user.isAdmin)
+}
+
+/**
+ * Function to actually update a contact from a user. Called when user clicks on the update button
+ * @param {Contact} user: given data (from backend?)
+ * @param {User} user: current loggedin user, where the data(s) updated would be updated
+ * @param {int} contactIndex: is index of the contact within the contacts attribute of the user (used to update / delete contact.)
+ */
+const updateContact = function (contact, user, contactIndex) {
+    const contactsOriginal = [...user.contacts] // original contacts attribute of the user
+    _.pullAt(contactsOriginal, contactIndex) // is another lodash function, to pull an element from an array at the given index.
+
+    const contactsUpdated = [...contactsOriginal, contact]
+
+    _.set(user, 'contacts', contactsUpdated)
+
+    main(user, user.isAdmin)
 }
 
 // Functionalities
@@ -354,14 +411,6 @@ const login = function (password, username) {
  */
 const logout = function () {
     // show login page.
-}
-
-/**
- * Shows "Add Contact screen"
- * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
- */
-const addNewContact = function (isAdmin) {
-    // calls addContactScreen
 }
 
 /**
@@ -418,7 +467,7 @@ const renderContacts = (contacts, currUser) => {
 
     clearContactListChildren(contactList)
 
-    contacts.forEach((contact) => {
+    contacts.forEach((contact, index) => {
         const el = document.createElement('li')
         el.setAttribute('contactValue', JSON.stringify(contact))
         el.className = 'contact'
@@ -426,7 +475,7 @@ const renderContacts = (contacts, currUser) => {
         contactList.appendChild(el)
 
         el.addEventListener('click', () => {
-            updateContact(contact, currUser)
+            updateContactScreen(contact, currUser, index)
         })
     })
 }
