@@ -211,23 +211,42 @@ const addContactScreen = function (username, isAdmin) {
     const addNewAddressForm = document.querySelector('#addnewaddress form')
 
     // form elements
-    const titleField = addNewAddressForm.getElementById('title').value
-    const genderField = addNewAddressForm.getElementById('gender').value
-    const firstNameField = addNewAddressForm.getElementById('first-name').value
-    const lastNameField = addNewAddressForm.getElementById('last-name').value
-    const streetField = addNewAddressForm.getElementById('street').value
-    const zipField = addNewAddressForm.getElementById('zip').value
-    const cityField = addNewAddressForm.getElementById('city').value
-    const countryField = addNewAddressForm.getElementById('country').value
-    const emailField = addNewAddressForm.getElementById('email').value
-    const othersField = addNewAddressForm.getElementById('others').value
-    const isPrivateField = addNewAddressForm.getElementById('private').value
+    // changed the querySelector from 'addNewAddressForm.getElementById' to 'document.getElementById'
+    const title = document.getElementById('title').value
+    const gender = document.getElementById('gender').value
+    const firstName = document.getElementById('first-name').value
+    const lastName = document.getElementById('last-name').value
+    const street = document.getElementById('street').value
+    const zip = document.getElementById('zip').value
+    const city = document.getElementById('city').value
+    const country = document.getElementById('country').value
+    const email = document.getElementById('email').value
+    const others = document.getElementById('others').value
+    const isPrivate = document.getElementById('private').value
+
+    // also: removed the 'Field' from variable names, as we already accessing its values
 
     document.getElementById('addbtn').addEventListener('click', (e) => {
         // preventDefault: prevent the page from refreshing itself.
         e.preventDefault()
-        if (checkNewContact(streetField, zipField, cityField, countryField)) {
-            addContact()
+        if (checkNewContact(street, zip, city, country)) {
+            console.log('adding')
+            addContact(
+                {
+                    title,
+                    gender,
+                    firstName,
+                    lastName,
+                    street,
+                    zip,
+                    city,
+                    country,
+                    email,
+                    others,
+                    isPrivate,
+                },
+                getUser(username)
+            )
         } else {
             main(username, isAdmin)
         }
@@ -236,6 +255,43 @@ const addContactScreen = function (username, isAdmin) {
     // hier auch
     document.getElementById('cancelbtn').addEventListener('click', (e) => {
         main(username, isAdmin)
+    })
+}
+
+/**
+ * Add a contact into current user's contact list.
+ *
+ * @param {Contact} contact: given values from input fields
+ * @param {User} user: Current logged in user. OR user, whom the contact should be added to (Added by admin)
+ */
+const addContact = function (
+    {
+        title,
+        gender,
+        firstName,
+        lastName,
+        zip,
+        city,
+        country,
+        email,
+        others,
+        isPrivate,
+    },
+    user
+) {
+    // add contact
+    console.log({
+        title,
+        gender,
+        firstName,
+        lastName,
+        zip,
+        city,
+        country,
+        email,
+        others,
+        isPrivate,
+        user,
     })
 }
 
@@ -388,8 +444,6 @@ const renderContacts = (contacts, currUser) => {
         contactList.appendChild(el)
 
         el.addEventListener('click', () => {
-            // const contactValue = e.target.getAttribute('contactValue')
-            console.log(contact)
             updateContact(contact, currUser)
         })
     })
@@ -457,24 +511,6 @@ const realcheckNewContact = function (street, zip, city, country) {
         }
     }
 }
-
-/**
- * Add a contact into current user's contact list.
- *
- * @param {user} user: given values from input fields
- */
-const addContact = function ({
-    title,
-    gender,
-    firstName,
-    lastName,
-    zip,
-    city,
-    country,
-    email,
-    others,
-    isPrivate,
-}) {}
 
 /**
  * Save user datas to localstorage?
