@@ -82,13 +82,13 @@ const daniel = {
 /**
  * Hard coded users. Both has 2 more contacts..
  */
-const normalo = {
+var normalo = {
     username: 'Louis',
     password: 'aaa',
     isAdmin: false,
     contacts: [alice, bob],
 }
-const admina = {
+var admina = {
     username: 'Julia',
     password: 'aaa',
     isAdmin: true,
@@ -189,7 +189,7 @@ const main = function (username, isAdmin) {
     // show contact list
     showMyContacts(username)
 
-    console.log('help')
+    console.log(userBase)
 }
 
 /**
@@ -264,35 +264,17 @@ const addContactScreen = function (username, isAdmin) {
  * @param {Contact} contact: given values from input fields
  * @param {User} user: Current logged in user. OR user, whom the contact should be added to (Added by admin)
  */
-const addContact = function (
-    {
-        title,
-        gender,
-        firstName,
-        lastName,
-        zip,
-        city,
-        country,
-        email,
-        others,
-        isPrivate,
-    },
-    user
-) {
-    // add contact
-    console.log({
-        title,
-        gender,
-        firstName,
-        lastName,
-        zip,
-        city,
-        country,
-        email,
-        others,
-        isPrivate,
-        user,
-    })
+const addContact = function (contact, user) {
+    // contact should be added to the user provided.
+    // how: using lodash.set method?
+    user = {
+        ...user,
+        contacts: [...user.contacts, contact],
+    }
+
+    console.log(user)
+
+    main(user.username, user.isAdmin)
 }
 
 /**
