@@ -1,11 +1,3 @@
-// import statements functions perfectly
-import { helloWorld } from './screens'
-helloWorld()
-
-// imported styling here, bcs webpack bundles it down and importing it directly to the html page
-import '../styles/main.css'
-//delete me just for git checking
-
 // App div element.
 let app
 
@@ -415,15 +407,14 @@ const clearContactListChildren = (el) => {
 
 /**
  * Mockup for debugging
- * @param {*} street 
- * @param {*} zip 
- * @param {*} city 
- * @param {*} country 
+ * @param {*} street
+ * @param {*} zip
+ * @param {*} city
+ * @param {*} country
  */
-const checkNewContact = function (street, zip, city, country){
-    console.log("checkNewContact() was called");
+const checkNewContact = function (street, zip, city, country) {
+    console.log('checkNewContact() was called')
     return true
-
 }
 
 /**
