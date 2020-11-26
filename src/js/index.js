@@ -18,6 +18,13 @@ window.onload = function () {
     updateAddress = document.getElementById('updatedeleteaddress')
 
     contactList = document.getElementById('contactlist')
+
+    // set all screen's display to none.
+    loginScreen.style.display = 'none'
+    mapScreen.style.display = 'none'
+    addNewAddress.style.display = 'none'
+    updateAddress.style.display = 'none'
+
     welcome()
 }
 
@@ -124,9 +131,6 @@ let userBase = [normalo, admina]
  */
 const welcome = function () {
     // example on how to render login page on SPA.
-    mapScreen.style.display = 'none'
-    addNewAddress.style.display = 'none'
-    updateAddress.style.display = 'none'
 
     loginScreen.style.display = 'block'
 
@@ -147,6 +151,8 @@ const welcome = function () {
             const { isAdmin } = getUser(username)
             // get the info, if the logged in user is an admin.
 
+            // cleanup => remove loginScreen from view.
+            loginScreen.style.display = 'none'
             main(username, isAdmin)
         } else {
             const LOGIN_FAILED_MSG = 'Username or password is wrong'
@@ -165,10 +171,11 @@ const welcome = function () {
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
 const main = function (username, isAdmin) {
+    const cleanup = () => {
+        mapScreen.style.display = 'none'
+    }
+
     // show map
-    loginScreen.style.display = 'none'
-    addNewAddress.style.display = 'none'
-    updateAddress.style.display = 'none'
     mapScreen.style.display = 'block'
 
     document.getElementById('showminebtn').addEventListener('click', (e) => {
@@ -178,18 +185,22 @@ const main = function (username, isAdmin) {
         showAllContacts(username, isAdmin)
     })
     document.getElementById('addnewbtn').addEventListener('click', (e) => {
+        cleanup()
         addContactScreen(username, isAdmin)
     })
 
     // show log out button
     document.getElementById('logoutbtn').addEventListener('click', (e) => {
+        cleanup()
         welcome()
     })
 
     // show contact list
     showMyContacts(username)
 
-    console.log(userBase)
+    const content = 'user base'
+
+    console.log({ content, userBase })
 }
 
 /**
@@ -199,16 +210,25 @@ const main = function (username, isAdmin) {
  * @param {string} username: identifier of user
  */
 const addContactScreen = function (username, isAdmin) {
-    loginScreen.style.display = 'none'
-    mapScreen.style.display = 'none'
-    addNewAddress.style.display = 'block'
-    updateAddress.style.display = 'none'
-    document.getElementById('updatebtn').style.display = 'none'
-    document.getElementById('deletebtn').style.display = 'none'
-    document.getElementById('addbtn').style.display = 'block'
+    const addBtn = document.getElementById('addbtn')
+    const cancelBtn = document.getElementById('cancelbtn')
+    const form = document.querySelector('#addnewaddress form')
 
-    document.getElementById('addbtn').addEventListener('click', (e) => {
-        // preventDefault: prevent the page from refreshing itself.
+    addNewAddress.style.display = 'block'
+    cancelBtn.style.display = 'block'
+    addBtn.style.display = 'block'
+    addBtn.setAttribute('type', 'submit') // set the button as the submit button.
+
+    // Cleanup function. Setting all display to none and removing attributes
+    const cleanup = () => {
+        addNewAddress.style.display = 'none'
+        cancelBtn.style.display = 'none'
+
+        addBtn.style.display = 'none'
+        addBtn.removeAttribute('type')
+    }
+
+    const submit = (e) => {
         e.preventDefault()
 
         // form elements
@@ -245,15 +265,21 @@ const addContactScreen = function (username, isAdmin) {
                 },
                 getUser(username)
             )
+
+            cleanup()
+            main(username, isAdmin)
         } else {
+            cleanup()
             main(username, isAdmin)
         }
-    })
+    }
 
-    // hier auch
-    document.getElementById('cancelbtn').addEventListener('click', (e) => {
+    // okay this fixes the bug.
+    form.onsubmit = submit // not using event listener anymore, as it produces bug which fires the submit event multiple times
+    cancelBtn.onclick = () => {
+        cleanup()
         main(username, isAdmin)
-    })
+    }
 }
 
 /**
@@ -279,54 +305,30 @@ const updateContactScreen = function (
     currUser,
     contactIndex
 ) {
-    loginScreen.style.display = 'none'
-    mapScreen.style.display = 'none'
-    addNewAddress.style.display = 'block'
-    updateAddress.style.display = 'none'
-
-    document.getElementById('addbtn').style.display = 'none'
-
     const cancelBtn = document.getElementById('cancelbtn')
     const updateBtn = document.getElementById('updatebtn')
     const deleteBtn = document.getElementById('deletebtn')
+    const form = document.querySelector('#addnewaddress form')
 
     // display all of the necessary buttons
+    addNewAddress.style.display = 'block'
     cancelBtn.style.display = 'block'
-    updateBtn.style.display = 'block'
     deleteBtn.style.display = 'block'
 
-    // form elements
-    const titleField = document.getElementById('title')
-    const genderField = document.getElementById('gender')
-    const firstNameField = document.getElementById('first-name')
-    const lastNameField = document.getElementById('last-name')
-    const streetField = document.getElementById('street')
-    const zipField = document.getElementById('zip')
-    const cityField = document.getElementById('city')
-    const countryField = document.getElementById('country')
-    const emailField = document.getElementById('email')
-    const othersField = document.getElementById('others')
-    const isPrivateField = document.getElementById('private')
+    updateBtn.style.display = 'block'
+    updateBtn.setAttribute('type', 'submit') // setting the bnutton's type with submit.
 
-    // assigning values
-    titleField.value = title
-    genderField.value = gender
-    firstNameField.value = firstName
-    lastNameField.value = lastName
-    streetField.value = street
-    zipField.value = zip
-    cityField.value = city
-    countryField.value = country
-    emailField.value = email
-    othersField.value = others
-    isPrivateField.value = isPrivate === 'on'
+    // Cleanup function. Setting all display to none and removing attributes
+    const cleanup = () => {
+        addNewAddress.style.display = 'none'
+        cancelBtn.style.display = 'none'
+        deleteBtn.style.display = 'none'
 
-    cancelBtn.addEventListener('click', (e) => {
-        e.preventDefault()
-        main(currUser.username, currUser.isAdmin)
-    })
+        updateBtn.style.display = 'none'
+        updateBtn.removeAttribute('type')
+    }
 
-    updateBtn.addEventListener('click', (e) => {
+    const submit = (e) => {
         e.preventDefault()
 
         const titleNewValue = titleField.value
@@ -341,6 +343,7 @@ const updateContactScreen = function (
         const othersNewValue = othersField.value
         const isPrivateNewValue = isPrivateField.value === 'on'
 
+        cleanup()
         updateContact(
             {
                 title: titleNewValue,
@@ -358,13 +361,47 @@ const updateContactScreen = function (
             currUser,
             contactIndex
         )
-    })
+    }
 
-    deleteBtn.addEventListener('click', (e) => {
-        e.preventDefault()
+    // form elements
+    const titleField = document.getElementById('title')
+    const genderField = document.getElementById('gender')
+    const firstNameField = document.getElementById('first-name')
+    const lastNameField = document.getElementById('last-name')
+    const streetField = document.getElementById('street')
+    const zipField = document.getElementById('zip')
+    const cityField = document.getElementById('city')
+    const countryField = document.getElementById('country')
+    const emailField = document.getElementById('email')
+    const othersField = document.getElementById('others')
+    const isPrivateField = document.getElementById('private')
 
+    // assigning values to its provided value.
+    titleField.value = title
+    genderField.value = gender
+    firstNameField.value = firstName
+    lastNameField.value = lastName
+    streetField.value = street
+    zipField.value = zip
+    cityField.value = city
+    countryField.value = country
+    emailField.value = email
+    othersField.value = others
+    isPrivateField.value = isPrivate === 'on'
+
+    console.log(currUser)
+
+    cancelBtn.onclick = () => {
+        cleanup()
+        main(currUser.username, currUser.isAdmin)
+    }
+
+    deleteBtn.onclick = () => {
+        cleanup()
         deleteContact(currUser, contactIndex)
-    })
+    }
+
+    form.onsubmit = submit
 }
 
 /**
@@ -388,14 +425,24 @@ const addContact = function (contact, user) {
  * @param {int} contactIndex: is index of the contact within the contacts attribute of the user (used to update / delete contact.)
  */
 const updateContact = function (contact, user, contactIndex) {
-    const contactsOriginal = [...user.contacts] // original contacts attribute of the user
-    _.pullAt(contactsOriginal, contactIndex) // is another lodash function, to pull an element from an array at the given index.
+    // const contactsOriginal = [...user.contacts] // original contacts attribute of the user
+    // _.pullAt(contactsOriginal, contactIndex) // is another lodash function, to pull an element from an array at the given index.
 
-    console.log(contactsOriginal)
+    // console.log(contactsOriginal)
 
-    const contactsUpdated = [...contactsOriginal, contact]
+    // const contactsUpdated = [...contactsOriginal, contact]
 
-    console.log({ contactsUpdated, contactsOriginal })
+    // updating user's contactlist on the given index with the new contact object
+    const contactsUpdated = user.contacts.map((ct, index) => {
+        if (index === contactIndex) {
+            return contact
+        } else {
+            return ct
+        }
+    })
+
+    const content = 'in update contact'
+    console.log({ content, contactsUpdated })
 
     _.set(user, 'contacts', contactsUpdated)
 
@@ -503,6 +550,8 @@ const renderContacts = (contacts, currUser) => {
         contactList.appendChild(el)
 
         el.addEventListener('click', () => {
+            // calls main cleanup.
+            mapScreen.style.display = 'none'
             updateContactScreen(contact, currUser, index)
         })
     })
