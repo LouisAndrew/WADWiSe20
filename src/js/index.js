@@ -219,6 +219,8 @@ const addContactScreen = function (username, isAdmin) {
     addBtn.style.display = 'block'
     addBtn.setAttribute('type', 'submit') // set the button as the submit button.
 
+    const { getValues, cleanupForm } = formHelper()
+
     // Cleanup function. Setting all display to none and removing attributes
     const cleanup = () => {
         addNewAddress.style.display = 'none'
@@ -226,70 +228,25 @@ const addContactScreen = function (username, isAdmin) {
 
         addBtn.style.display = 'none'
         addBtn.removeAttribute('type')
-
-        titleField.value = null
-        genderField.value = 'M'
-        firstNameField.value = null
-        lastNameField.value = null
-        streetField.value = null
-        zipField.value = null
-        cityField.value = null
-        countryField.value = null
-        emailField.value = null
-        othersField.value = null
-        isPrivateField.value = 'on'
+        cleanupForm()
     }
 
     // form elements
-    const titleField = document.getElementById('title')
-    const genderField = document.getElementById('gender')
-    const firstNameField = document.getElementById('first-name')
-    const lastNameField = document.getElementById('last-name')
-    const streetField = document.getElementById('street')
-    const zipField = document.getElementById('zip')
-    const cityField = document.getElementById('city')
-    const countryField = document.getElementById('country')
-    const emailField = document.getElementById('email')
-    const othersField = document.getElementById('others')
-    const isPrivateField = document.getElementById('private')
 
     const submit = (e) => {
         e.preventDefault()
 
         // form elements
         // changed the querySelector from 'addNewAddressForm.getElementById' to 'document.getElementById'
-        const title = titleField.value
-        const gender = genderField.value
-        const firstName = firstNameField.value
-        const lastName = lastNameField.value
-        const street = streetField.value
-        const zip = zipField.value
-        const city = cityField.value
-        const country = countryField.value
-        const email = emailField.value
-        const others = othersField.value
-        const isPrivate = isPrivateField.value === 'on'
+        const formValues = getValues()
+
+        const { street, zip, city, country } = formValues
 
         // also: removed the 'Field' from variable names, as we already accessing its values and moved these block from above, bcs we have to wait for the user to
         // actually finish inputting the values and clicking the add button.
 
         if (checkNewContact(street, zip, city, country)) {
-            addContact(
-                {
-                    title,
-                    gender,
-                    firstName,
-                    lastName,
-                    street,
-                    zip,
-                    city,
-                    country,
-                    email,
-                    others,
-                    isPrivate,
-                },
-                getUser(username)
-            )
+            addContact(formValues, getUser(username))
 
             cleanup()
             main(username, isAdmin)
@@ -343,6 +300,8 @@ const updateContactScreen = function (
     updateBtn.style.display = 'block'
     updateBtn.setAttribute('type', 'submit') // setting the bnutton's type with submit.
 
+    const { getFields, getValues, cleanupForm } = formHelper()
+
     // Cleanup function. Setting all display to none and removing attributes
     const cleanup = () => {
         addNewAddress.style.display = 'none'
@@ -352,67 +311,33 @@ const updateContactScreen = function (
         updateBtn.style.display = 'none'
         updateBtn.removeAttribute('type')
 
-        // reset the fields values.
-        titleField.value = null
-        genderField.value = 'M'
-        firstNameField.value = null
-        lastNameField.value = null
-        streetField.value = null
-        zipField.value = null
-        cityField.value = null
-        countryField.value = null
-        emailField.value = null
-        othersField.value = null
-        isPrivateField.value = 'on'
+        // reset the values.
+        cleanupForm()
     }
 
     const submit = (e) => {
         e.preventDefault()
 
-        const titleNewValue = titleField.value
-        const genderNewValue = genderField.value
-        const firstNameNewValue = firstNameField.value
-        const lastNameNewValue = lastNameField.value
-        const streetNewValue = streetField.value
-        const zipNewValue = zipField.value
-        const cityNewValue = cityField.value
-        const countryNewValue = countryField.value
-        const emailNewValue = emailField.value
-        const othersNewValue = othersField.value
-        const isPrivateNewValue = isPrivateField.value === 'on'
+        const newValues = getValues()
 
         cleanup()
-        updateContact(
-            {
-                title: titleNewValue,
-                gender: genderNewValue,
-                firstName: firstNameNewValue,
-                lastName: lastNameNewValue,
-                street: streetNewValue,
-                zip: zipNewValue,
-                city: cityNewValue,
-                country: countryNewValue,
-                email: emailNewValue,
-                others: othersNewValue,
-                isPrivate: isPrivateNewValue,
-            },
-            currUser,
-            contactIndex
-        )
+        updateContact(newValues, currUser, contactIndex)
     }
 
     // form elements
-    const titleField = document.getElementById('title')
-    const genderField = document.getElementById('gender')
-    const firstNameField = document.getElementById('first-name')
-    const lastNameField = document.getElementById('last-name')
-    const streetField = document.getElementById('street')
-    const zipField = document.getElementById('zip')
-    const cityField = document.getElementById('city')
-    const countryField = document.getElementById('country')
-    const emailField = document.getElementById('email')
-    const othersField = document.getElementById('others')
-    const isPrivateField = document.getElementById('private')
+    const {
+        titleField,
+        genderField,
+        firstNameField,
+        lastNameField,
+        streetField,
+        zipField,
+        countryField,
+        emailField,
+        othersField,
+        isPrivateField,
+        cityField,
+    } = getFields()
 
     // assigning values to its provided value.
     titleField.value = title
@@ -426,8 +351,6 @@ const updateContactScreen = function (
     emailField.value = email
     othersField.value = others
     isPrivateField.value = isPrivate === 'on'
-
-    console.log(currUser)
 
     cancelBtn.onclick = () => {
         cleanup()
@@ -680,4 +603,82 @@ const getUser = function (username) {
 
     // if user is available.
     return currUserArr[0]
+}
+
+/**
+ * Helper function which returns functions that can be used to simplify the code by returning the field element(s) or its values
+ * @returns {getFields, getValues, cleanupForm} Utility functions to help simplify the code
+ */
+const formHelper = () => {
+    const titleField = document.getElementById('title')
+    const genderField = document.getElementById('gender')
+    const firstNameField = document.getElementById('first-name')
+    const lastNameField = document.getElementById('last-name')
+    const streetField = document.getElementById('street')
+    const zipField = document.getElementById('zip')
+    const cityField = document.getElementById('city')
+    const countryField = document.getElementById('country')
+    const emailField = document.getElementById('email')
+    const othersField = document.getElementById('others')
+    const isPrivateField = document.getElementById('private')
+
+    /**
+     * Function to return all form fields.
+     * @returns form fields.
+     */
+    const getFields = () => ({
+        titleField,
+        genderField,
+        firstNameField,
+        lastNameField,
+        streetField,
+        zipField,
+        countryField,
+        emailField,
+        othersField,
+        isPrivateField,
+        cityField,
+    })
+
+    /**
+     * Function to return the value of all form fields
+     * @returns {formValue} value of all form fields
+     */
+    const getValues = () => ({
+        title: titleField.value,
+        gender: genderField.value,
+        firstName: firstNameField.value,
+        lastName: lastNameField.value,
+        street: streetField.value,
+        zip: zipField.value,
+        city: cityField.value,
+        country: countryField.value,
+        email: emailField.value,
+        others: othersField.value,
+        isPrivate: isPrivateField.value === 'on',
+    })
+
+    /**
+     * Function to reset the value(s) of the form
+     */
+    const cleanupForm = () => {
+        // setting the non-required to null and required to its base value
+        titleField.value = null
+        genderField.value = 'M'
+        firstNameField.value = ''
+        lastNameField.value = ''
+        streetField.value = ''
+        zipField.value = ''
+        cityField.value = ''
+        countryField.value = ''
+        emailField.value = null
+        othersField.value = null
+        isPrivateField.value = 'on'
+
+        // error msg always called: An invalid form control with name='' is not focusable.
+        // Answer: https://stackoverflow.com/questions/22148080/an-invalid-form-control-with-name-is-not-focusable
+        // Non-critical issue, but how to hide / disable err msg?
+    }
+
+    return { getFields, getValues, cleanupForm }
 }
