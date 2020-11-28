@@ -5,7 +5,7 @@ let app
 let loginScreen
 let mapScreen
 let addNewAddress
-let updateAddress
+//let updateAddress
 
 let contactList
 
@@ -15,7 +15,7 @@ window.onload = function () {
     loginScreen = document.getElementById('login')
     mapScreen = document.getElementById('mapscreen')
     addNewAddress = document.getElementById('addnewaddress')
-    updateAddress = document.getElementById('updatedeleteaddress')
+    //updateAddress = document.getElementById('updatedeleteaddress')
 
     contactList = document.getElementById('contactlist')
 
@@ -23,7 +23,7 @@ window.onload = function () {
     loginScreen.style.display = 'none'
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'none'
-    updateAddress.style.display = 'none'
+   // updateAddress.style.display = 'none'
 
     welcome()
 }
@@ -124,22 +124,6 @@ var admina = {
     isAdmin: true,
     contacts: [kim, cat, daniel],
 }
-
-/**
- *
- * Schema for user object:
- *
- * title: string,
- * gender: string,
- * firstName: string,
- * lastName: string,
- * zip: numbeer,
- * city: string,
- * country: string,
- * email: string,
- * others: string,
- * isPrivate: boolean,
- */
 
 /**
  * Hard coded users. (normalo, admina)
