@@ -34,49 +34,70 @@ const alice = {
     title: 'Frau',
     gender: 'W',
     firstName: 'Alice',
-    lastName: 'A',
-    street: 'Musterstr. 1',
-    zip: 123456,
+    lastName: 'Allison',
+    street: 'Leipziger Straße 75',
+    zip: 10117,
     city: 'Berlin',
     country: 'Deutschland',
     email: 'alice@in-wonderland.com',
     others: '',
     private: true,
+    lat: 52.5094305,
+    lon: 13.3862223
 }
 
 const bob = {
     title: 'Herr',
     gender: 'M',
     firstName: 'Bob',
-    lastName: 'B',
-    street: 'Spainstr. 2',
-    zip: 456221,
-    city: 'Madrid',
-    country: 'Spanien',
+    lastName: 'Bobbinsky',
+    street: 'Martin-Luther-Straße 21',
+    zip: 10777,
+    city: 'Berlin',
+    country: 'Deutschland',
     email: 'bob@the-builder.com',
     others: '',
     private: false,
+    lat: 52.497479,
+    lon: 13.346461
 }
 
 const cat = {
     title: '',
     gender: 'D',
     firstName: 'Cat',
-    lastName: 'C',
-    street: 'Katzenstr. 2',
-    zip: 123421,
-    city: 'München',
+    lastName: 'Cat',
+    street: 'Katzenstr. 2A',
+    zip: 21335,
+    city: 'Lüneburg',
     country: 'Deutschland',
     email: 'cute@cat.com',
     others: '',
     private: false,
+    lat: 53.2489851,
+    lon: 10.4061901
+}
+const kim ={
+    title: '',
+    gender: 'D',
+    firstName: 'Kim',
+    lastName: 'Meyer',
+    street: 'Metzer Straße 20',
+    zip: 10405,
+    city: 'Berlin',
+    country: 'Deutschland',
+    email: 'businesskim@office.net',
+    others: '',
+    private: false,
+    lat: 52.5327813604134,
+    lon: 13.414483666419983
 }
 
 const daniel = {
     title: 'Herr',
     gender: 'M',
     firstName: 'Daniel',
-    lastName: 'D',
+    lastName: 'Duff',
     street: 'Time Square',
     zip: 213412,
     city: 'New York',
@@ -84,6 +105,8 @@ const daniel = {
     country: 'USA',
     others: '',
     private: true,
+    lat: 40.7581738,
+    lon: -73.9856834
 }
 
 /**
@@ -99,7 +122,7 @@ var admina = {
     username: 'Julia',
     password: 'aaa',
     isAdmin: true,
-    contacts: [cat, daniel],
+    contacts: [kim, cat, daniel],
 }
 
 /**
