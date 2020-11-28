@@ -72,6 +72,13 @@ form.styled {
     .container {
         width: fit-content;
     }
+
+    form {
+        button {
+            // default: set display of all buttons to none.
+            display: none;
+        }
+    }
 }
 
 #updatedeleteaddress {
@@ -93,4 +100,8 @@ form.styled {
 
 .error {
     color: $error;
+}
+
+#map {
+    height: 180px;
 }

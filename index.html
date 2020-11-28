@@ -8,12 +8,13 @@
   <!-- created folder for styling! -->
 
   <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="src/styles/main.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin="" /> <!-- I put this in for openstreetmap, the library leaflet needs it-->
 
   <!-- main javascript file -->
-  <script type="module" src="dist/bundle.js"></script>
+  <script type="module" src="src/js/index.js"></script>
 
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
@@ -163,7 +164,7 @@
         </label>
 
         <!-- submit button -->
-        <button id='addbtn' class="primary" type='submit'>Add</button>
+        <button id='addbtn' class="primary">Add</button>
         <!-- update button -->
         <button id='updatebtn' class="primary">Update</button>
         <!-- delete button -->
