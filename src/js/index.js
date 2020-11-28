@@ -552,7 +552,7 @@ const oldcheckNewContact = function (street, zip, city, country) {
 const checkNewContact = function (street, zip, city, country) {
     const Http = new XMLHttpRequest()
     // URl for nominatim search API https://nominatim.org/release-docs/develop/api/Search/
-    const url = 'https://nominatim.geocoding.ai/search?'
+    const url = 'https://nominatim.geocoding.ai/search?' //switched to a thirdparty services
     // we're going for a structured search here. free-form query would also be an option.
     //let freeformquery = "q="+country+"/"+city+"/"+zip+"/"+street;
     let queryParameter =
@@ -564,19 +564,26 @@ const checkNewContact = function (street, zip, city, country) {
         country +
         '&postalcode=' +
         zip
-    //I chose this format because it's shortest and quickly returns the coordinates of lat and long, which we could use for updating markers on the map
-    const format = '&geocodejson'
+        const format = '&geocodejson'
 
 
     Http.open('GET', url + queryParameter + format)
-    //Http.setRequestHeader("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:83.0) Gecko/20100101 Firefox/83.0")
     console.log(Http.HEADERS_RECEIVED)
     Http.send()
     Http.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(Http.responseText)
+            const geojson = Http.responseText
+            const geoobj = JSON.parse(geojson)
+            if (Object.keys(geoobj).length == 0){//responseobj is empty if there is no address matching your query in osm database
+                console.log("sorry, I couldn't find this address.")
+                return false
+            }else{
+            console.log(geoobj[0].lat+"lat")
+            console.log(geoobj[0].lon+"lon")
             return true
-        } else {
+            }
+        } else if(this.readyState == 4 && this.status != 200) {
+            console.log("nope.received this status:"+Http.statusText)//why is this always an empty string??
             return false
         }
     }
