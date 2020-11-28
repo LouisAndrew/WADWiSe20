@@ -226,24 +226,49 @@ const addContactScreen = function (username, isAdmin) {
 
         addBtn.style.display = 'none'
         addBtn.removeAttribute('type')
+
+        titleField.value = null
+        genderField.value = 'M'
+        firstNameField.value = null
+        lastNameField.value = null
+        streetField.value = null
+        zipField.value = null
+        cityField.value = null
+        countryField.value = null
+        emailField.value = null
+        othersField.value = null
+        isPrivateField.value = 'on'
     }
+
+    // form elements
+    const titleField = document.getElementById('title')
+    const genderField = document.getElementById('gender')
+    const firstNameField = document.getElementById('first-name')
+    const lastNameField = document.getElementById('last-name')
+    const streetField = document.getElementById('street')
+    const zipField = document.getElementById('zip')
+    const cityField = document.getElementById('city')
+    const countryField = document.getElementById('country')
+    const emailField = document.getElementById('email')
+    const othersField = document.getElementById('others')
+    const isPrivateField = document.getElementById('private')
 
     const submit = (e) => {
         e.preventDefault()
 
         // form elements
         // changed the querySelector from 'addNewAddressForm.getElementById' to 'document.getElementById'
-        const title = document.getElementById('title').value
-        const gender = document.getElementById('gender').value
-        const firstName = document.getElementById('first-name').value
-        const lastName = document.getElementById('last-name').value
-        const street = document.getElementById('street').value
-        const zip = document.getElementById('zip').value
-        const city = document.getElementById('city').value
-        const country = document.getElementById('country').value
-        const email = document.getElementById('email').value
-        const others = document.getElementById('others').value
-        const isPrivate = document.getElementById('private').value === 'on'
+        const title = titleField.value
+        const gender = genderField.value
+        const firstName = firstNameField.value
+        const lastName = lastNameField.value
+        const street = streetField.value
+        const zip = zipField.value
+        const city = cityField.value
+        const country = countryField.value
+        const email = emailField.value
+        const others = othersField.value
+        const isPrivate = isPrivateField.value === 'on'
 
         // also: removed the 'Field' from variable names, as we already accessing its values and moved these block from above, bcs we have to wait for the user to
         // actually finish inputting the values and clicking the add button.
@@ -326,6 +351,19 @@ const updateContactScreen = function (
 
         updateBtn.style.display = 'none'
         updateBtn.removeAttribute('type')
+
+        // reset the fields values.
+        titleField.value = null
+        genderField.value = 'M'
+        firstNameField.value = null
+        lastNameField.value = null
+        streetField.value = null
+        zipField.value = null
+        cityField.value = null
+        countryField.value = null
+        emailField.value = null
+        othersField.value = null
+        isPrivateField.value = 'on'
     }
 
     const submit = (e) => {
@@ -411,6 +449,8 @@ const updateContactScreen = function (
  * @param {User} user: Current logged in user. OR user, whom the contact should be added to (Added by admin)
  */
 const addContact = function (contact, user) {
+    console.log(user)
+
     // contact should be added to the user provided.
     const contacts = [...user.contacts, contact] // equivalent to: array.push()
     _.set(user, 'contacts', contacts) // this is a function from lodash. docs: https://lodash.com/docs/4.17.15#set. Used bcs tbh i don't know how to rlly mutate the user object well.
@@ -446,7 +486,7 @@ const updateContact = function (contact, user, contactIndex) {
 
     _.set(user, 'contacts', contactsUpdated)
 
-    main(user, user.isAdmin)
+    main(user.username, user.isAdmin)
 }
 
 /**
@@ -464,7 +504,7 @@ const deleteContact = (user, contactIndex) => {
 
     _.set(user, 'contacts', contactsUpdated)
 
-    main(user, user.isAdmin)
+    main(user.username, user.isAdmin)
 }
 
 // Functionalities
