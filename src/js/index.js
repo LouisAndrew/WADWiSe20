@@ -219,6 +219,7 @@ const main = function (username, isAdmin) {
 const addContactScreen = function (username, isAdmin) {
     const addBtn = document.getElementById('addbtn')
     const cancelBtn = document.getElementById('cancelbtn')
+    const addaddressError = document.getElementById('addaddress-error')
     const form = document.querySelector('#addnewaddress form')
 
     addNewAddress.style.display = 'block'
@@ -232,6 +233,7 @@ const addContactScreen = function (username, isAdmin) {
     const cleanup = () => {
         addNewAddress.style.display = 'none'
         cancelBtn.style.display = 'none'
+        addaddressError.style.display = 'none' //ths is still visible despite cleanup, why?
 
         addBtn.style.display = 'none'
         addBtn.removeAttribute('type')
@@ -252,14 +254,19 @@ const addContactScreen = function (username, isAdmin) {
         // also: removed the 'Field' from variable names, as we already accessing its values and moved these block from above, bcs we have to wait for the user to
         // actually finish inputting the values and clicking the add button.
 
-        if (checkNewContact(street, zip, city, country)) {
+        if (checkNewContact(street, zip, city, country) == true) {
             addContact(formValues, getUser(username))
 
             cleanup()
             main(username, isAdmin)
-        } else {
-            cleanup()
-            main(username, isAdmin)
+        } else if(checkNewContact(street, zip, city, country) == false ){//i don't want to call this twice but 
+            const ADDRESSCHECK_FAILED_MSG = 'Sorry, I couldnt find this address.'//if i just make this a simple else, this part is still executed
+    
+            addaddressError.textContent = ADDRESSCHECK_FAILED_MSG
+            addaddressError.style.display = 'block'
+            addaddressError.style.margin = '4px 0'
+            //cleanup()
+            //main(username, isAdmin)
         }
     }
 
@@ -547,7 +554,7 @@ const clearContactListChildren = (el) => {
 const oldcheckNewContact = function (street, zip, city, country) {
     console.log('checkNewContact() was called')
     return true
-}
+} //can be deleted
 
 /**
  * Check contents of Addressfields in AddNewContactForm bevore submitting is allowed
