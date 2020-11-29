@@ -99,8 +99,16 @@ const addContactScreen = function (username, isAdmin) {
 
     const { getValues, cleanupForm } = formHelper()
 
+    if (isAdmin) {
+        renderUserOption()
+    }
+
     // Cleanup function. Setting all display to none and removing attributes
     const cleanup = () => {
+        if (isAdmin) {
+            document.getElementById('user-select-label').innerHTML = ''
+        }
+
         addNewAddress.style.display = 'none'
         cancelBtn.style.display = 'none'
 
@@ -118,13 +126,22 @@ const addContactScreen = function (username, isAdmin) {
         // changed the querySelector from 'addNewAddressForm.getElementById' to 'document.getElementById'
         const formValues = getValues()
 
+        let toBeAdded
+
+        if (isAdmin) {
+            const userSelectValue = document.getElementById('user-select').value
+            toBeAdded = getUser(userSelectValue)
+        } else {
+            toBeAdded = getUser(username)
+        }
+
         const { street, zip, city, country } = formValues
 
         // also: removed the 'Field' from variable names, as we already accessing its values and moved these block from above, bcs we have to wait for the user to
         // actually finish inputting the values and clicking the add button.
 
         if (checkNewContact(street, zip, city, country)) {
-            addContact(formValues, getUser(username), getUser(username))
+            addContact(formValues, toBeAdded, getUser(username))
 
             cleanup()
             main(username, isAdmin)
@@ -140,6 +157,27 @@ const addContactScreen = function (username, isAdmin) {
         cleanup()
         main(username, isAdmin)
     }
+}
+
+/**
+ * Function to render useroption when adding user on admin log in.
+ */
+const renderUserOption = () => {
+    const userSelect = document.createElement('select') // creating select element
+    userSelect.id = 'user-select' // assigning id to the select element
+    userSelect.required = true
+
+    const label = document.getElementById('user-select-label')
+    label.textContent = 'Create user for'
+    label.appendChild(userSelect)
+
+    userBase.forEach((user) => {
+        const option = document.createElement('option')
+        option.value = user.username
+        option.textContent = user.username
+
+        userSelect.appendChild(option)
+    })
 }
 
 /**
@@ -266,7 +304,6 @@ const showAllContacts = function (username, isAdmin) {
                 // return the contact even though its private if the contact is already in the contactbook of
                 // current user
                 if (isAdmin || user.username === username) {
-                    console.log('tru', contact.firstName)
                     return true
                 }
 
