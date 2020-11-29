@@ -68,7 +68,18 @@
       <div class="flex-container">
         <ul id="contactlist">
         </ul>
-          <div id="map">
+          <div id="map"></div>
+          <script>
+            map = L.map('map').setView({ lon: 13.39293, lat: 52.54181 }, 10); //the last number is the zoomlevel. took me forever to find it
+            // add the OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              maxZoom: 19,
+              attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+            }).addTo(map);
+
+            // show the scale bar on the lower left corner
+            L.control.scale().addTo(map);
+          </script>
         </div>
       </div>
     </div>

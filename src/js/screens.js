@@ -3,9 +3,9 @@ let loginScreen
 let mapScreen
 let addNewAddress
 let updateAddress
+let map
 
 let contactList
-// screens function
 
 /**
  * Function to display when page first loads.
@@ -295,6 +295,7 @@ const showMyContacts = function (username) {
 const renderContacts = (contacts, currUser) => {
     const contactList = document.getElementById('contactlist')
 
+    cleanMap() // always clean the map before rerendering new markers
     clearContactListChildren(contactList)
 
     contacts.forEach((contact, index) => {
@@ -304,12 +305,36 @@ const renderContacts = (contacts, currUser) => {
         el.textContent = contact.firstName
         contactList.appendChild(el)
 
+        const { lon, lat, firstName, lastName } = contact
+
+        addMarker(lon, lat, `${firstName} ${lastName}`)
+
         el.addEventListener('click', () => {
             // calls main cleanup.
             mapScreen.style.display = 'none'
             updateContactScreen(contact, currUser, index)
         })
     })
+}
+
+/**
+ * Function to add a marker to mark the contact's position in map
+ * @param {number} lon longitude of the address
+ * @param {number} lat latitude of the address
+ * @param {string} name name of the address' owner
+ */
+const addMarker = (lon, lat, name) => {
+    // binding tooltip rather than popup, bcs if a popup is clicked, it always sets the marker to the far left of the map
+    L.marker({ lon, lat }).bindTooltip(name).addTo(map)
+}
+
+/**
+ * Function to remove all marker from the map layer
+ */
+const cleanMap = () => {
+    map.eachLayer = (layer) => {
+        layer.remove()
+    }
 }
 
 /**

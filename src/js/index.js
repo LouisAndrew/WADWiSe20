@@ -14,7 +14,7 @@ window.onload = function () {
     loginScreen.style.display = 'none'
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'none'
-    generateMap() // generates map when the document first loads.
+    // map should be generated in index.html file
 
     welcome()
     // main(admina.username, true) // debugging map
@@ -90,18 +90,6 @@ const login = function (password, username) {
  */
 const logout = function () {
     // show login page.
-}
-
-/**
- * Mockup for debugging
- * @param {*} street
- * @param {*} zip
- * @param {*} city
- * @param {*} country
- */
-const checkNewContact = function (street, zip, city, country) {
-    console.log('checkNewContact() was called')
-    return true
 }
 
 /**
