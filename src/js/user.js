@@ -92,3 +92,20 @@ var admina = {
  * Hard coded users. (normalo, admina)
  */
 const userBase = [normalo, admina]
+
+/**
+ * Utility function to get a user from the userbase
+ * @param {string} username
+ * @returns {User} when user with the provided username is available within the userbase
+ * @returns {null} when user is not available
+ */
+const getUser = function (username) {
+    const currUserArr = userBase.filter((user) => user.username === username)
+    if (currUserArr.length === 0) {
+        // means user is not available in the userBase
+        return null
+    }
+
+    // if user is available.
+    return currUserArr[0]
+}
