@@ -5,6 +5,8 @@ let app
 let loginScreen
 let mapScreen
 let addNewAddress
+
+let map
 //let updateAddress
 
 let contactList
@@ -25,7 +27,31 @@ window.onload = function () {
     addNewAddress.style.display = 'none'
     // updateAddress.style.display = 'none'
 
-    welcome()
+    generateMap() // generates map when the document first loads.
+
+    // welcome()
+    main(admina.username, true) // debugging map
+}
+
+/**
+ * Function to generate interactive map with leafletJS
+ */
+const generateMap = () => {
+    // initialize Leaflet
+    map = L.map('map', {
+        center: [52.54181, 13.39293],
+        zoom: 10,
+    }) //.setView({ lon: 13.39293, lat: 52.54181 }, 10) //the last number is the zoomlevel. took me forever to find it
+
+    // add the OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution:
+            '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+    }).addTo(map)
+
+    // // show the scale bar on the lower left corner
+    L.control.scale().addTo(map)
 }
 
 // User datas:: to another file?
@@ -528,6 +554,7 @@ const showMyContacts = function (username) {
 const renderContacts = (contacts, currUser) => {
     const contactList = document.getElementById('contactlist')
 
+    cleanMap()
     clearContactListChildren(contactList)
 
     // TODO: Render marker on the map for each user.
@@ -538,12 +565,33 @@ const renderContacts = (contacts, currUser) => {
         el.textContent = contact.firstName
         contactList.appendChild(el)
 
+        const { lon, lat, firstName, lastName } = contact
+
+        addMarker(lon, lat, `${firstName} ${lastName}`)
+
         el.addEventListener('click', () => {
             // calls main cleanup.
             mapScreen.style.display = 'none'
             updateContactScreen(contact, currUser, index)
         })
     })
+}
+
+/**
+ * Function to add a marker to mark the contact's position in map
+ * @param {number} lon longitude of the address
+ * @param {number} lat latitude of the address
+ * @param {string} name name of the address' owner
+ */
+const addMarker = (lon, lat, name) => {
+    // binding tooltip rather than popup, bcs if a popup is clicked, it always sets the marker to the far left of the map
+    L.marker({ lon, lat }).bindTooltip(name).addTo(map)
+}
+
+const cleanMap = () => {
+    map.eachLayer = (layer) => {
+        layer.remove()
+    }
 }
 
 /**

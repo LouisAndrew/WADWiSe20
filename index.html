@@ -64,25 +64,7 @@
       <div class="flex-container">
         <ul id="contactlist">
         </ul>
-        <div id="map">
-          <script>
-            // initialize Leaflet
-            var map = L.map('map').setView({ lon: 13.39293, lat: 52.54181 }, 10); //the last number is the zoomlevel. took me forever to find it
-
-            // add the OpenStreetMap tiles
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              maxZoom: 19,
-              attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-            }).addTo(map);
-
-            // show the scale bar on the lower left corner
-            L.control.scale().addTo(map);
-
-            // show a marker on the map
-            L.marker({ lon: 13.39293, lat: 52.54181 }).bindPopup('either Alice, Bob or Cat').addTo(map);
-            L.marker({ lon: 13.38862, lat: 52.53862 }).bindPopup('someone else').addTo(map);
-            L.marker({ lon: 13.42956, lat: 52.51677 }).bindPopup('idk').addTo(map);
-          </script>
+          <div id="map">
         </div>
       </div>
     </div>
