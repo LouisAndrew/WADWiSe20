@@ -23,7 +23,7 @@ window.onload = function () {
     loginScreen.style.display = 'none'
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'none'
-   // updateAddress.style.display = 'none'
+    // updateAddress.style.display = 'none'
 
     welcome()
 }
@@ -41,9 +41,9 @@ const alice = {
     country: 'Deutschland',
     email: 'alice@in-wonderland.com',
     others: '',
-    private: true,
+    isPrivate: true,
     lat: 52.5094305,
-    lon: 13.3862223
+    lon: 13.3862223,
 }
 
 const bob = {
@@ -57,9 +57,9 @@ const bob = {
     country: 'Deutschland',
     email: 'bob@the-builder.com',
     others: '',
-    private: false,
+    isPrivate: false,
     lat: 52.497479,
-    lon: 13.346461
+    lon: 13.346461,
 }
 
 const cat = {
@@ -73,11 +73,11 @@ const cat = {
     country: 'Deutschland',
     email: 'cute@cat.com',
     others: '',
-    private: false,
+    isPrivate: false,
     lat: 53.2489851,
-    lon: 10.4061901
+    lon: 10.4061901,
 }
-const kim ={
+const kim = {
     title: '',
     gender: 'D',
     firstName: 'Kim',
@@ -88,9 +88,9 @@ const kim ={
     country: 'Deutschland',
     email: 'businesskim@office.net',
     others: '',
-    private: false,
+    isPrivate: false,
     lat: 52.5327813604134,
-    lon: 13.414483666419983
+    lon: 13.414483666419983,
 }
 
 const daniel = {
@@ -104,9 +104,9 @@ const daniel = {
     email: 'daniel@wellington.de',
     country: 'USA',
     others: '',
-    private: true,
+    isPrivate: true,
     lat: 40.7581738,
-    lon: -73.9856834
+    lon: -73.9856834,
 }
 
 /**
@@ -259,9 +259,11 @@ const addContactScreen = function (username, isAdmin) {
 
             cleanup()
             main(username, isAdmin)
-        } else if(checkNewContact(street, zip, city, country) == false ){//i don't want to call this twice but 
-            const ADDRESSCHECK_FAILED_MSG = 'Sorry, I couldnt find this address.'//if i just make this a simple else, this part is still executed
-    
+        } else if (checkNewContact(street, zip, city, country) == false) {
+            //i don't want to call this twice but
+            const ADDRESSCHECK_FAILED_MSG =
+                'Sorry, I couldnt find this address.' //if i just make this a simple else, this part is still executed
+
             addaddressError.textContent = ADDRESSCHECK_FAILED_MSG
             addaddressError.style.display = 'block'
             addaddressError.style.margin = '4px 0'
@@ -353,6 +355,20 @@ const updateContactScreen = function (
         cityField,
     } = getFields()
 
+    console.log({
+        title,
+        gender,
+        firstName,
+        lastName,
+        zip,
+        street,
+        city,
+        country,
+        email,
+        others,
+        isPrivate,
+    })
+
     // assigning values to its provided value.
     titleField.value = title
     genderField.value = gender
@@ -364,7 +380,7 @@ const updateContactScreen = function (
     countryField.value = country
     emailField.value = email
     othersField.value = others
-    isPrivateField.value = isPrivate === 'on'
+    isPrivateField.checked = isPrivate
 
     cancelBtn.onclick = () => {
         cleanup()
@@ -418,9 +434,6 @@ const updateContact = function (contact, user, contactIndex) {
         }
     })
 
-    const content = 'in update contact'
-    console.log({ content, contactsUpdated })
-
     _.set(user, 'contacts', contactsUpdated)
 
     main(user.username, user.isAdmin)
@@ -436,8 +449,6 @@ const deleteContact = (user, contactIndex) => {
     _.pullAt(contactsUpdated, contactIndex) // is another lodash function, to pull an element from an array at the given index.
 
     // same as above
-
-    console.log(contactsUpdated)
 
     _.set(user, 'contacts', contactsUpdated)
 
@@ -482,7 +493,7 @@ const showAllContacts = function (username, isAdmin) {
                 return contact
             }
 
-            return !contact.private
+            return !contact.isPrivate
         })
     )
 
@@ -519,6 +530,7 @@ const renderContacts = (contacts, currUser) => {
 
     clearContactListChildren(contactList)
 
+    // TODO: Render marker on the map for each user.
     contacts.forEach((contact, index) => {
         const el = document.createElement('li')
         el.setAttribute('contactValue', JSON.stringify(contact))
@@ -578,8 +590,7 @@ const checkNewContact = function (street, zip, city, country) {
         country +
         '&postalcode=' +
         zip
-        const format = '&geocodejson'
-
+    const format = '&geocodejson'
 
     Http.open('GET', url + queryParameter + format)
     console.log(Http.HEADERS_RECEIVED)
@@ -588,16 +599,17 @@ const checkNewContact = function (street, zip, city, country) {
         if (this.readyState == 4 && this.status == 200) {
             const geojson = Http.responseText
             const geoobj = JSON.parse(geojson)
-            if (Object.keys(geoobj).length == 0){//responseobj is empty if there is no address matching your query in osm database
+            if (Object.keys(geoobj).length == 0) {
+                //responseobj is empty if there is no address matching your query in osm database
                 console.log("sorry, I couldn't find this address.")
                 return false
-            }else{
-            console.log(geoobj[0].lat+"lat")
-            console.log(geoobj[0].lon+"lon")
-            return true
+            } else {
+                console.log(geoobj[0].lat + 'lat')
+                console.log(geoobj[0].lon + 'lon')
+                return true
             }
-        } else if(this.readyState == 4 && this.status != 200) {
-            console.log("nope.received this status:"+Http.statusText)//why is this always an empty string??
+        } else if (this.readyState == 4 && this.status != 200) {
+            console.log('nope.received this status:' + Http.statusText) //why is this always an empty string??
             return false
         }
     }
@@ -675,7 +687,7 @@ const formHelper = () => {
         country: countryField.value,
         email: emailField.value,
         others: othersField.value,
-        isPrivate: isPrivateField.value === 'on',
+        isPrivate: isPrivateField.checked,
     })
 
     /**
@@ -693,7 +705,7 @@ const formHelper = () => {
         countryField.value = ''
         emailField.value = null
         othersField.value = null
-        isPrivateField.value = 'on'
+        isPrivateField.checked = true
 
         // error msg always called: An invalid form control with name='' is not focusable.
         // Answer: https://stackoverflow.com/questions/22148080/an-invalid-form-control-with-name-is-not-focusable
