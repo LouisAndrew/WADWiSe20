@@ -7,7 +7,6 @@ let mapScreen
 let addNewAddress
 
 let map
-//let updateAddress
 
 let contactList
 
@@ -17,7 +16,6 @@ window.onload = function () {
     loginScreen = document.getElementById('login')
     mapScreen = document.getElementById('mapscreen')
     addNewAddress = document.getElementById('addnewaddress')
-    //updateAddress = document.getElementById('updatedeleteaddress')
 
     contactList = document.getElementById('contactlist')
 
@@ -25,12 +23,10 @@ window.onload = function () {
     loginScreen.style.display = 'none'
     mapScreen.style.display = 'none'
     addNewAddress.style.display = 'none'
-    // updateAddress.style.display = 'none'
-
     generateMap() // generates map when the document first loads.
 
-    // welcome()
-    main(admina.username, true) // debugging map
+    welcome()
+    // main(admina.username, true) // debugging map
 }
 
 /**
@@ -232,8 +228,6 @@ const main = function (username, isAdmin) {
     showMyContacts(username)
 
     const content = 'user base'
-
-    console.log({ content, userBase })
 }
 
 /**
@@ -381,20 +375,6 @@ const updateContactScreen = function (
         cityField,
     } = getFields()
 
-    console.log({
-        title,
-        gender,
-        firstName,
-        lastName,
-        zip,
-        street,
-        city,
-        country,
-        email,
-        others,
-        isPrivate,
-    })
-
     // assigning values to its provided value.
     titleField.value = title
     genderField.value = gender
@@ -428,8 +408,6 @@ const updateContactScreen = function (
  * @param {User} user: Current logged in user. OR user, whom the contact should be added to (Added by admin)
  */
 const addContact = function (contact, user) {
-    console.log(user)
-
     // contact should be added to the user provided.
     const contacts = [...user.contacts, contact] // equivalent to: array.push()
     _.set(user, 'contacts', contacts) // this is a function from lodash. docs: https://lodash.com/docs/4.17.15#set. Used bcs tbh i don't know how to rlly mutate the user object well.
@@ -444,13 +422,6 @@ const addContact = function (contact, user) {
  * @param {int} contactIndex: is index of the contact within the contacts attribute of the user (used to update / delete contact.)
  */
 const updateContact = function (contact, user, contactIndex) {
-    // const contactsOriginal = [...user.contacts] // original contacts attribute of the user
-    // _.pullAt(contactsOriginal, contactIndex) // is another lodash function, to pull an element from an array at the given index.
-
-    // console.log(contactsOriginal)
-
-    // const contactsUpdated = [...contactsOriginal, contact]
-
     // updating user's contactlist on the given index with the new contact object
     const contactsUpdated = user.contacts.map((ct, index) => {
         if (index === contactIndex) {
