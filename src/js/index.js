@@ -25,13 +25,14 @@ window.onload = function () {
  *
  * @param {Contact} contact: given values from input fields
  * @param {User} user: Current logged in user. OR user, whom the contact should be added to (Added by admin)
+ * @param {User} currUser current loggedin user.
  */
-const addContact = function (contact, user) {
+const addContact = function (contact, user, currUser) {
     // contact should be added to the user provided.
     const contacts = [...user.contacts, contact] // equivalent to: array.push()
     _.set(user, 'contacts', contacts) // this is a function from lodash. docs: https://lodash.com/docs/4.17.15#set. Used bcs tbh i don't know how to rlly mutate the user object well.
 
-    main(user.username, user.isAdmin)
+    main(currUser.username, currUser.isAdmin)
 }
 
 /**
@@ -39,6 +40,7 @@ const addContact = function (contact, user) {
  * @param {Contact} user: given data (from backend?)
  * @param {User} user: current loggedin user, where the data(s) updated would be updated
  * @param {int} contactIndex: is index of the contact within the contacts attribute of the user (used to update / delete contact.)
+ * @param {User} currUser current loggedin user.
  */
 const updateContact = function (contact, user, contactIndex) {
     // updating user's contactlist on the given index with the new contact object
@@ -52,15 +54,16 @@ const updateContact = function (contact, user, contactIndex) {
 
     _.set(user, 'contacts', contactsUpdated)
 
-    main(user.username, user.isAdmin)
+    main(currUser.username, currUser.isAdmin)
 }
 
 /**
  * Function to delete a contact from a user contacts
  * @param {User} user user, from whom the contact is to be deleted
  * @param {int} contactIndex index of the to-be-deleted contact
+ * @param {User} currUser current loggedin user.
  */
-const deleteContact = (user, contactIndex) => {
+const deleteContact = (user, contactIndex, currUser) => {
     const contactsUpdated = [...user.contacts] // original contacts attribute of the user
     _.pullAt(contactsUpdated, contactIndex) // is another lodash function, to pull an element from an array at the given index.
 
@@ -68,7 +71,7 @@ const deleteContact = (user, contactIndex) => {
 
     _.set(user, 'contacts', contactsUpdated)
 
-    main(user.username, user.isAdmin)
+    main(currUser.username, currUser.isAdmin)
 }
 
 // Functionalities

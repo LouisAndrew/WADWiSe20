@@ -99,8 +99,16 @@ const addContactScreen = function (username, isAdmin) {
 
     const { getValues, cleanupForm } = formHelper()
 
+    if (isAdmin) {
+        renderUserOption()
+    }
+
     // Cleanup function. Setting all display to none and removing attributes
     const cleanup = () => {
+        if (isAdmin) {
+            document.getElementById('user-select-label').innerHTML = ''
+        }
+
         addNewAddress.style.display = 'none'
         cancelBtn.style.display = 'none'
 
@@ -118,13 +126,22 @@ const addContactScreen = function (username, isAdmin) {
         // changed the querySelector from 'addNewAddressForm.getElementById' to 'document.getElementById'
         const formValues = getValues()
 
+        let toBeAdded
+
+        if (isAdmin) {
+            const userSelectValue = document.getElementById('user-select').value
+            toBeAdded = getUser(userSelectValue)
+        } else {
+            toBeAdded = getUser(username)
+        }
+
         const { street, zip, city, country } = formValues
 
         // also: removed the 'Field' from variable names, as we already accessing its values and moved these block from above, bcs we have to wait for the user to
         // actually finish inputting the values and clicking the add button.
 
         if (checkNewContact(street, zip, city, country)) {
-            addContact(formValues, getUser(username))
+            addContact(formValues, toBeAdded, getUser(username))
 
             cleanup()
             main(username, isAdmin)
@@ -143,10 +160,32 @@ const addContactScreen = function (username, isAdmin) {
 }
 
 /**
+ * Function to render useroption when adding user on admin log in.
+ */
+const renderUserOption = () => {
+    const userSelect = document.createElement('select') // creating select element
+    userSelect.id = 'user-select' // assigning id to the select element
+    userSelect.required = true
+
+    const label = document.getElementById('user-select-label')
+    label.textContent = 'Create user for'
+    label.appendChild(userSelect)
+
+    userBase.forEach((user) => {
+        const option = document.createElement('option')
+        option.value = user.username
+        option.textContent = user.username
+
+        userSelect.appendChild(option)
+    })
+}
+
+/**
  * Shows delete / update contact screen
  * @param {Contact} user: given data (from backend?)
- * @param {User} currUser: current loggedin user, where the data(s) updated would be updated
+ * @param {User} user: current loggedin user, where the data(s) updated would be updated
  * @param {int} contactIndex: is index of the contact within the contacts attribute of the user (used to update / delete contact.)
+ * @param {User} currUser: current logged in user..
  */
 const updateContactScreen = function (
     {
@@ -162,21 +201,28 @@ const updateContactScreen = function (
         others,
         isPrivate,
     },
-    currUser,
-    contactIndex
+    user,
+    contactIndex,
+    currUser
 ) {
     const cancelBtn = document.getElementById('cancelbtn')
     const updateBtn = document.getElementById('updatebtn')
     const deleteBtn = document.getElementById('deletebtn')
     const form = document.querySelector('#addnewaddress form')
 
+    const canUpdate = user.username === currUser.username || currUser.isAdmin // can update if to-be updated is your own contact or current logged in is an admin
+
     // display all of the necessary buttons
     addNewAddress.style.display = 'block'
     cancelBtn.style.display = 'block'
-    deleteBtn.style.display = 'block'
+    deleteBtn.style.display = canUpdate ? 'block' : 'none'
 
-    updateBtn.style.display = 'block'
-    updateBtn.setAttribute('type', 'submit') // setting the bnutton's type with submit.
+    updateBtn.style.display = canUpdate ? 'block' : 'none'
+    // setting the bnutton's type with submit.
+
+    if (canUpdate) {
+        updateBtn.setAttribute('type', 'submit')
+    }
 
     const { getFields, getValues, cleanupForm } = formHelper()
 
@@ -199,7 +245,7 @@ const updateContactScreen = function (
         const newValues = getValues()
 
         cleanup()
-        updateContact(newValues, currUser, contactIndex)
+        updateContact(newValues, user, contactIndex, currUser)
     }
 
     // form elements
@@ -228,7 +274,7 @@ const updateContactScreen = function (
     countryField.value = country
     emailField.value = email
     othersField.value = others
-    isPrivateField.value = isPrivate === 'on'
+    isPrivateField.checked = isPrivate
 
     cancelBtn.onclick = () => {
         cleanup()
@@ -237,10 +283,10 @@ const updateContactScreen = function (
 
     deleteBtn.onclick = () => {
         cleanup()
-        deleteContact(currUser, contactIndex)
+        deleteContact(user, contactIndex, currUser)
     }
 
-    form.onsubmit = submit
+    form.onsubmit = canUpdate ? submit : () => {} // set to empty function if user is prohibitted to update
 }
 
 /**
@@ -253,16 +299,20 @@ const showAllContacts = function (username, isAdmin) {
 
     // needs to be flatten.
     const contactsUnflattened = userBase.map((user) =>
-        user.contacts.filter((contact) => {
-            // return the contact even though its private if the contact is already in the contactbook of
-            // current user
-            if (isAdmin || user.username === username) {
-                return contact
-            }
+        user.contacts
+            .filter((contact) => {
+                // return the contact even though its private if the contact is already in the contactbook of
+                // current user
+                if (isAdmin || user.username === username) {
+                    return true
+                }
 
-            return !contact.private
-        })
+                return !contact.isPrivate
+            })
+            .map((contact) => ({ ...contact, contactOf: user.username }))
     )
+
+    console.log(contactsUnflattened)
 
     // using lodash to flatten the contact arr.
     // from [[contact1, contact2], [contact3]] -> to: [contact1, contact2, contact3]
@@ -284,7 +334,10 @@ const showMyContacts = function (username) {
 
     const { contacts } = currUser
 
-    renderContacts(contacts, currUser)
+    renderContacts(
+        contacts.map((ct) => ({ ...ct, contactOf: currUser.username })),
+        currUser
+    )
 }
 
 /**
@@ -297,6 +350,8 @@ const renderContacts = (contacts, currUser) => {
 
     cleanMap() // always clean the map before rerendering new markers
     clearContactListChildren(contactList)
+
+    console.log(contacts)
 
     contacts.forEach((contact, index) => {
         const el = document.createElement('li')
@@ -312,7 +367,12 @@ const renderContacts = (contacts, currUser) => {
         el.addEventListener('click', () => {
             // calls main cleanup.
             mapScreen.style.display = 'none'
-            updateContactScreen(contact, currUser, index)
+            updateContactScreen(
+                contact,
+                getUser(contact.contactOf),
+                index,
+                currUser
+            )
         })
     })
 }
@@ -397,7 +457,7 @@ const formHelper = () => {
         country: countryField.value,
         email: emailField.value,
         others: othersField.value,
-        isPrivate: isPrivateField.value === 'on',
+        isPrivate: isPrivateField.checked,
     })
 
     /**
@@ -415,7 +475,7 @@ const formHelper = () => {
         countryField.value = ''
         emailField.value = null
         othersField.value = null
-        isPrivateField.value = 'on'
+        isPrivateField.checked = true
 
         // error msg always called: An invalid form control with name='' is not focusable.
         // Answer: https://stackoverflow.com/questions/22148080/an-invalid-form-control-with-name-is-not-focusable
