@@ -140,7 +140,32 @@ const addContactScreen = function (username, isAdmin) {
         // also: removed the 'Field' from variable names, as we already accessing its values and moved these block from above, bcs we have to wait for the user to
         // actually finish inputting the values and clicking the add button.
 
-        if (checkNewContact(street, zip, city, country)) {
+        const onSuccess = (lat, lon) => {
+            addContact({ ...formValues, lat, lon },toBeAdded, getUser(username))
+
+            cleanup()
+            main(username, isAdmin)
+        }
+
+        const onFailure = () => {
+            const ADDRESSCHECK_FAILED_MSG =
+                'Sorry, I couldnt find this address.' //if i just make this a simple else, this part is still executed
+
+            addaddressError.textContent = ADDRESSCHECK_FAILED_MSG
+            addaddressError.style.display = 'block'
+            addaddressError.style.margin = '4px 0'
+        }
+
+        const addressCheckResult = checkNewContact(
+            street,
+            zip,
+            city,
+            country,
+            onSuccess,
+            onFailure
+        )
+
+        if (addressCheckResult.successful) {
             addContact(formValues, toBeAdded, getUser(username))
 
             cleanup()

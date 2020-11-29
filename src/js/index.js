@@ -102,7 +102,20 @@ const logout = function () {
  * @param city: contents of cityfield
  * @param country: contents of countryfield
  */
-const checkNewContact = function (street, zip, city, country) {
+const checkNewContact = function (
+    street,
+    zip,
+    city,
+    country,
+    onSuccess,
+    onFailure
+) {
+    var resultobj = {
+        successful: false,
+        lat: 0.0,
+        lon: 0.0,
+    }
+
     const Http = new XMLHttpRequest()
     // URl for nominatim search API https://nominatim.org/release-docs/develop/api/Search/
     const url = 'https://nominatim.geocoding.ai/search?' //switched to a thirdparty services
@@ -120,7 +133,6 @@ const checkNewContact = function (street, zip, city, country) {
     const format = '&geocodejson'
 
     Http.open('GET', url + queryParameter + format)
-    console.log(Http.HEADERS_RECEIVED)
     Http.send()
     Http.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -128,18 +140,21 @@ const checkNewContact = function (street, zip, city, country) {
             const geoobj = JSON.parse(geojson)
             if (Object.keys(geoobj).length == 0) {
                 //responseobj is empty if there is no address matching your query in osm database
-                console.log("sorry, I couldn't find this address.")
-                return false
+                onFailure()
             } else {
+                resultobj.successful = true
+                resultobj.lat = geoobj[0].lat
+                resultobj.lon = geoobj[0].lon
                 console.log(geoobj[0].lat + 'lat')
                 console.log(geoobj[0].lon + 'lon')
-                return true
+                onSuccess(resultobj.lat, resultobj.lon)
             }
         } else if (this.readyState == 4 && this.status != 200) {
             console.log('nope.received this status:' + Http.statusText) //why is this always an empty string??
-            return false
         }
     }
+    console.log(resultobj.lat)
+    return resultobj
 }
 
 /**
