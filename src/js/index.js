@@ -554,10 +554,9 @@ const showMyContacts = function (username) {
 const renderContacts = (contacts, currUser) => {
     const contactList = document.getElementById('contactlist')
 
-    cleanMap()
+    cleanMap() // always clean the map before rerendering new markers
     clearContactListChildren(contactList)
 
-    // TODO: Render marker on the map for each user.
     contacts.forEach((contact, index) => {
         const el = document.createElement('li')
         el.setAttribute('contactValue', JSON.stringify(contact))
@@ -588,6 +587,9 @@ const addMarker = (lon, lat, name) => {
     L.marker({ lon, lat }).bindTooltip(name).addTo(map)
 }
 
+/**
+ * Function to remove all marker from the map layer
+ */
 const cleanMap = () => {
     map.eachLayer = (layer) => {
         layer.remove()
@@ -603,18 +605,6 @@ const clearContactListChildren = (el) => {
     // removing all inner html of contactlist
     el.innerHTML = ''
 }
-
-/**
- * Mockup for debugging
- * @param {*} street
- * @param {*} zip
- * @param {*} city
- * @param {*} country
- */
-const oldcheckNewContact = function (street, zip, city, country) {
-    console.log('checkNewContact() was called')
-    return true
-} //can be deleted
 
 /**
  * Check contents of Addressfields in AddNewContactForm bevore submitting is allowed
