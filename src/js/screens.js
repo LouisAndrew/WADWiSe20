@@ -53,12 +53,16 @@ const welcome = function () {
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
 const main = function (username, isAdmin) {
+    const greeting = document.getElementById('username-greeting')
+
     const cleanup = () => {
         mapScreen.style.display = 'none'
+        greeting.textContent = ''
     }
 
     // show map
     mapScreen.style.display = 'block'
+    greeting.textContent = username
 
     document.getElementById('showminebtn').addEventListener('click', (e) => {
         showMyContacts(username)
@@ -91,29 +95,37 @@ const addContactScreen = function (username, isAdmin) {
     const addBtn = document.getElementById('addbtn')
     const cancelBtn = document.getElementById('cancelbtn')
     const form = document.querySelector('#addnewaddress form')
+    const addAddressError = document.getElementById('addaddress-error')
 
     addNewAddress.style.display = 'block'
     cancelBtn.style.display = 'block'
     addBtn.style.display = 'block'
     addBtn.setAttribute('type', 'submit') // set the button as the submit button.
 
+    var userOptionExists = document.getElementById('user-select')
+
     const { getValues, cleanupForm } = formHelper()
 
     if (isAdmin) {
         renderUserOption()
+    } else {
+        if (userOptionExists != null) {
+            //checks if userOption has been created
+            userOptionExists.parentNode.textContent = '' // remove the label before removing the select option
+            userOptionExists.parentNode.removeChild(userOptionExists) //and removes it :)
+        }
     }
 
     // Cleanup function. Setting all display to none and removing attributes
     const cleanup = () => {
-        if (isAdmin) {
-            document.getElementById('user-select-label').innerHTML = ''
-        }
-
         addNewAddress.style.display = 'none'
         cancelBtn.style.display = 'none'
 
         addBtn.style.display = 'none'
         addBtn.removeAttribute('type')
+
+        addAddressError.innerHTML = ''
+
         cleanupForm()
     }
 
@@ -140,15 +152,27 @@ const addContactScreen = function (username, isAdmin) {
         // also: removed the 'Field' from variable names, as we already accessing its values and moved these block from above, bcs we have to wait for the user to
         // actually finish inputting the values and clicking the add button.
 
-        if (checkNewContact(street, zip, city, country)) {
-            addContact(formValues, toBeAdded, getUser(username))
+        const onSuccess = (lat, lon) => {
+            addContact(
+                { ...formValues, lat, lon },
+                toBeAdded,
+                getUser(username)
+            )
 
             cleanup()
             main(username, isAdmin)
-        } else {
-            cleanup()
-            main(username, isAdmin)
         }
+
+        const onFailure = () => {
+            const ADDRESSCHECK_FAILED_MSG =
+                'Sorry, I couldnt find this address.' //if i just make this a simple else, this part is still executed
+
+            addAddressError.textContent = ADDRESSCHECK_FAILED_MSG
+            addAddressError.style.display = 'block'
+            addAddressError.style.margin = '4px 0'
+        }
+
+        checkNewContact(street, zip, city, country, onSuccess, onFailure)
     }
 
     // okay this fixes the bug.
@@ -209,6 +233,7 @@ const updateContactScreen = function (
     const updateBtn = document.getElementById('updatebtn')
     const deleteBtn = document.getElementById('deletebtn')
     const form = document.querySelector('#addnewaddress form')
+    const addAddressError = document.getElementById('addaddress-error')
 
     const canUpdate = user.username === currUser.username || currUser.isAdmin // can update if to-be updated is your own contact or current logged in is an admin
 
@@ -235,6 +260,8 @@ const updateContactScreen = function (
         updateBtn.style.display = 'none'
         updateBtn.removeAttribute('type')
 
+        addAddressError.innerHTML = ''
+
         // reset the values.
         cleanupForm()
     }
@@ -243,9 +270,28 @@ const updateContactScreen = function (
         e.preventDefault()
 
         const newValues = getValues()
+        const { street, zip, city, country } = newValues // what causes the bug is that the lat, lon is not calculated when updating
 
-        cleanup()
-        updateContact(newValues, user, contactIndex, currUser)
+        const onSuccess = (lat, lon) => {
+            cleanup()
+            updateContact(
+                { ...newValues, lat, lon },
+                user,
+                contactIndex,
+                currUser
+            )
+        }
+
+        const onFailure = () => {
+            const ADDRESSCHECK_FAILED_MSG =
+                'Sorry, I couldnt find this address.' //if i just make this a simple else, this part is still executed
+
+            addAddressError.textContent = ADDRESSCHECK_FAILED_MSG
+            addAddressError.style.display = 'block'
+            addAddressError.style.margin = '4px 0'
+        }
+
+        checkNewContact(street, zip, city, country, onSuccess, onFailure)
     }
 
     // form elements
@@ -312,8 +358,6 @@ const showAllContacts = function (username, isAdmin) {
             .map((contact) => ({ ...contact, contactOf: user.username }))
     )
 
-    console.log(contactsUnflattened)
-
     // using lodash to flatten the contact arr.
     // from [[contact1, contact2], [contact3]] -> to: [contact1, contact2, contact3]
     const contacts = _.flatten(contactsUnflattened)
@@ -348,10 +392,8 @@ const showMyContacts = function (username) {
 const renderContacts = (contacts, currUser) => {
     const contactList = document.getElementById('contactlist')
 
-    cleanMap() // always clean the map before rerendering new markers
+    cleanMap(contacts) // always clean the map before rerendering new markers
     clearContactListChildren(contactList)
-
-    console.log(contacts)
 
     contacts.forEach((contact, index) => {
         const el = document.createElement('li')
@@ -392,9 +434,15 @@ const addMarker = (lon, lat, name) => {
  * Function to remove all marker from the map layer
  */
 const cleanMap = () => {
-    map.eachLayer = (layer) => {
-        layer.remove()
-    }
+    console.log('cleaning map')
+
+    // how to get the marker type of a layer?
+    map.eachLayer((layer) => {
+        // map layer has an attribute, named _url
+        if (!layer._url) {
+            layer.remove()
+        }
+    })
 }
 
 /**
