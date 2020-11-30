@@ -68,20 +68,20 @@
       <div class="flex-container">
         <ul id="contactlist">
         </ul>
-          <div id="map"></div>
-          <script>
-            map = L.map('map').setView({ lon: 13.39293, lat: 52.54181 }, 10); //the last number is the zoomlevel. took me forever to find it
-            // add the OpenStreetMap tiles
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              maxZoom: 19,
-              attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-            }).addTo(map);
+        <div id="map"></div>
+        <script>
+          map = L.map('map').setView({ lon: 13.39293, lat: 52.54181 }, 10); //the last number is the zoomlevel. took me forever to find it
+          // add the OpenStreetMap tiles
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+          }).addTo(map);
 
-            // show the scale bar on the lower left corner
-            L.control.scale().addTo(map);
-          </script>
-        </div>
+          // show the scale bar on the lower left corner
+          L.control.scale().addTo(map);
+        </script>
       </div>
+    </div>
     </div>
   </section>
 
@@ -162,20 +162,21 @@
 
         <label for='user-select' id='user-select-label'></label>
 
+        <div id='addaddress-error' class="error"></div>
+
         <!-- submit button -->
         <button id='addbtn' class="primary">Add</button>
         <!-- update button -->
         <button id='updatebtn' class="primary">Update</button>
         <!-- delete button -->
         <button id='deletebtn' class="primary">Delete</button>
-        <div id='addaddress-error' class="error"></div>
         <!-- cancel button-->
         <button id='cancelbtn' class="primary" type="button">Cancel</button>
         <!--can we make this red?-->
       </form>
     </div>
   </section>
-  
+
 </body>
 
 </html>

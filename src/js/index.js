@@ -42,7 +42,7 @@ const addContact = function (contact, user, currUser) {
  * @param {int} contactIndex: is index of the contact within the contacts attribute of the user (used to update / delete contact.)
  * @param {User} currUser current loggedin user.
  */
-const updateContact = function (contact, user, contactIndex) {
+const updateContact = function (contact, user, contactIndex, currUser) {
     // updating user's contactlist on the given index with the new contact object
     const contactsUpdated = user.contacts.map((ct, index) => {
         if (index === contactIndex) {
@@ -145,15 +145,12 @@ const checkNewContact = function (
                 resultobj.successful = true
                 resultobj.lat = geoobj[0].lat
                 resultobj.lon = geoobj[0].lon
-                console.log(geoobj[0].lat + 'lat')
-                console.log(geoobj[0].lon + 'lon')
                 onSuccess(resultobj.lat, resultobj.lon)
             }
         } else if (this.readyState == 4 && this.status != 200) {
             console.log('nope.received this status:' + Http.statusText) //why is this always an empty string??
         }
     }
-    console.log(resultobj.lat)
     return resultobj
 }
 
