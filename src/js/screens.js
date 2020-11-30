@@ -102,11 +102,16 @@ const addContactScreen = function (username, isAdmin) {
     addBtn.style.display = 'block'
     addBtn.setAttribute('type', 'submit') // set the button as the submit button.
 
+    var userOptionExists = document.getElementById('user-select')
+
     const { getValues, cleanupForm } = formHelper()
 
     if (isAdmin) {
         renderUserOption()
     } else {
+        if (userOptionExists != null){ //checks if userOption has been created
+            userOptionExists.parentNode.removeChild(userOptionExists)//and removes it :)
+        }
     }
 
     // Cleanup function. Setting all display to none and removing attributes
