@@ -109,30 +109,15 @@ const addContactScreen = function (username, isAdmin) {
     if (isAdmin) {
         renderUserOption()
     } else {
-        if (userOptionExists != null){ //checks if userOption has been created
-            userOptionExists.parentNode.removeChild(userOptionExists)//and removes it :)
+        if (userOptionExists != null) {
+            //checks if userOption has been created
+            userOptionExists.parentNode.textContent = '' // remove the label before removing the select option
+            userOptionExists.parentNode.removeChild(userOptionExists) //and removes it :)
         }
     }
 
     // Cleanup function. Setting all display to none and removing attributes
     const cleanup = () => {
-        if (isAdmin) {
-            console.log('cleaning up')
-            const label = document.getElementById('user-select-label')
-            const select = document.getElementById('user-select')
-
-            while (select.lastChild) {
-                select.removeChild(select.lastChild)
-            }
-
-            while (label.lastChild) {
-                console.log(label.lastChild)
-                label.removeChild(label.lastChild)
-            }
-
-            console.log(label.childNodes)
-        }
-
         addNewAddress.style.display = 'none'
         cancelBtn.style.display = 'none'
 
