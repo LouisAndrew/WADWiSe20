@@ -1,9 +1,6 @@
 // App div element.
-let app
 
 window.onload = function () {
-    app = document.getElementById('app')
-
     loginScreen = document.getElementById('login')
     mapScreen = document.getElementById('mapscreen')
     addNewAddress = document.getElementById('addnewaddress')

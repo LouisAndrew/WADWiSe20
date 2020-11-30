@@ -25,45 +25,51 @@
     crossorigin=""></script>
   <!--same here just for leaflet-->
 
+  <!-- lodash utility functions -->
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+
+  <!-- icons packafe -->
+  <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 
   <!-- google font (optional) -->
   <!-- usage: https://fonts.google.com/specimen/Nunito?query=nu&sidebar.open=true&selection.family=Nunito:wght@400;600;700 -->
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <title>AdViz</title>
 </head>
 
 <body>
 
   <!-- main div, this is where all of the window(s) / screen(s) is going to be mounted on. -->
-  <div id="app"></div>
 
   <!--1st screen login-->
-  <section id="login" class="login-section">
+  <section id="login" class="login-section modal">
+    <img src="https://images.unsplash.com/photo-1512626120412-faf41adb4874?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8Y29udGFjdHxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=500&q=60" />
     <div class="container">
-      <div class="row">
-        <h1>welcome to adViz!</h1>
-      </div>
-      <form>
-        <label for="username">username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        <label for="password">password:</label>
-        <input type="password" id="password" name="password" required><br><br>
+      <h1>Welcome to adviz! please login to continue</h1>
+      <form class='styled'>
+        <label for="username">username:
+          <input type="text" id="username" name="username" required>
+        </label>
+        <label for="password">password:
+          <input type="password" id="password" name="password" required>
+        </label>
+
         <div id='login-error' class="error"></div>
-        <input type="submit" value="login">
+        <button class='primary' type="submit">Login</button>
       </form>
     </div>
     </div>
   </section>
 
   <!--2nd screen mainscreen with map-->
-  <section id="mapscreen" class="map-screen">
+  <section id="mapscreen" class="map-screen modal">
     <div class="container">
-      <div class="row">
-        <button id="showminebtn" type="button">show mine</button>
-        <button id="showallbtn" type="button">show all</button>
-        <button id="addnewbtn" type="button">add new</button>
-        <button id="logoutbtn" type="button">log out</button>
+      <h1>Hello, <span id="username-greeting"></span>!</h1>
+      <div class="buttons">
+        <button id="showminebtn" type="button" class='primary'> <span class="iconify" data-icon="eva:person-fill" data-inline="false"></span>Show my contacts</button>
+        <button id="showallbtn" type="button" class='primary'> <span class="iconify" data-icon="eva:globe-2-fill" data-inline="false"></span>Show all contacts</button>
+        <button id="addnewbtn" type="button" class='secondary'> <span class="iconify" data-icon="eva:person-add-fill" data-inline="false"></span>Add new contact</button>
+        <button id="logoutbtn" type="button" class='others'> <span class="iconify" data-icon="eva:log-in-outline" data-inline="false"></span>Log out </span></button>
       </div>
       <div class="flex-container">
         <ul id="contactlist">
@@ -90,7 +96,8 @@
     <div class="container modal">
       <form class="address-form styled">
 
-        <!-- title -->
+        <div class="form-fields">
+          <!-- title -->
         <label for="title">
           Titel
           <input type="text" name="title" id="title">
@@ -154,13 +161,14 @@
           <input type="text" name="others" id="others">
         </label>
 
+        <label for='user-select' id='user-select-label'></label>
+
         <!-- private -->
         <label for="private">
           Privat
           <input type="checkbox" name="private" id="private" checked>
         </label>
-
-        <label for='user-select' id='user-select-label'></label>
+        </div>
 
         <div id='addaddress-error' class="error"></div>
 
@@ -169,9 +177,9 @@
         <!-- update button -->
         <button id='updatebtn' class="primary">Update</button>
         <!-- delete button -->
-        <button id='deletebtn' class="primary">Delete</button>
+        <button id='deletebtn' class="others">Delete</button>
         <!-- cancel button-->
-        <button id='cancelbtn' class="primary" type="button">Cancel</button>
+        <button id='cancelbtn' class="secondary">Cancel</button>
         <!--can we make this red?-->
       </form>
     </div>

@@ -53,12 +53,16 @@ const welcome = function () {
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  */
 const main = function (username, isAdmin) {
+    const greeting = document.getElementById('username-greeting')
+
     const cleanup = () => {
         mapScreen.style.display = 'none'
+        greeting.textContent = ''
     }
 
     // show map
     mapScreen.style.display = 'block'
+    greeting.textContent = username
 
     document.getElementById('showminebtn').addEventListener('click', (e) => {
         showMyContacts(username)
@@ -102,12 +106,26 @@ const addContactScreen = function (username, isAdmin) {
 
     if (isAdmin) {
         renderUserOption()
+    } else {
     }
 
     // Cleanup function. Setting all display to none and removing attributes
     const cleanup = () => {
         if (isAdmin) {
-            document.getElementById('user-select-label').innerHTML = ''
+            console.log('cleaning up')
+            const label = document.getElementById('user-select-label')
+            const select = document.getElementById('user-select')
+
+            while (select.lastChild) {
+                select.removeChild(select.lastChild)
+            }
+
+            while (label.lastChild) {
+                console.log(label.lastChild)
+                label.removeChild(label.lastChild)
+            }
+
+            console.log(label.childNodes)
         }
 
         addNewAddress.style.display = 'none'
