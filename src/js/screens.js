@@ -342,20 +342,6 @@ const updateContactScreen = function (
     othersField.value = others
     isPrivateField.checked = isPrivate
 
-    console.log({
-        titleField,
-        genderField,
-        firstNameField,
-        lastNameField,
-        streetField,
-        zipField,
-        countryField,
-        emailField,
-        othersField,
-        isPrivateField,
-        cityField,
-    })
-
     cancelBtn.onclick = () => {
         cleanup()
         main(currUser.username, currUser.isAdmin)
@@ -468,8 +454,6 @@ const addMarker = (lon, lat, name) => {
  * Function to remove all marker from the map layer
  */
 const cleanMap = () => {
-    console.log('cleaning map')
-
     // how to get the marker type of a layer?
     map.eachLayer((layer) => {
         // map layer has an attribute, named _url
