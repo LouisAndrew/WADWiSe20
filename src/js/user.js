@@ -83,14 +83,14 @@ const daniel = {
  * Hard coded users. Both has 2 more contacts..
  */
 var normalo = {
-    username: 'Louis',
-    password: 'aaa',
+    username: 'normalo',
+    password: 'a',
     isAdmin: false,
     contacts: [alice, bob],
 }
 var admina = {
-    username: 'Julia',
-    password: 'aaa',
+    username: 'admina',
+    password: 'a',
     isAdmin: true,
     contacts: [kim, cat, daniel],
 }

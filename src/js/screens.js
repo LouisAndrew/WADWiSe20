@@ -19,6 +19,8 @@ const welcome = function () {
     // function to handle loginform
     const loginForm = document.querySelector('#login form')
     loginForm.addEventListener('submit', (e) => {
+        const loginError = document.getElementById('login-error')
+
         e.preventDefault()
 
         // get the form input values here.
@@ -29,6 +31,10 @@ const welcome = function () {
         const loginSuccesful = login(password, username)
 
         if (loginSuccesful) {
+            // cleanup on err msg
+            loginError.textContent = ''
+            loginError.style.margin = '0'
+
             // hardcoded isAdmin to true
             const { isAdmin } = getUser(username)
             // get the info, if the logged in user is an admin.
@@ -38,7 +44,6 @@ const welcome = function () {
             main(username, isAdmin)
         } else {
             const LOGIN_FAILED_MSG = 'Username or password is wrong'
-            const loginError = document.getElementById('login-error')
 
             loginError.textContent = LOGIN_FAILED_MSG
             loginError.style.margin = '4px 0'
@@ -102,7 +107,8 @@ const addContactScreen = function (username, isAdmin) {
     addBtn.style.display = 'block'
     addBtn.setAttribute('type', 'submit') // set the button as the submit button.
 
-    var userOptionExists = document.getElementById('user-select')
+    // changing to const, as const is block scoped and var is global scoped
+    const userOptionExists = document.getElementById('user-select')
 
     const { getValues, cleanupForm } = formHelper()
 
@@ -248,6 +254,11 @@ const updateContactScreen = function (
     if (canUpdate) {
         updateBtn.setAttribute('type', 'submit')
     }
+
+    const userOptionExists = document.getElementById('user-select')
+    // disable user-select
+    userOptionExists.parentNode.textContent = '' // remove the label before removing the select option
+    userOptionExists.parentNode.removeChild(userOptionExists) //and removes it :)
 
     const { getFields, getValues, cleanupForm } = formHelper()
 

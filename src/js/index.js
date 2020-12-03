@@ -82,7 +82,15 @@ const deleteContact = (user, contactIndex, currUser) => {
  */
 const login = function (password, username) {
     // catch error when password, username is not right.
-    return username === 'Louis' || username === 'Julia' // TODO: add userbase query here
+    const user = getUser(username)
+
+    // user = null if the user with given username does not exist.
+    if (!user || user.password !== password) {
+        // also return false when the given password is different with the user's initial pass
+        return false
+    }
+
+    return true // returns true when constrains above were passed
 }
 
 /**
