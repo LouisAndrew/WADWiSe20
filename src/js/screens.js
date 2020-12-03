@@ -69,22 +69,29 @@ const main = function (username, isAdmin) {
     mapScreen.style.display = 'block'
     greeting.textContent = username
 
-    document.getElementById('showminebtn').addEventListener('click', (e) => {
+    // not attaching event-listener anymore, as it causes lags when the app is being used for a long time (attaching event listener everytime main got called.)
+    const showMineBtn = document.getElementById('showminebtn')
+    const showAllBtn = document.getElementById('showallbtn')
+    const addNewBtn = document.getElementById('addnewbtn')
+    const logoutBtn = document.getElementById('logoutbtn')
+
+    showMineBtn.onclick = () => {
         showMyContacts(username)
-    })
-    document.getElementById('showallbtn').addEventListener('click', (e) => {
+    }
+
+    showAllBtn.onclick = () => {
         showAllContacts(username, isAdmin)
-    })
-    document.getElementById('addnewbtn').addEventListener('click', (e) => {
+    }
+
+    addNewBtn.onclick = () => {
         cleanup()
         addContactScreen(username, isAdmin)
-    })
+    }
 
-    // show log out button
-    document.getElementById('logoutbtn').addEventListener('click', (e) => {
+    logoutBtn.onclick = () => {
         cleanup()
         welcome()
-    })
+    }
 
     // show contact list
     showMyContacts(username)
@@ -256,9 +263,11 @@ const updateContactScreen = function (
     }
 
     const userOptionExists = document.getElementById('user-select')
-    // disable user-select
-    userOptionExists.parentNode.textContent = '' // remove the label before removing the select option
-    userOptionExists.parentNode.removeChild(userOptionExists) //and removes it :)
+    // // disable user-select
+    if (userOptionExists && userOptionExists.parentElement) {
+        userOptionExists.parentNode.textContent = '' // remove the label before removing the select option
+        userOptionExists.parentNode.removeChild(userOptionExists) //and removes it :)
+    }
 
     const { getFields, getValues, cleanupForm } = formHelper()
 
@@ -332,6 +341,20 @@ const updateContactScreen = function (
     emailField.value = email
     othersField.value = others
     isPrivateField.checked = isPrivate
+
+    console.log({
+        titleField,
+        genderField,
+        firstNameField,
+        lastNameField,
+        streetField,
+        zipField,
+        countryField,
+        emailField,
+        othersField,
+        isPrivateField,
+        cityField,
+    })
 
     cancelBtn.onclick = () => {
         cleanup()
