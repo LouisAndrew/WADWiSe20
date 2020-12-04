@@ -264,9 +264,9 @@ const updateContactScreen = function (
 
     const userOptionExists = document.getElementById('user-select')
     // // disable user-select
-    if (userOptionExists && userOptionExists.parentElement) {
+    if (userOptionExists && userOptionExists.parentNode) {
         userOptionExists.parentNode.textContent = '' // remove the label before removing the select option
-        userOptionExists.parentNode.removeChild(userOptionExists) //and removes it :)
+        userOptionExists.parentNode?.removeChild(userOptionExists) //and removes it :)
     }
 
     const { getFields, getValues, cleanupForm } = formHelper()
