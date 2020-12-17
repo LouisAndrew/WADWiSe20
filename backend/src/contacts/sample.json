@@ -1,0 +1,16 @@
+{
+    "id": { "$oid": "5fd39794e49793a94340ccf0" },
+    "titel": "Frau",
+    "gender": "W",
+    "firstName": "Alice",
+    "lastName": "Allison",
+    "street": "Leipziger Straße 75",
+    "zip": { "$numberLong": "10117" },
+    "city": "Berlin",
+    "country": "Deutschland",
+    "email": "alice@in-wonderland.com",
+    "others": "",
+    "isPrivate": true,
+    "lat": { "$numberDouble": "52.5094305" },
+    "lon": { "$numberDouble": "13.3862223" }
+}

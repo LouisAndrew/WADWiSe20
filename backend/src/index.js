@@ -6,6 +6,8 @@ const mongoose = require('mongoose')
 const app = express()
 const port = 8000
 
+app.use(express.json()) // accepting JSON body
+
 // connect to mongoDB here
 const username = `Admina`
 const password = `a`
