@@ -8,15 +8,32 @@
 
 const router = require('express').Router() // initializing router object.
 
+const createContact = require('./createContact')
+
 const defaultRoute = router.route('/')
 const routeWithParam = router.route('/:id')
 
-// todo: implement create contact functionality
 defaultRoute.post((req, res) => {
     // ! Testing endpoint -> use sample data on sample.json
-    res.send(
-        `Called post, user datas should be on body ${JSON.stringify(req.body)}`
-    )
+    const { body } = req
+
+    if (!body.firstName) {
+        // handle error if data is not found in the body.
+        res.status(400).send({ msg: 'Error, no user data is provided.' })
+        return
+    }
+
+    // data should be complete -> validation on the frront end
+    createContact(body).then((contactId) => {
+        console.log(contactId)
+
+        if (!contactId) {
+            res.status(400).send({ msg: 'Failed creating new contact' })
+            return
+        }
+
+        res.status(200).send({ id: contactId })
+    })
 })
 
 // todo: implement get functonality
