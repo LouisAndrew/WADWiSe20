@@ -32,7 +32,7 @@ const createContact = async (data) => {
         const contactId = await contactDoc._id // id of the new contact.
 
         // update user's contact list. with given userId
-        await User.findByIdAndUpdate(userId, { $push: { contacts: contactId } })
+        await User.findByIdAndUpdate(userId, { $push: { contacts: contactId } }) // if the id is not found: CastError.
         return await contactId
     } catch (e) {
         console.error(e) // logging error for debug purposes.

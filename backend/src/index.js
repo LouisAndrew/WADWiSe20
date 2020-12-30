@@ -17,6 +17,7 @@ mongoose.connect(uri, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
+    useFindAndModify: false, // deprecation warning
 })
 
 const db = mongoose.connection
