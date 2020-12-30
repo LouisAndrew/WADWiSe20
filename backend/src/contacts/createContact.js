@@ -19,7 +19,7 @@ const { Contact, User } = require('../models') // import models of the contact a
  *  lat: String,
  *  lon: String
  *  userId: String
- * }} data user data + userID to be updated
+ * }} data user data + userID to be updated (⚠ Using the convention from getContact: userId is userName and NOT the id of mongoDB document.)
  *
  * @returns {Promise<(Number | null)>} id of the new contact.
  * ! ⚠ Async await always returns a promise. if this becomes confusing just tell me. I would then refractor this function.
@@ -32,7 +32,10 @@ const createContact = async (data) => {
         const contactId = await contactDoc._id // id of the new contact.
 
         // update user's contact list. with given userId
-        await User.findByIdAndUpdate(userId, { $push: { contacts: contactId } }) // if the id is not found: CastError.
+        await User.findOneAndUpdate(
+            { userName: userId },
+            { $push: { contacts: contactId } }
+        ) // if the id is not found: CastError.
         return await contactId
     } catch (e) {
         console.error(e) // logging error for debug purposes.

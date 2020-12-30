@@ -1,10 +1,10 @@
 {
     "titel": "Frau",
     "gender": "W",
-    "firstName": "Alice",
-    "lastName": "Allison",
-    "street": "Leipziger Straße 75",
-    "zip": "10117",
+    "firstName": "Angelica",
+    "lastName": "Awe",
+    "street": "Storkowerstr. 219",
+    "zip": "10367",
     "city": "Berlin",
     "country": "Deutschland",
     "email": "alice@in-wonderland.com",
@@ -12,5 +12,5 @@
     "isPrivate": true,
     "lat": "52.5094305",
     "lon": "13.3862223",
-    "userId": "5fd3a28ac82e2af54dfe8d38"
+    "userId": "normalo"
 }

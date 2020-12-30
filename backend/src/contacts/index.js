@@ -9,6 +9,7 @@
 const router = require('express').Router() // initializing router object.
 
 const createContact = require('./createContact')
+const getContact = require('./getContact')
 
 const defaultRoute = router.route('/')
 const routeWithParam = router.route('/:id')
@@ -29,12 +30,36 @@ defaultRoute.post(async (req, res) => {
         return
     }
 
-    res.status(200).send({ id: contactId })
+    /**
+     * ! Was ist es eigentlich hier gemeint? Status code: 201 & "HTTP-Header: Location: /adviz/contacts/newId"
+     */
+    await res
+        .status(201)
+        .header({ Location: '' })
+        .send({ msg: 'Success', id: contactId })
 })
 
 // todo: implement get functonality
-defaultRoute.get((req, res) => {
-    res.send(`Called get with user ID: ${req.query.userId}`)
+defaultRoute.get(async (req, res) => {
+    // Hard coded bcs it is unlikely tht admina user id would be changed.
+    const { userId } = req.query
+
+    // error handling if userId is not provided.
+    if (!userId) {
+        res.status(401).send({ msg: 'Unauthorized' })
+        return
+    }
+
+    const contacts = await getContact(userId) // returns null if error occured.
+    if (!contacts) {
+        res.status(404).send({ msg: 'Not Found' })
+        return
+    }
+
+    await res
+        .status(200)
+        .header({ 'Content-Type': 'application/json' })
+        .send({ contacts })
 })
 
 // todo: implement contact update
