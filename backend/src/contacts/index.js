@@ -13,7 +13,7 @@ const createContact = require('./createContact')
 const defaultRoute = router.route('/')
 const routeWithParam = router.route('/:id')
 
-defaultRoute.post((req, res) => {
+defaultRoute.post(async (req, res) => {
     // ! Testing endpoint -> use sample data on sample.json
     const { body } = req
 
@@ -23,17 +23,13 @@ defaultRoute.post((req, res) => {
         return
     }
 
-    // data should be complete -> validation on the frront end
-    createContact(body).then((contactId) => {
-        console.log(contactId)
+    const contactId = await createContact(body)
+    if (await !contactId) {
+        res.status(400).send({ msg: 'Failed creating new contact' })
+        return
+    }
 
-        if (!contactId) {
-            res.status(400).send({ msg: 'Failed creating new contact' })
-            return
-        }
-
-        res.status(200).send({ id: contactId })
-    })
+    res.status(200).send({ id: contactId })
 })
 
 // todo: implement get functonality

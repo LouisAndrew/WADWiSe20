@@ -1,4 +1,4 @@
-const Contact = require('../models/contact') // import model of the contact.
+const { Contact, User } = require('../models') // import models of the contact and user.
 
 /**
  * Create new contact in the database.
@@ -18,15 +18,22 @@ const Contact = require('../models/contact') // import model of the contact.
  *  isPrivate: Boolean,
  *  lat: String,
  *  lon: String
- * }} data user data
+ *  userId: String
+ * }} data user data + userID to be updated
  *
  * @returns {Promise<(Number | null)>} id of the new contact.
  * ! ⚠ Async await always returns a promise. if this becomes confusing just tell me. I would then refractor this function.
  */
 const createContact = async (data) => {
+    const { userId, ...userData } = data
+
     try {
-        const doc = await Contact.create(data)
-        return await doc._id
+        const contactDoc = await Contact.create(userData)
+        const contactId = await contactDoc._id // id of the new contact.
+
+        // update user's contact list. with given userId
+        await User.findByIdAndUpdate(userId, { $push: { contacts: contactId } })
+        return await contactId
     } catch (e) {
         console.error(e) // logging error for debug purposes.
         return null
