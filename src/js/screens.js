@@ -62,6 +62,7 @@ const showErrMsg = (username, isAdmin) => {
     const button = document.querySelector('#error button')
 
     button.onclick = () => {
+        document.getElementById('modal').style.display = 'none'
         main(username, isAdmin)
     }
 }
@@ -256,7 +257,7 @@ const renderUserOption = () => {
  */
 const updateContactScreen = function (
     {
-        title,
+        titel,
         gender,
         firstName,
         lastName,
@@ -359,7 +360,7 @@ const updateContactScreen = function (
     } = getFields()
 
     // assigning values to its provided value.
-    titleField.value = title
+    titleField.value = titel
     genderField.value = gender
     firstNameField.value = firstName
     lastNameField.value = lastName
@@ -426,9 +427,10 @@ const showMyContacts = async function (username, isAdmin) {
 
     if (await rsp) {
         const { contacts } = await rsp
+        console.log(contacts)
         await renderContacts(
             contacts.map((ct) => ({ ...ct, contactOf: username })),
-            currUser
+            { username, isAdmin }
         )
     } else {
         // handle error here!
@@ -545,7 +547,7 @@ const formHelper = () => {
      * @returns {formValue} value of all form fields
      */
     const getValues = () => ({
-        title: titleField.value,
+        titel: titleField.value,
         gender: genderField.value,
         firstName: firstNameField.value,
         lastName: lastNameField.value,
