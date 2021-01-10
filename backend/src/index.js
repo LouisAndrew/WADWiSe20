@@ -1,12 +1,14 @@
 // entry file.
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 // setup express server here
 const app = express()
 const port = 8000
 
 app.use(express.json()) // accepting JSON body
+app.use(cors())
 
 // connect to mongoDB here
 const username = `Admina`

@@ -166,7 +166,7 @@ const addContactScreen = function (username, isAdmin) {
         // actually finish inputting the values and clicking the add button.
 
         const onSuccess = (lat, lon) => {
-            addContact(
+            addContactDB(
                 { ...formValues, lat, lon },
                 toBeAdded,
                 getUser(username)

@@ -15,8 +15,10 @@ const defaultRoute = router.route('/')
 const routeWithParam = router.route('/:id')
 
 defaultRoute.post(async (req, res) => {
+    console.log('Calling')
     // ! Testing endpoint -> use sample data on sample.json
     const { body } = req
+    console.log(body)
 
     if (!body.firstName) {
         // handle error if data is not found in the body.
@@ -30,6 +32,8 @@ defaultRoute.post(async (req, res) => {
         return
     }
 
+    console.log(await 'After creating contact')
+
     /**
      * ! Was ist es eigentlich hier gemeint? Status code: 201 & "HTTP-Header: Location: /adviz/contacts/newId"
      */
@@ -39,7 +43,6 @@ defaultRoute.post(async (req, res) => {
         .send({ msg: 'Success', id: contactId })
 })
 
-// todo: implement get functonality
 defaultRoute.get(async (req, res) => {
     // Hard coded bcs it is unlikely tht admina user id would be changed.
     const { userId } = req.query

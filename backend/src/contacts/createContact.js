@@ -25,6 +25,8 @@ const { Contact, User } = require('../models') // import models of the contact a
  * ! ⚠ Async await always returns a promise. if this becomes confusing just tell me. I would then refractor this function.
  */
 const createContact = async (data) => {
+    console.log('Creating contact')
+
     const { userId, ...userData } = data
 
     try {

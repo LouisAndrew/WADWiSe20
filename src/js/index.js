@@ -17,18 +17,54 @@ window.onload = function () {
 }
 
 /**
- * Add a contact into current user's contact list by calling an endpoint from the database (POST /adviz/contacts)
+ * Add a contact into current user's contact list. (No interaction with the database)
  *
  * @param {Contact} contact: given values from input fields
  * @param {User} user: Current logged in user. OR user, whom the contact should be added to (Added by admin)
  * @param {User} currUser current loggedin user.
  */
-const addContact = function (contact, user, currUser) {
+const addContact = async function (contact, user, currUser) {
     // contact should be added to the user provided.
     const contacts = [...user.contacts, contact] // equivalent to: array.push()
     _.set(user, 'contacts', contacts) // this is a function from lodash. docs: https://lodash.com/docs/4.17.15#set. Used bcs tbh i don't know how to rlly mutate the user object well.
 
     main(currUser.username, currUser.isAdmin)
+}
+
+/**
+ * Add a contact into current user's contact list by calling an endpoint from the database (POST /adviz/contacts)
+ *
+ * @param {Contact} contact: given values from input fields
+ * @param {{ username: String }} user: Current logged in user. OR user, whom the contact should be added to (Added by admin)
+ * @param {{ username: String, isAdmin: Boolean }} currUser current loggedin user.
+ */
+const addContactDB = async function (contact, user, currUser) {
+    try {
+        const body = {
+            ...contact,
+            userId: currUser.username,
+        }
+
+        const req = await fetch(`http://localhost:8000/adviz/contacts`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        })
+
+        if (await req.ok) {
+            const data = await req.json()
+            const {} = data
+
+            await main(currUser.username, currUser.isAdmin)
+        } else {
+            // error handling
+        }
+    } catch (e) {
+        console.error(e)
+        // error handling
+    }
 }
 
 /**
