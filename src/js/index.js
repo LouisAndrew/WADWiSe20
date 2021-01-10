@@ -1,5 +1,4 @@
-// App div element.
-
+// All functions that are interacting with the backend are stored here!
 window.onload = function () {
     loginScreen = document.getElementById('login')
     mapScreen = document.getElementById('mapscreen')
@@ -18,7 +17,7 @@ window.onload = function () {
 }
 
 /**
- * Add a contact into current user's contact list.
+ * Add a contact into current user's contact list by calling an endpoint from the database (POST /adviz/contacts)
  *
  * @param {Contact} contact: given values from input fields
  * @param {User} user: Current logged in user. OR user, whom the contact should be added to (Added by admin)
@@ -160,6 +159,7 @@ const checkNewContact = function (
 }
 
 /**
- * Save user datas to localstorage?
+ * Get all contacts with the username from the database
+ * @param {String} username
  */
-const saveContact = function () {}
+const getAllContacts = (username) => {}

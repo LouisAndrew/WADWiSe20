@@ -100,6 +100,10 @@ var admina = {
  */
 let userBase = [normalo, admina]
 
+let currUser
+
+const debug = () => {}
+
 /**
  * Utility function to get a user from the userbase
  * @param {string} username
