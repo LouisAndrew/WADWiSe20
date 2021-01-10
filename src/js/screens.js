@@ -52,6 +52,28 @@ const welcome = function () {
 }
 
 /**
+ * Function to show error msg.
+ * @param {string} username: username of the current loggedin user.
+ * @param {Boolean} isAdmin: If current user is an admin
+ */
+const showErrMsg = (username, isAdmin) => {
+    // const err = document.getElementById('error')
+    showModal()
+    const button = document.querySelector('#error button')
+
+    button.onclick = () => {
+        main(username, isAdmin)
+    }
+}
+
+/**
+ * Show overlay to contain the error msg
+ */
+const showModal = () => {
+    document.getElementById('modal').style.display = 'flex'
+}
+
+/**
  * Function to show main page.
  * Also: Shows the text 'Hello, ${username}!'
  * @param {string} username string: username of the logged in user.
@@ -76,7 +98,7 @@ const main = function (username, isAdmin) {
     const logoutBtn = document.getElementById('logoutbtn')
 
     showMineBtn.onclick = () => {
-        showMyContacts(username)
+        showMyContacts(username, isAdmin)
     }
 
     showAllBtn.onclick = () => {
@@ -94,7 +116,7 @@ const main = function (username, isAdmin) {
     }
 
     // show contact list
-    showMyContacts(username)
+    showMyContacts(username, isAdmin)
 }
 
 /**
@@ -169,11 +191,19 @@ const addContactScreen = function (username, isAdmin) {
             addContactDB(
                 { ...formValues, lat, lon },
                 toBeAdded,
-                getUser(username)
+                (errMsg) => {
+                    console.log('Error got called')
+                    // callback failure function -> if interaction with backend is not successful.
+                    addAddressError.textContent = errMsg
+                    addAddressError.style.display = 'block'
+                    addAddressError.style.margin = '4px 0'
+                },
+                () => {
+                    // callback success
+                    cleanup()
+                    main(username, isAdmin)
+                }
             )
-
-            cleanup()
-            main(username, isAdmin)
         }
 
         const onFailure = () => {
@@ -387,20 +417,23 @@ const showAllContacts = function (username, isAdmin) {
 /**
  * Shows "My contacts"
  * @param {string} username: username of the current loggedin user.
+ * @param {Boolean} isAdmin: If current user is an admin
  */
-const showMyContacts = function (username) {
+const showMyContacts = async function (username, isAdmin) {
     // filter the userbase arr. Looking for the same username!
-    const currUser = getUser(username)
-    if (!currUser) {
-        return
+
+    const rsp = await getContacts(username) // wait for data from getContacts function (in index.js)
+
+    if (await rsp) {
+        const { contacts } = await rsp
+        await renderContacts(
+            contacts.map((ct) => ({ ...ct, contactOf: username })),
+            currUser
+        )
+    } else {
+        // handle error here!
+        showErrMsg(username, isAdmin)
     }
-
-    const { contacts } = currUser
-
-    renderContacts(
-        contacts.map((ct) => ({ ...ct, contactOf: currUser.username })),
-        currUser
-    )
 }
 
 /**

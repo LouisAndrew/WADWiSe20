@@ -36,16 +36,20 @@ const addContact = async function (contact, user, currUser) {
  *
  * @param {Contact} contact: given values from input fields
  * @param {{ username: String }} user: Current logged in user. OR user, whom the contact should be added to (Added by admin)
- * @param {{ username: String, isAdmin: Boolean }} currUser current loggedin user.
+ * @param {Function} onErr callback function to be called if there's an error during interaction with the backend
+ * @param {Function} onSucces callback function to be called if the operation is successful
  */
-const addContactDB = async function (contact, user, currUser) {
+const addContactDB = async function (contact, user, onErr, onSuccess) {
     try {
         const body = {
             ...contact,
-            userId: currUser.username,
+            userId: user.username,
         }
 
-        const req = await fetch(`http://localhost:8000/adviz/contacts`, {
+        // response object. Using fetch here rather than XMLHTTPReuest:
+        // Link: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+        // Let me know if it gets confusing and you would rather use XMLHTTPRequest.
+        const res = await fetch(`http://localhost:8000/adviz/contacts`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,17 +57,22 @@ const addContactDB = async function (contact, user, currUser) {
             body: JSON.stringify(body),
         })
 
-        if (await req.ok) {
-            const data = await req.json()
-            const {} = data
+        console.log(await res.ok)
 
-            await main(currUser.username, currUser.isAdmin)
+        // check if status of response is ok.
+        if (await res.ok) {
+            const data = await res.json()
+            const {} = data // what to do with data here?
+
+            await onSuccess()
         } else {
             // error handling
+            await onErr('Failed creating new contact')
         }
     } catch (e) {
         console.error(e)
         // error handling
+        onErr('Oops, something went wrong')
     }
 }
 
@@ -196,6 +205,25 @@ const checkNewContact = function (
 
 /**
  * Get all contacts with the username from the database
+ * @param {String} username
+ * @returns {([Contact] | null)} returns an array of contacts on success and returns null if operation failed.
+ */
+const getContacts = async (username) => {
+    const url = `http://localhost:8000/adviz/contacts?userId=${username}` // fetching with url
+
+    try {
+        const res = await fetch(url)
+        const data = await res.json()
+
+        return await data
+    } catch (e) {
+        console.error(e)
+        return await null
+    }
+}
+
+/**
+ * Get all contacts from the database within the user's right
  * @param {String} username
  */
 const getAllContacts = (username) => {}

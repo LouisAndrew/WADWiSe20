@@ -15,10 +15,8 @@ const defaultRoute = router.route('/')
 const routeWithParam = router.route('/:id')
 
 defaultRoute.post(async (req, res) => {
-    console.log('Calling')
     // ! Testing endpoint -> use sample data on sample.json
     const { body } = req
-    console.log(body)
 
     if (!body.firstName) {
         // handle error if data is not found in the body.
@@ -31,8 +29,6 @@ defaultRoute.post(async (req, res) => {
         res.status(400).send({ msg: 'Failed creating new contact' })
         return
     }
-
-    console.log(await 'After creating contact')
 
     /**
      * ! Was ist es eigentlich hier gemeint? Status code: 201 & "HTTP-Header: Location: /adviz/contacts/newId"
