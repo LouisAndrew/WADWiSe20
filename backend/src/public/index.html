@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!--https://stackoverflow.com/questions/38497334/how-to-run-html-file-on-localhost-->
+
+  <!-- created folder for styling! -->
+
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" /> <!-- I put this in for openstreetmap, the library leaflet needs it-->
+
+  <!-- everything would be called inside index.js every file that's going to be called at index.js should me placed above index.js script tag -->
+  <script src="js/user.js"></script>
+  <!-- file for all screen displays -> what's going to be rendered in screen (no add / update contact logic) -->
+  <script src="js/screens.js"></script>
+  <!-- main javascript file -->
+  <script src="js/index.js"></script>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+  <!--same here just for leaflet-->
+
+  <!-- lodash utility functions -->
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+
+  <!-- icons packafe -->
+  <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+
+  <!-- google font (optional) -->
+  <!-- usage: https://fonts.google.com/specimen/Nunito?query=nu&sidebar.open=true&selection.family=Nunito:wght@400;600;700 -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>AdViz</title>
+</head>
+
+<body>
+
+  <!-- main div, this is where all of the window(s) / screen(s) is going to be mounted on. -->
+
+  <!--1st screen login-->
+  <section id="login" class="login-section modal">
+    <img src="https://images.unsplash.com/photo-1512626120412-faf41adb4874?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8Y29udGFjdHxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=500&q=60" />
+    <div class="container">
+      <h1>Welcome to adviz! please login to continue</h1>
+      <form class='styled'>
+        <label for="username">username:
+          <input type="text" id="username" name="username" required>
+        </label>
+        <label for="password">password:
+          <input type="password" id="password" name="password" required>
+        </label>
+
+        <div id='login-error' class="error"></div>
+        <button class='primary' type="submit"><span class="iconify" data-icon="eva:unlock-outline" data-inline="false"></span>Login</button>
+      </form>
+    </div>
+    </div>
+  </section>
+
+  <!--2nd screen mainscreen with map-->
+  <section id="mapscreen" class="map-screen modal">
+    <div class="container">
+      <h1>Hello, <span id="username-greeting"></span>!</h1>
+      <div class="buttons">
+        <button id="showminebtn" type="button" class='primary'> <span class="iconify" data-icon="eva:person-fill" data-inline="false"></span>Show my contacts</button>
+        <button id="showallbtn" type="button" class='primary'> <span class="iconify" data-icon="eva:globe-2-fill" data-inline="false"></span>Show all contacts</button>
+        <button id="addnewbtn" type="button" class='secondary'> <span class="iconify" data-icon="eva:person-add-fill" data-inline="false"></span>Add new contact</button>
+        <button id="logoutbtn" type="button" class='others'> <span class="iconify" data-icon="eva:log-in-outline" data-inline="false"></span>Log out </span></button>
+      </div>
+      <div class="flex-container">
+        <ul id="contactlist">
+        </ul>
+        <div id="map"></div>
+        <script>
+          map = L.map('map').setView({ lon: 13.39293, lat: 52.54181 }, 10); //the last number is the zoomlevel. took me forever to find it
+          // add the OpenStreetMap tiles
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+          }).addTo(map);
+
+          // show the scale bar on the lower left corner
+          L.control.scale().addTo(map);
+        </script>
+      </div>
+    </div>
+    </div>
+    <div id="modal">
+      <div id="error">
+        <h1>Oops, something went wrong</h1>
+        <button class='others'>Go back</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3rd screen add new address-->
+  <section id="addnewaddress" class="add-new-address">
+    <div class="container modal">
+      <form class="address-form styled">
+
+        <div class="form-fields">
+          <!-- title -->
+        <label for="title">
+          Titel
+          <input type="text" name="title" id="title">
+        </label>
+
+        <!-- gender -->
+        <label for="gender">
+          Geschlecht
+          <select name="gender" id="gender">
+            <option value="M">M</option>
+            <option value="W">W</option>
+            <option value="D">D</option>
+          </select>
+        </label>
+
+        <!-- first name -->
+        <label for="first-name">
+          Vorname
+          <input type="text" name="first-name" id="first-name" required>
+        </label>
+
+        <!-- last name -->
+        <label for="last-name">
+          Name
+          <input type="text" name="last-name" id="last-name" required>
+        </label>
+
+        <!-- street -->
+        <label for="street">
+          Straße + Hausnr.
+          <input type="text" name="street" id="street" required>
+        </label>
+
+        <!-- zip -->
+        <label for="zip">
+          PLZ
+          <input type="number" name="zip" id="zip" required>
+        </label>
+
+        <!-- city -->
+        <label for="city">
+          Stadt
+          <input type="text" name="city" id="city" required>
+        </label>
+
+        <!-- country -->
+        <label for="country">
+          Land
+          <input type="text" name="country" id="country" required>
+        </label>
+
+        <!-- email -->
+        <label for="email">
+          Email
+          <input type="email" name="email" id="email">
+        </label>
+
+        <!-- others -->
+        <label for="others">
+          Sonstiges
+          <input type="text" name="others" id="others">
+        </label>
+
+        <label for='user-select' id='user-select-label'></label>
+
+        <!-- private -->
+        <label for="private">
+          Privat
+          <input type="checkbox" name="private" id="private" checked>
+        </label>
+        </div>
+
+        <div id='addaddress-error' class="error"></div>
+
+        <!-- submit button -->
+        <button id='addbtn' class="primary">Add</button>
+        <!-- update button -->
+        <button id='updatebtn' class="primary">Update</button>
+        <!-- delete button -->
+        <button id='deletebtn' class="others">Delete</button>
+        <!-- cancel button-->
+        <button id='cancelbtn' class="secondary">Cancel</button>
+        <!--can we make this red?-->
+      </form>
+    </div>
+  </section>
+
+</body>
+
+</html>

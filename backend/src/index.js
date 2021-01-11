@@ -2,6 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const path = require('path')
 
 // setup express server here
 const app = express()
@@ -37,8 +38,15 @@ db.once('open', () => {
 const loginRouter = require('./login')
 const contactsRouter = require('./contacts')
 
+// adding access to public folder
+app.use(express.static(path.join(__dirname, 'public')))
+
 // setup express routes here.
 app.use('/adviz/login', loginRouter)
 app.use('/adviz/contacts', contactsRouter)
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public'))
+})
 
 // resources: https://expressjs.com/en/guide/routing.html
