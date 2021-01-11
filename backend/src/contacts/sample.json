@@ -1,0 +1,16 @@
+{
+    "titel": "Frau",
+    "gender": "W",
+    "firstName": "Angelica",
+    "lastName": "Awe",
+    "street": "Storkowerstr. 219",
+    "zip": "10367",
+    "city": "Berlin",
+    "country": "Deutschland",
+    "email": "alice@in-wonderland.com",
+    "others": "",
+    "isPrivate": true,
+    "lat": "52.5094305",
+    "lon": "13.3862223",
+    "userId": "normalo"
+}

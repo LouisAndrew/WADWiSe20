@@ -49,7 +49,7 @@ const addContactDB = async function (contact, user, onErr, onSuccess) {
         // response object. Using fetch here rather than XMLHTTPReuest:
         // Link: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
         // Let me know if it gets confusing and you would rather use XMLHTTPRequest.
-        const res = await fetch(`http://localhost:8000/adviz/contacts`, {
+        const res = await fetch(`/adviz/contacts`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -209,7 +209,7 @@ const checkNewContact = function (
  * @returns {([Contact] | null)} returns an array of contacts on success and returns null if operation failed.
  */
 const getContacts = async (username) => {
-    const url = `http://localhost:8000/adviz/contacts?userId=${username}` // fetching with url
+    const url = `/adviz/contacts?userId=${username}` // fetching with url
 
     try {
         const res = await fetch(url)
