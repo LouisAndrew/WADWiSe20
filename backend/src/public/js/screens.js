@@ -18,7 +18,7 @@ const welcome = function () {
 
     // function to handle loginform
     const loginForm = document.querySelector('#login form')
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
         const loginError = document.getElementById('login-error')
 
         e.preventDefault()
@@ -28,15 +28,16 @@ const welcome = function () {
         const username = document.getElementById('username').value
 
         // wait for return value from login function
-        const loginSuccesful = login(password, username)
+        // const loginSuccesful = login(password, username)
 
-        if (loginSuccesful) {
+        const loginSuccesful = await loginDb(password, username) // calls the endpoint /adviz/login
+
+        if (await loginSuccesful) {
+            const { isAdmin } = loginSuccesful
+
             // cleanup on err msg
             loginError.textContent = ''
             loginError.style.margin = '0'
-
-            // hardcoded isAdmin to true
-            const { isAdmin } = getUser(username)
             // get the info, if the logged in user is an admin.
 
             // cleanup => remove loginScreen from view.
@@ -584,3 +585,5 @@ const formHelper = () => {
 
     return { getFields, getValues, cleanupForm }
 }
+
+// module.exports.welcome = welcome

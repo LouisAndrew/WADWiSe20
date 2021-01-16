@@ -13,6 +13,8 @@ defaultRoute.post(async (req, res) => {
     const { body } = req
     const useDebug = false // set to true to always log in as admina. for development purposes.
 
+    console.log(body)
+
     const { userId, password } = body
 
     // send error when no userId or password is provided

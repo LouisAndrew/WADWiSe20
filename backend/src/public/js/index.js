@@ -1,3 +1,5 @@
+// const { welcome } = require('./screens')
+
 // All functions that are interacting with the backend are stored here!
 window.onload = function () {
     loginScreen = document.getElementById('login')
@@ -56,8 +58,6 @@ const addContactDB = async function (contact, user, onErr, onSuccess) {
             },
             body: JSON.stringify(body),
         })
-
-        console.log(await res.ok)
 
         // check if status of response is ok.
         if (await res.ok) {
@@ -135,6 +135,44 @@ const login = function (password, username) {
     }
 
     return true // returns true when constrains above were passed
+}
+
+/**
+ * Login function by calling the endpoint /adviz/login.
+ * Invoked when user filled the username + password field and clicked on login button.
+ * @param password string: password inputted by the user.
+ * @param username string: username of the user.
+ * @returns true, if the login is successful
+ */
+const loginDb = async function (password, username) {
+    try {
+        const body = {
+            userId: username,
+            password,
+        }
+
+        const res = await fetch('/adviz/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        })
+
+        if (await res.ok) {
+            return {
+                isAdmin: await res
+                    .json()
+                    .then((data) => data.userName === 'admina'), // setisAdmin to true if the username from data is admina
+                loggedIn: true,
+            }
+        } else {
+            // handle error
+            return false
+        }
+    } catch (e) {
+        return false
+    }
 }
 
 /**
