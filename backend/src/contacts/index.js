@@ -10,6 +10,7 @@ const router = require('express').Router() // initializing router object.
 
 const createContact = require('./createContact')
 const getContact = require('./getContact')
+const updateContact = require('./updateContact')
 
 const defaultRoute = router.route('/')
 const routeWithParam = router.route('/:id')
@@ -30,9 +31,6 @@ defaultRoute.post(async (req, res) => {
         return
     }
 
-    /**
-     * ! Was ist es eigentlich hier gemeint? Status code: 201 & "HTTP-Header: Location: /adviz/contacts/newId"
-     */
     await res
         .status(201)
         .header({ Location: '' })
@@ -61,9 +59,29 @@ defaultRoute.get(async (req, res) => {
         .send({ contacts })
 })
 
-// todo: implement contact update
-routeWithParam.put((req, res) => {
-    res.send(`Called put with contact ID: ${req.params.id}`)
+routeWithParam.put(async (req, res) => {
+    // get the new and old contact from the request body..
+    const { oldContact, newContact } = req.body
+    const { id: userId } = req.params
+
+    // send error if no old + newContact objects are provided.
+    if (!oldContact || !newContact) {
+        res.status(400).send({ msg: 'Bad request' })
+        return
+    }
+
+    const isUpdateSuccessful = await updateContact(
+        userId,
+        oldContact,
+        newContact
+    )
+    if (await isUpdateSuccessful) {
+        res.status(200).send({ msg: 'Succesful' })
+        return
+    } else {
+        res.status(400).send({ msg: 'Bad request' })
+        return
+    }
 })
 
 // todo: implement contact deletion

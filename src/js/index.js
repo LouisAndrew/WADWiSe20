@@ -99,6 +99,20 @@ const updateContact = function (contact, user, contactIndex, currUser) {
 }
 
 /**
+ * Function to actually update a contact from a user by calling it to the database. Called when user clicks on the update button.
+ * @param {Contact} user: given data (from backend?)
+ * @param {User} user: current loggedin user, where the data(s) updated would be updated
+ * @param {User} contactBeforeUpdate: contact object before the update ()
+ * @param {User} currUser current loggedin user.
+ */
+const updateContactDb = async (
+    contact,
+    user,
+    contactBeforeUpdate,
+    currUser
+) => {}
+
+/**
  * Function to delete a contact from a user contacts
  * @param {User} user user, from whom the contact is to be deleted
  * @param {int} contactIndex index of the to-be-deleted contact

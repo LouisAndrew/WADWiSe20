@@ -322,12 +322,27 @@ const updateContactScreen = function (
         const newValues = getValues()
         const { street, zip, city, country } = newValues // what causes the bug is that the lat, lon is not calculated when updating
 
+        const userBeforeUpdate = {
+            titel,
+            gender,
+            firstName,
+            lastName,
+            street,
+            zip,
+            city,
+            country,
+            email,
+            others,
+            isPrivate,
+        }
+
         const onSuccess = (lat, lon) => {
             cleanup()
-            updateContact(
+
+            updateContactDb(
                 { ...newValues, lat, lon },
                 user,
-                contactIndex,
+                userBeforeUpdate,
                 currUser
             )
         }
