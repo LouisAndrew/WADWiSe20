@@ -343,7 +343,12 @@ const updateContactScreen = function (
                 { ...newValues, lat, lon },
                 user,
                 userBeforeUpdate,
-                currUser
+                () => {
+                    console.log('Error')
+                },
+                () => {
+                    main(currUser.username, currUser.isAdmin)
+                }
             )
         }
 

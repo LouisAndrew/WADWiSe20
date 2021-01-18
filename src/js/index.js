@@ -57,8 +57,6 @@ const addContactDB = async function (contact, user, onErr, onSuccess) {
             body: JSON.stringify(body),
         })
 
-        console.log(await res.ok)
-
         // check if status of response is ok.
         if (await res.ok) {
             const data = await res.json()
@@ -104,13 +102,40 @@ const updateContact = function (contact, user, contactIndex, currUser) {
  * @param {User} user: current loggedin user, where the data(s) updated would be updated
  * @param {User} contactBeforeUpdate: contact object before the update ()
  * @param {User} currUser current loggedin user.
+ * @param {Function} onErr callback function to be called if there's an error during interaction with the backend
+ * @param {Function} onSucces callback function to be called if the operation is successful
  */
 const updateContactDb = async (
     contact,
     user,
     contactBeforeUpdate,
-    currUser
-) => {}
+    onErr,
+    onSuccess
+) => {
+    try {
+        const body = {
+            oldContact: contactBeforeUpdate,
+            newContact: contact,
+        }
+        const url = '/adviz/contacts'
+        const req = await fetch(`${url}/${user.username}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        })
+
+        if (await req.ok) {
+            //
+        } else {
+            // error handling
+        }
+    } catch (e) {
+        console.error(e)
+        // error handling
+    }
+}
 
 /**
  * Function to delete a contact from a user contacts

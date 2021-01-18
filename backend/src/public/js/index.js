@@ -99,6 +99,50 @@ const updateContact = function (contact, user, contactIndex, currUser) {
 }
 
 /**
+ * Function to actually update a contact from a user by calling it to the database. Called when user clicks on the update button.
+ * @param {Contact} user: given data (from backend?)
+ * @param {User} user: current loggedin user, where the data(s) updated would be updated
+ * @param {User} contactBeforeUpdate: contact object before the update ()
+ * @param {User} currUser current loggedin user.
+ * @param {Function} onErr callback function to be called if there's an error during interaction with the backend
+ * @param {Function} onSucces callback function to be called if the operation is successful
+ */
+const updateContactDb = async (
+    contact,
+    user,
+    contactBeforeUpdate,
+    onErr,
+    onSuccess
+) => {
+    try {
+        const body = {
+            oldContact: contactBeforeUpdate,
+            newContact: contact,
+        }
+        const url = '/adviz/contacts'
+        const req = await fetch(`${url}/${user.username}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        })
+
+        if (await req.ok) {
+            //
+            onSuccess()
+        } else {
+            // error handling
+            onErr('Failed updating contact')
+        }
+    } catch (e) {
+        console.error(e)
+        // error handling
+        onErr('Failed updating contact')
+    }
+}
+
+/**
  * Function to delete a contact from a user contacts
  * @param {User} user user, from whom the contact is to be deleted
  * @param {int} contactIndex index of the to-be-deleted contact

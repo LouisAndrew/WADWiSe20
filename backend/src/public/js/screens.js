@@ -254,7 +254,8 @@ const renderUserOption = () => {
  * @param {Contact} user: given data (from backend?)
  * @param {User} user: current loggedin user, where the data(s) updated would be updated
  * @param {int} contactIndex: is index of the contact within the contacts attribute of the user (used to update / delete contact.)
- * @param {User} currUser: current logged in user..
+ * @param {String} username of the user
+ * @param {Boolean} isAdmin true, if the user is an amdin
  */
 const updateContactScreen = function (
     {
@@ -272,7 +273,8 @@ const updateContactScreen = function (
     },
     user,
     contactIndex,
-    currUser
+    username,
+    isAdmin
 ) {
     const cancelBtn = document.getElementById('cancelbtn')
     const updateBtn = document.getElementById('updatebtn')
@@ -280,7 +282,7 @@ const updateContactScreen = function (
     const form = document.querySelector('#addnewaddress form')
     const addAddressError = document.getElementById('addaddress-error')
 
-    const canUpdate = user.username === currUser.username || currUser.isAdmin // can update if to-be updated is your own contact or current logged in is an admin
+    const canUpdate = user.username === username || isAdmin // can update if to-be updated is your own contact or current logged in is an admin
 
     // display all of the necessary buttons
     addNewAddress.style.display = 'block'
@@ -317,19 +319,44 @@ const updateContactScreen = function (
         cleanupForm()
     }
 
+    const errorUpdating = (errMsg) => {
+        // callback failure function -> if interaction with backend is not successful.
+        addAddressError.textContent = errMsg
+        addAddressError.style.display = 'block'
+        addAddressError.style.margin = '4px 0'
+    }
+
     const submit = (e) => {
         e.preventDefault()
 
         const newValues = getValues()
         const { street, zip, city, country } = newValues // what causes the bug is that the lat, lon is not calculated when updating
 
+        const userBeforeUpdate = {
+            titel,
+            gender,
+            firstName,
+            lastName,
+            street,
+            zip,
+            city,
+            country,
+            email,
+            others,
+            isPrivate,
+        }
+
         const onSuccess = (lat, lon) => {
             cleanup()
-            updateContact(
+
+            updateContactDb(
                 { ...newValues, lat, lon },
                 user,
-                contactIndex,
-                currUser
+                userBeforeUpdate,
+                errorUpdating,
+                () => {
+                    main(username, isAdmin)
+                }
             )
         }
 
@@ -375,7 +402,7 @@ const updateContactScreen = function (
 
     cancelBtn.onclick = () => {
         cleanup()
-        main(currUser.username, currUser.isAdmin)
+        main(username, isAdmin)
     }
 
     deleteBtn.onclick = () => {
@@ -383,7 +410,11 @@ const updateContactScreen = function (
         deleteContact(user, contactIndex, currUser)
     }
 
-    form.onsubmit = canUpdate ? submit : () => {} // set to empty function if user is prohibitted to update
+    form.onsubmit = canUpdate
+        ? submit
+        : () => {
+              errorUpdating('Error updating, you cannot update this contact')
+          } // set to empty function if user is prohibitted to update
 }
 
 /**
@@ -450,6 +481,8 @@ const renderContacts = (contacts, currUser) => {
     cleanMap(contacts) // always clean the map before rerendering new markers
     clearContactListChildren(contactList)
 
+    console.log(currUser)
+
     contacts.forEach((contact, index) => {
         const el = document.createElement('li')
         el.setAttribute('contactValue', JSON.stringify(contact))
@@ -458,6 +491,7 @@ const renderContacts = (contacts, currUser) => {
         contactList.appendChild(el)
 
         const { lon, lat, firstName, lastName } = contact
+        const { username, isAdmin } = currUser
 
         addMarker(lon, lat, `${firstName} ${lastName}`)
 
@@ -468,7 +502,8 @@ const renderContacts = (contacts, currUser) => {
                 contact,
                 getUser(contact.contactOf),
                 index,
-                currUser
+                username,
+                isAdmin
             )
         })
     })
