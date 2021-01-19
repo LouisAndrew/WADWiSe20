@@ -13,6 +13,8 @@ const deleteContact = require('./deleteContact')
 const getContact = require('./getContact')
 const updateContact = require('./updateContact')
 
+const { getAllContacts } = require('./getContact')
+
 const defaultRoute = router.route('/')
 const routeWithParam = router.route('/:id')
 
@@ -103,6 +105,23 @@ routeWithParam.delete(async (req, res) => {
     } else {
         res.status(404).send({ msg: 'Contact not found' })
         return
+    }
+})
+
+/**
+ * Get all visible user
+ */
+routeWithParam.get(async (req, res) => {
+    const { id: userId } = req.params
+    const contacts = await getAllContacts(userId)
+
+    if (await !contacts) {
+        res.status(404).send({ msg: 'Not found' })
+        return
+    } else {
+        res.status(201)
+            .header({ 'Content-Type': 'application/json' })
+            .send({ contacts })
     }
 })
 
