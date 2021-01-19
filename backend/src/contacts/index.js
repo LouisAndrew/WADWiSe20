@@ -9,6 +9,7 @@
 const router = require('express').Router() // initializing router object.
 
 const createContact = require('./createContact')
+const deleteContact = require('./deleteContact')
 const getContact = require('./getContact')
 const updateContact = require('./updateContact')
 
@@ -75,6 +76,7 @@ routeWithParam.put(async (req, res) => {
         oldContact,
         newContact
     )
+
     if (await isUpdateSuccessful) {
         res.status(200).send({ msg: 'Succesful' })
         return
@@ -84,9 +86,24 @@ routeWithParam.put(async (req, res) => {
     }
 })
 
-// todo: implement contact deletion
-routeWithParam.delete((req, res) => {
-    res.send(`Deleting contact with the ID of ${req.params.id}`)
+routeWithParam.delete(async (req, res) => {
+    const { contact } = req.body
+    const { id: userId } = req.params
+
+    if (!contact) {
+        // return 404 if no contact is found on the body
+        res.status(404).send({ msg: 'Not found' })
+        return
+    }
+
+    const isDeleteSuccesful = await deleteContact(userId, contact)
+    if (await isDeleteSuccesful) {
+        res.status(200).send({ msg: 'Succesful' })
+        return
+    } else {
+        res.status(404).send({ msg: 'Contact not found' })
+        return
+    }
 })
 
 module.exports = router
