@@ -100,10 +100,9 @@ const updateContact = function (contact, user, contactIndex, currUser) {
 
 /**
  * Function to actually update a contact from a user by calling it to the database. Called when user clicks on the update button.
- * @param {Contact} user: given data (from backend?)
- * @param {User} user: current loggedin user, where the data(s) updated would be updated
+ * @param {Contact} contact: given data (from backend?)
+ * @param {User} user: user, whose contact is to be updated
  * @param {User} contactBeforeUpdate: contact object before the update ()
- * @param {User} currUser current loggedin user.
  * @param {Function} onErr callback function to be called if there's an error during interaction with the backend
  * @param {Function} onSucces callback function to be called if the operation is successful
  */
@@ -157,6 +156,37 @@ const deleteContact = (user, contactIndex, currUser) => {
     _.set(user, 'contacts', contactsUpdated)
 
     main(currUser.username, currUser.isAdmin)
+}
+
+/**
+ * Function to delete a contact from a user contacts by calling the REST endpoint on the backend
+ * @param {Contact} contact: given data (from backend?)
+ * @param {User} user: user, whose contact is to be deleted
+ * @param {Function} onErr callback function to be called if there's an error during interaction with the backend
+ * @param {Function} onSucces callback function to be called if the operation is successful
+ */
+const deleteContactDb = async (contact, user, onErr, onSuccess) => {
+    try {
+        const body = { contact }
+
+        const res = await fetch(`/adviz/contacts/${user.username}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        })
+
+        if (await res.ok) {
+            onSuccess()
+        } else {
+            onErr('Failed deleting contact')
+        }
+    } catch (e) {
+        console.log('Catched')
+        console.error(e)
+        onErr('Failed deleting contact')
+    }
 }
 
 // Functionalities

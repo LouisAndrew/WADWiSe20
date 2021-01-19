@@ -272,7 +272,6 @@ const updateContactScreen = function (
         isPrivate,
     },
     user,
-    contactIndex,
     username,
     isAdmin
 ) {
@@ -302,6 +301,20 @@ const updateContactScreen = function (
         userOptionExists.parentNode?.removeChild(userOptionExists) //and removes it :)
     }
 
+    // current contact data being edited
+    const currContact = {
+        titel,
+        gender,
+        firstName,
+        lastName,
+        street,
+        zip,
+        city,
+        country,
+        email,
+        others,
+        isPrivate,
+    }
     const { getFields, getValues, cleanupForm } = formHelper()
 
     // Cleanup function. Setting all display to none and removing attributes
@@ -319,7 +332,8 @@ const updateContactScreen = function (
         cleanupForm()
     }
 
-    const errorUpdating = (errMsg) => {
+    const error = (errMsg) => {
+        console.log('Error')
         // callback failure function -> if interaction with backend is not successful.
         addAddressError.textContent = errMsg
         addAddressError.style.display = 'block'
@@ -332,29 +346,14 @@ const updateContactScreen = function (
         const newValues = getValues()
         const { street, zip, city, country } = newValues // what causes the bug is that the lat, lon is not calculated when updating
 
-        const userBeforeUpdate = {
-            titel,
-            gender,
-            firstName,
-            lastName,
-            street,
-            zip,
-            city,
-            country,
-            email,
-            others,
-            isPrivate,
-        }
-
         const onSuccess = (lat, lon) => {
-            cleanup()
-
             updateContactDb(
                 { ...newValues, lat, lon },
                 user,
-                userBeforeUpdate,
-                errorUpdating,
+                currContact,
+                error,
                 () => {
+                    cleanup()
                     main(username, isAdmin)
                 }
             )
@@ -363,10 +362,7 @@ const updateContactScreen = function (
         const onFailure = () => {
             const ADDRESSCHECK_FAILED_MSG =
                 'Sorry, I couldnt find this address.' //if i just make this a simple else, this part is still executed
-
-            addAddressError.textContent = ADDRESSCHECK_FAILED_MSG
-            addAddressError.style.display = 'block'
-            addAddressError.style.margin = '4px 0'
+            error(ADDRESSCHECK_FAILED_MSG)
         }
 
         checkNewContact(street, zip, city, country, onSuccess, onFailure)
@@ -406,14 +402,22 @@ const updateContactScreen = function (
     }
 
     deleteBtn.onclick = () => {
-        cleanup()
-        deleteContact(user, contactIndex, currUser)
+        // deleteContact(user, contactIndex, currUser)
+        try {
+            deleteContactDb(currContact, user, error, () => {
+                cleanup()
+                main(username, isAdmin)
+            })
+        } catch (e) {
+            console.error(e)
+            error('Oops, something went wrong')
+        }
     }
 
     form.onsubmit = canUpdate
         ? submit
         : () => {
-              errorUpdating('Error updating, you cannot update this contact')
+              error('Error updating, you cannot update this contact')
           } // set to empty function if user is prohibitted to update
 }
 
@@ -483,7 +487,7 @@ const renderContacts = (contacts, currUser) => {
 
     console.log(currUser)
 
-    contacts.forEach((contact, index) => {
+    contacts.forEach((contact) => {
         const el = document.createElement('li')
         el.setAttribute('contactValue', JSON.stringify(contact))
         el.className = 'contact'
@@ -501,7 +505,6 @@ const renderContacts = (contacts, currUser) => {
             updateContactScreen(
                 contact,
                 getUser(contact.contactOf),
-                index,
                 username,
                 isAdmin
             )
