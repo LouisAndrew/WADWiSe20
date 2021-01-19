@@ -33,7 +33,36 @@ const getContact = async (userId) => {
 const isMyContact = (contactId, contactList) => contactList.includes(contactId)
 
 /**
+ * Assigning contactOF Attribute for each Contacts
+ * Function is being runned under the assumption: 1 contact could no exist within 2 different users
+ * @param {String} contactId
+ * @param {[{ contacts: [String] }]} allUsers
+ */
+const assignContactOf = (contactId, allUsers) => {
+    const contactOf = allUsers.filter((user) =>
+        user.contacts.includes(contactId)
+    )
+
+    return contactOf[0].userName ?? 'admina' // either return the contact owner or admina, if the contact has no owner
+}
+
+const finishUpGetAllContacts = async (contacts) => {
+    try {
+        const allUsers = await User.find({})
+        console.log(contacts.map((c) => ({ ...c, foo: 'bar' })))
+        return await contacts.map((contact) => ({
+            ...contact,
+            contactOf: assignContactOf(contact._id, allUsers),
+        }))
+    } catch (e) {
+        console.error(e)
+        return null
+    }
+}
+
+/**
  * Get all contacts from the database, that should be visible for this user.
+ * Contacts returned should have additional attribute = contactOf.
  * @param {String} userId username of the user
  * @returns {([Contact] | null)}
  */
@@ -41,20 +70,28 @@ const getAllContacts = async (userId) => {
     const isAdmin = userId === 'admina' // boolean if the user is an admin.
 
     try {
-        const allContacts = await Contact.find() // find all contacts
+        const allContacts = await Contact.find({}) // find all contacts
         const userDoc = await User.findOne({ userName: userId }) // find the requesting user.
-
+        const allUsers = await User.find({})
         // returns all contacts if user is an admin
         if (isAdmin) {
             console.log(await 'Returning all contacts')
-            return await allContacts
+            return await allContacts.map((value) => ({
+                value,
+                contactOf: assignContactOf(value._id, allUsers),
+            }))
         }
 
-        const { contacts: contactList } = await userDoc // contact list of the requesting user
-        return await allContacts.filter(
-            (contact) =>
-                isMyContact(contact._id, contactList) || !contact.isPrivate
-        )
+        const { contacts: contactList } = await userDoc // contact list of the requesting usera
+        return await allContacts
+            .filter(
+                (contact) =>
+                    isMyContact(contact._id, contactList) || !contact.isPrivate
+            )
+            .map((value) => ({
+                value,
+                contactOf: assignContactOf(value._id, allUsers),
+            }))
     } catch (e) {
         return null
     }

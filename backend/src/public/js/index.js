@@ -234,10 +234,9 @@ const loginDb = async function (password, username) {
         })
 
         if (await res.ok) {
-            return {
-                isAdmin: await res
-                    .json()
-                    .then((data) => data.userName === 'admina'), // setisAdmin to true if the username from data is admina
+            const { user } = await res.json()
+            return await {
+                isAdmin: (await user.userName) === 'admina', // setisAdmin to true if the username from data is admina
                 loggedIn: true,
             }
         } else {
@@ -338,4 +337,15 @@ const getContacts = async (username) => {
  * Get all contacts from the database within the user's right
  * @param {String} username
  */
-const getAllContacts = (username) => {}
+const getAllContacts = async (username) => {
+    try {
+        const res = await fetch(`/adviz/contacts/${username}`)
+        const data = await res.json()
+
+        console.log(await data)
+        return await data
+    } catch (e) {
+        console.error(e)
+        return await null
+    }
+}

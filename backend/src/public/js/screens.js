@@ -281,7 +281,7 @@ const updateContactScreen = function (
     const form = document.querySelector('#addnewaddress form')
     const addAddressError = document.getElementById('addaddress-error')
 
-    const canUpdate = user.username === username || isAdmin // can update if to-be updated is your own contact or current logged in is an admin
+    const canUpdate = isAdmin || user.username === username // can update if to-be updated is your own contact or current logged in is an admin
 
     // display all of the necessary buttons
     addNewAddress.style.display = 'block'
@@ -426,29 +426,20 @@ const updateContactScreen = function (
  * @param {boolean} isAdmin: identifier to identify if the logged-in user is an admin.
  * @param {string} username: username of the logged in user
  */
-const showAllContacts = function (username, isAdmin) {
-    const currUser = getUser(username)
-
-    // needs to be flatten.
-    const contactsUnflattened = userBase.map((user) =>
-        user.contacts
-            .filter((contact) => {
-                // return the contact even though its private if the contact is already in the contactbook of
-                // current user
-                if (isAdmin || user.username === username) {
-                    return true
-                }
-
-                return !contact.isPrivate
-            })
-            .map((contact) => ({ ...contact, contactOf: user.username }))
-    )
-
-    // using lodash to flatten the contact arr.
-    // from [[contact1, contact2], [contact3]] -> to: [contact1, contact2, contact3]
-    const contacts = _.flatten(contactsUnflattened)
-
-    renderContacts(contacts, currUser)
+const showAllContacts = async function (username, isAdmin) {
+    // const currUser = getUser(username)
+    const rsp = await getAllContacts(username)
+    if (await rsp) {
+        const { contacts: contactsRsp } = await rsp
+        const contacts = contactsRsp.map((c) => ({
+            ...c.value,
+            ...c,
+        }))
+        await renderContacts(contacts, { username, isAdmin })
+    } else {
+        // handle error here!
+        showErrMsg(username, isAdmin)
+    }
 }
 
 /**
