@@ -302,20 +302,6 @@ const updateContactScreen = function (
         userOptionExists.parentNode?.removeChild(userOptionExists) //and removes it :)
     }
 
-    // current contact data being edited
-    const currContact = {
-        titel,
-        gender,
-        firstName,
-        lastName,
-        street,
-        zip,
-        city,
-        country,
-        email,
-        others,
-        isPrivate,
-    }
     const { getFields, getValues, cleanupForm } = formHelper()
 
     // Cleanup function. Setting all display to none and removing attributes
@@ -348,16 +334,10 @@ const updateContactScreen = function (
         const { street, zip, city, country } = newValues // what causes the bug is that the lat, lon is not calculated when updating
 
         const onSuccess = (lat, lon) => {
-            updateContactDb(
-                { ...newValues, lat, lon },
-                user,
-                currContact,
-                error,
-                () => {
-                    cleanup()
-                    main(username, isAdmin)
-                }
-            )
+            updateContactDb({ ...newValues, lat, lon }, _id, error, () => {
+                cleanup()
+                main(username, isAdmin)
+            })
         }
 
         const onFailure = () => {

@@ -101,30 +101,19 @@ const updateContact = function (contact, user, contactIndex, currUser) {
 /**
  * Function to actually update a contact from a user by calling it to the database. Called when user clicks on the update button.
  * @param {Contact} contact: given data (from backend?)
- * @param {User} user: user, whose contact is to be updated
- * @param {User} contactBeforeUpdate: contact object before the update ()
+ * @param {Number} contactId: id of the contact that should be updated
  * @param {Function} onErr callback function to be called if there's an error during interaction with the backend
  * @param {Function} onSucces callback function to be called if the operation is successful
  */
-const updateContactDb = async (
-    contact,
-    user,
-    contactBeforeUpdate,
-    onErr,
-    onSuccess
-) => {
+const updateContactDb = async (contact, contactId, onErr, onSuccess) => {
     try {
-        const body = {
-            oldContact: contactBeforeUpdate,
-            newContact: contact,
-        }
         const url = '/adviz/contacts'
-        const req = await fetch(`${url}/${user.username}`, {
+        const req = await fetch(`${url}/${contactId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(body),
+            body: JSON.stringify(contact),
         })
 
         if (await req.ok) {
@@ -160,8 +149,7 @@ const deleteContact = (user, contactIndex, currUser) => {
 
 /**
  * Function to delete a contact from a user contacts by calling the REST endpoint on the backend
- * @param {Contact} contact: given data (from backend?)
- * @param {User} user: user, whose contact is to be deleted
+ * @param {Contact} contactId: id of the contact to be updated
  * @param {Function} onErr callback function to be called if there's an error during interaction with the backend
  * @param {Function} onSucces callback function to be called if the operation is successful
  */
