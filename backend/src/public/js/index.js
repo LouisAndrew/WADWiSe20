@@ -165,16 +165,13 @@ const deleteContact = (user, contactIndex, currUser) => {
  * @param {Function} onErr callback function to be called if there's an error during interaction with the backend
  * @param {Function} onSucces callback function to be called if the operation is successful
  */
-const deleteContactDb = async (contact, user, onErr, onSuccess) => {
+const deleteContactDb = async (contactId, onErr, onSuccess) => {
     try {
-        const body = { contact }
-
-        const res = await fetch(`/adviz/contacts/${user.username}`, {
+        const res = await fetch(`/adviz/contacts/${contactId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(body),
         })
 
         if (await res.ok) {

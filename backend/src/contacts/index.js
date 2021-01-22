@@ -89,16 +89,15 @@ routeWithParam.put(async (req, res) => {
 })
 
 routeWithParam.delete(async (req, res) => {
-    const { contact } = req.body
-    const { id: userId } = req.params
+    const { id: contactId } = req.params
 
-    if (!contact) {
+    if (!contactId) {
         // return 404 if no contact is found on the body
         res.status(404).send({ msg: 'Not found' })
         return
     }
 
-    const isDeleteSuccesful = await deleteContact(userId, contact)
+    const isDeleteSuccesful = await deleteContact(contactId)
     if (await isDeleteSuccesful) {
         res.status(200).send({ msg: 'Succesful' })
         return

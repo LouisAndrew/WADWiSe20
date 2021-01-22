@@ -259,6 +259,7 @@ const renderUserOption = () => {
  */
 const updateContactScreen = function (
     {
+        _id,
         titel,
         gender,
         firstName,
@@ -404,7 +405,7 @@ const updateContactScreen = function (
     deleteBtn.onclick = () => {
         // deleteContact(user, contactIndex, currUser)
         try {
-            deleteContactDb(currContact, user, error, () => {
+            deleteContactDb(_id, error, () => {
                 cleanup()
                 main(username, isAdmin)
             })
@@ -454,7 +455,6 @@ const showMyContacts = async function (username, isAdmin) {
 
     if (await rsp) {
         const { contacts } = await rsp
-        console.log(contacts)
         await renderContacts(
             contacts.map((ct) => ({ ...ct, contactOf: username })),
             { username, isAdmin }
