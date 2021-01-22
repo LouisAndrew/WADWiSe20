@@ -64,20 +64,16 @@ defaultRoute.get(async (req, res) => {
 
 routeWithParam.put(async (req, res) => {
     // get the new and old contact from the request body..
-    const { oldContact, newContact } = req.body
-    const { id: userId } = req.params
+    const { body } = req
+    const { id: contactId } = req.params
 
     // send error if no old + newContact objects are provided.
-    if (!oldContact || !newContact) {
-        res.status(400).send({ msg: 'Bad request' })
+    if (!body) {
+        res.status(400).send({ msg: 'No parameter' })
         return
     }
 
-    const isUpdateSuccessful = await updateContact(
-        userId,
-        oldContact,
-        newContact
-    )
+    const isUpdateSuccessful = await updateContact(body, contactId)
 
     if (await isUpdateSuccessful) {
         res.status(200).send({ msg: 'Succesful' })
