@@ -46,20 +46,6 @@ const assignContactOf = (contactId, allUsers) => {
     return contactOf[0].userName ?? 'admina' // either return the contact owner or admina, if the contact has no owner
 }
 
-const finishUpGetAllContacts = async (contacts) => {
-    try {
-        const allUsers = await User.find({})
-        console.log(contacts.map((c) => ({ ...c, foo: 'bar' })))
-        return await contacts.map((contact) => ({
-            ...contact,
-            contactOf: assignContactOf(contact._id, allUsers),
-        }))
-    } catch (e) {
-        console.error(e)
-        return null
-    }
-}
-
 /**
  * Get all contacts from the database, that should be visible for this user.
  * Contacts returned should have additional attribute = contactOf.
@@ -75,7 +61,6 @@ const getAllContacts = async (userId) => {
         const allUsers = await User.find({})
         // returns all contacts if user is an admin
         if (isAdmin) {
-            console.log(await 'Returning all contacts')
             return await allContacts.map((value) => ({
                 value,
                 contactOf: assignContactOf(value._id, allUsers),

@@ -168,7 +168,6 @@ const deleteContactDb = async (contactId, onErr, onSuccess) => {
             onErr('Failed deleting contact')
         }
     } catch (e) {
-        console.log('Catched')
         console.error(e)
         onErr('Failed deleting contact')
     }
@@ -327,7 +326,6 @@ const getAllContacts = async (username) => {
         const res = await fetch(`/adviz/contacts/${username}`)
         const data = await res.json()
 
-        console.log(await data)
         return await data
     } catch (e) {
         console.error(e)
