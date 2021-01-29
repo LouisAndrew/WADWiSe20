@@ -1,6 +1,6 @@
 # WADWiSe20
 
-## Added backend snippets and skeleton.
+## Now moving to React ! ⚛
 
 Run development server for the backend easily?
 link: https://www.nikola-breznjak.com/blog/javascript/nodejs/using-nodemon/#:~:text=Nodemon%20is%20a%20utility%20that,Perfect%20for%20development.&text=It%20will%20save%20you%20a,time%20you%20make%20a%20change.
@@ -10,6 +10,8 @@ link: https://www.nikola-breznjak.com/blog/javascript/nodejs/using-nodemon/#:~:t
 >
 > -   `npm run start-server`
 > -   `cd backend && npm run start`
+>
+> Dependencies of the frontend and the backend need to be installed separately
 
 ### Not using any bundler anymore
 

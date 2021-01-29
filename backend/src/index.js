@@ -39,7 +39,7 @@ const loginRouter = require('./login')
 const contactsRouter = require('./contacts')
 
 // adding access to public folder
-app.use(express.static(path.resolve(__dirname, '../../frontend/public'))) // giving public/index.html access to all of its js and csses
+app.use(express.static(path.resolve(__dirname, '../../frontend/build'))) // giving public/index.html access to all of its js and csses
 
 // setup express routes here.
 app.use('/adviz/login', loginRouter)
