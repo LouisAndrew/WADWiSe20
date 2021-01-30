@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
+import Loading from '../loading'
+
 /**
  * Available states of the adviz main component.
  */
@@ -25,11 +27,11 @@ const Main = ({ username }) => {
 
     return (
         <div id="mapscreen" className="map-screen-modal">
+            {isLoading && <Loading />}
             <div className="container">
                 <h1>Hello, {username}!</h1>
                 <div className="buttons">
                     <button className="primary">
-                        {' '}
                         <span
                             className="iconify"
                             data-icon="eva:person-fill"
@@ -38,7 +40,6 @@ const Main = ({ username }) => {
                         Show my contacts
                     </button>
                     <button className="primary">
-                        {' '}
                         <span
                             className="iconify"
                             data-icon="eva:globe-2-fill"
@@ -63,7 +64,15 @@ const Main = ({ username }) => {
                         Log out
                     </button>
                 </div>
-                <div className="flex-container"></div>
+                <div className="flex-container">
+                    <div className="contact-list-wrapper">
+                        <h4>
+                            {appState === AppState.MY_CONTACTS
+                                ? 'My contacts'
+                                : 'All contacts'}
+                        </h4>
+                    </div>
+                </div>
             </div>
         </div>
     )
