@@ -38,15 +38,22 @@ db.once('open', () => {
 const loginRouter = require('./login')
 const contactsRouter = require('./contacts')
 
+const frontendPublicPath = path.resolve(__dirname, '../../frontend/build')
+const publicPath = path.resolve(__dirname, './public')
+
+const useReact = false
+
 // adding access to public folder
-app.use(express.static(path.resolve(__dirname, '../../frontend/build'))) // giving public/index.html access to all of its js and csses
+app.use(express.static(useReact ? frontendPublicPath : publicPath)) // giving public/index.html access to all of its js and csses
 
 // setup express routes here.
 app.use('/adviz/login', loginRouter)
 app.use('/adviz/contacts', contactsRouter)
 
 app.get('/', (_, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend/build/index.html')) // sending index.html to the client.
+    res.sendFile(
+        path.join(useReact ? frontendPublicPath : publicPath, 'index.html')
+    ) // sending index.html to the client.
 })
 
 // resources: https://expressjs.com/en/guide/routing.html
