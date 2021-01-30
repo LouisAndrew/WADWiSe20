@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import logo from './logo.svg'
+import Login from './components/login'
 import './app.scss'
 
 /**
@@ -26,14 +26,16 @@ function App() {
 
     return (
         <div className="App">
-            {isLoggedIn ? 'Logged in' : 'I dont know u'}
-            <button
-                onClick={() => {
-                    setIsLoggedIn((prev) => !prev)
-                }}
-            >
-                Go to next state
-            </button>
+            {isLoggedIn ? (
+                'Logged in'
+            ) : (
+                <Login
+                    onSuccess={(username) => {
+                        setCurrUser(username)
+                        setIsLoggedIn(true)
+                    }}
+                />
+            )}
         </div>
     )
 }
