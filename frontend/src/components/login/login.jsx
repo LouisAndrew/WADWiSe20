@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios' // http client
-import BarLoader from 'react-spinners/BarLoader'
 
 import './index.scss' // additional styling.
+import Loading from '../loading'
 
 /**
  * Login form component. Calling the endpoint /adviz/login on the backend when the form is submitted.
@@ -60,11 +60,7 @@ const Login = ({ onSuccess }) => {
 
     return (
         <section id="login" className="login-section modal">
-            {isLoading && (
-                <div className="loading-modal">
-                    <BarLoader color="#5e7ce2" height={4} width={100} />
-                </div>
-            )}
+            {isLoading && <Loading />}
             <img src={imgUrl} />
             <div className="container">
                 <h1>Welcome to adviz! please login to continue</h1>
