@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
+import axios from 'axios'
 
 import contactType from '../../types/contact'
 import './index.scss'
@@ -10,6 +12,8 @@ import './index.scss'
  * Using React Portal in this document..
  */
 const ContactForm = ({ contactValues = undefined, username }) => {
+    const [errMsg, setErrMsg] = useState('')
+
     /**
      * Assigning default Values of the form fields with the provided values from contactValues
      */
@@ -32,7 +36,58 @@ const ContactForm = ({ contactValues = undefined, username }) => {
 
     const isAdmin = username === 'admina' // check if the current loggedin user is an admin
 
-    const onSubmit = (data) => console.log(data)
+    /**
+     * Function to handle submit data from the user.
+     * @param {} data
+     */
+    const onSubmit = async (data) => {
+        const { street, city, country, zip } = data
+
+        const { lat = undefined, lon = undefined } = await getLatLon(
+            street,
+            city,
+            country,
+            zip
+        ) // get the lat and lon of the address by hitting an api endpoint
+
+        if ((await !lat) || (await !lon)) {
+            return
+        }
+
+        const isUpdating = contactValues !== undefined
+    }
+
+    const updateContact = async () => {}
+    const addContact = async () => {}
+    const deleteContact = async () => {}
+
+    /**
+     * Function to get the lat lon values of the given address data.
+     * @param {String} street
+     * @param {String} city
+     * @param {String} country
+     * @param {String} zip
+     */
+    const getLatLon = async (street, city, country, zip) => {
+        const url = 'https://nominatim.geocoding.ai/search?'
+
+        try {
+            const { data } = await axios.get(
+                `${url}street=${street}&city=${city}&country=${country}&postalcode=${zip}&geocodejson`
+            )
+
+            if (data.length > 0) {
+                const { lat, lon } = await data[0]
+                return await { lat, lon }
+            } else {
+                setErrMsg('😢 Please enter a valid address')
+                return {} // return an empty object
+            }
+        } catch (e) {
+            console.error(e)
+            setErrMsg('😢 Please enter a valid address')
+        }
+    }
 
     const Element = (
         <div className="portal-container">
@@ -184,7 +239,11 @@ const ContactForm = ({ contactValues = undefined, username }) => {
                         </label>
                     </div>
 
-                    <div id="addaddress-error" className="error"></div>
+                    {errMsg && (
+                        <div id="addaddress-error" className="error">
+                            {errMsg}
+                        </div>
+                    )}
 
                     <div className="buttons">
                         {contactValues ? (
