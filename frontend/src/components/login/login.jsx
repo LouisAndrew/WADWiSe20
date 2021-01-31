@@ -56,7 +56,7 @@ const Login = ({ onSuccess }) => {
     }
 
     const imgUrl =
-        'https://images.unsplash.com/photo-1512626120412-faf41adb4874?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8Y29udGFjdHxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=500&q=60'
+        'https://images.unsplash.com/photo-1500576992153-0271099def59?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8aGVsbG98ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
 
     return (
         <section id="login" className="login-section modal">

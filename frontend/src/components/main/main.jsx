@@ -6,6 +6,7 @@ import Loading from '../loading'
 import Error from '../error'
 import ContactList from '../contact-list'
 import ContactForm from '../contact-form'
+import Map from '../map'
 
 /**
  * Available states of the adviz main component.
@@ -28,7 +29,7 @@ const Main = ({ username, logout }) => {
     const [appState, setAppState] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
-    const [shouldDisplayForm, setShouldDisplayForm] = useState(true) // identifier if contact form should be displayed.
+    const [shouldDisplayForm, setShouldDisplayForm] = useState(false) // identifier if contact form should be displayed.
     const [contactValue, setContactValue] = useState(undefined) // identifier if a specific contact should be displayed
     const [isError, setIsError] = useState(false)
     const [contacts, setContacts] = useState([])
@@ -206,6 +207,7 @@ const Main = ({ username, logout }) => {
                             editContact={editContact}
                         />
                     </div>
+                    <Map contacts={contacts} username={username} />
                 </div>
             </div>
         </div>

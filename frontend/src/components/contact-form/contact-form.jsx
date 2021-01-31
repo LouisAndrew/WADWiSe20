@@ -90,7 +90,7 @@ const ContactForm = ({ contactValues = undefined, username, closeModal }) => {
             email,
             others,
             firstName: data['first-name'],
-            lastname: data['last-name'],
+            lastName: data['last-name'],
             isPrivate,
             lat,
             lon,

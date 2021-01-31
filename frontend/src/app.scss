@@ -212,8 +212,9 @@ form.styled {
 
         #map {
             flex-shrink: 0;
-            width: 50vw;
+            width: 48vw;
             height: 50vh;
+            position: relative;
         }
 
         .contact-list-wrapper {
@@ -322,4 +323,47 @@ form.styled {
 
 #contact-form {
     animation: in 200ms;
+}
+
+.marker {
+    position: relative;
+    top: -16px;
+
+    height: 16px;
+    width: 16px;
+    border-radius: 50% 50%;
+    border-width: 8px;
+    border-style: solid;
+
+    &::after {
+        content: '';
+        position: absolute;
+        height: 0;
+        width: 0;
+
+        border: 13px solid transparent;
+        top: 16px;
+        left: -4.8px;
+        border-top: 18px solid transparent;
+    }
+
+    &.admina {
+        border-color: $admina-color;
+
+        &::after {
+            border-top-color: $admina-color;
+        }
+    }
+    &.normalo {
+        border-color: $normalo-color;
+
+        &::after {
+            border-top-color: $normalo-color;
+        }
+    }
+}
+
+.popup {
+    font-size: 13px;
+    font-weight: bold;
 }
