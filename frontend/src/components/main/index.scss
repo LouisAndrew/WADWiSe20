@@ -1,0 +1,35 @@
+.user-icons {
+    width: 100%;
+    padding-top: 16px;
+
+    display: flex;
+    justify-content: flex-end;
+
+    .user-wrapper {
+        font-size: 12px;
+        font-weight: bold;
+        position: relative;
+
+        margin: 0 16px;
+
+        &::after {
+            content: '';
+            position: absolute;
+            right: -16px;
+            top: 50%;
+            transform: translateY(-35%);
+
+            height: 8px;
+            width: 8px;
+            border-radius: 50%;
+        }
+
+        &.normalo::after {
+            background-color: #77dd77;
+        }
+
+        &.admina::after {
+            background-color: #ff6961;
+        }
+    }
+}

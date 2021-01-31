@@ -8,6 +8,8 @@ import ContactList from '../contact-list'
 import ContactForm from '../contact-form'
 import Map from '../map'
 
+import './index.scss'
+
 /**
  * Available states of the adviz main component.
  */
@@ -207,7 +209,13 @@ const Main = ({ username, logout }) => {
                             editContact={editContact}
                         />
                     </div>
-                    <Map contacts={contacts} username={username} />
+                    <div>
+                        <Map contacts={contacts} username={username} />
+                        <div className="user-icons">
+                            <div className="user-wrapper normalo">Normalo</div>
+                            <div className="user-wrapper admina">Admina</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
