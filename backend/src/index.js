@@ -41,7 +41,7 @@ const contactsRouter = require('./contacts')
 const frontendPublicPath = path.resolve(__dirname, '../../frontend/build')
 const publicPath = path.resolve(__dirname, './public')
 
-const useReact = false
+const useReact = true
 
 // adding access to public folder
 app.use(express.static(useReact ? frontendPublicPath : publicPath)) // giving public/index.html access to all of its js and csses

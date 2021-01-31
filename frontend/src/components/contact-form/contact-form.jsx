@@ -325,7 +325,7 @@ const ContactForm = ({ contactValues = undefined, username, closeModal }) => {
                             />
                         </label>
 
-                        {isAdmin && (
+                        {isAdmin && !contactValues && (
                             <label htmlFor="user-select" id="user-select-label">
                                 Create user for
                                 <select
