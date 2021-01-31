@@ -24,12 +24,12 @@ Object.freeze(AppState) // creating an enumeration
 /**
  * Main component of the app. This is where all of the operation is done.
  */
-const Main = ({ username }) => {
+const Main = ({ username, logout }) => {
     const [appState, setAppState] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
     const [shouldDisplayForm, setShouldDisplayForm] = useState(true) // identifier if contact form should be displayed.
-    const [editContactId, setEditContactId] = useState(-1) // identifier if a specific contact should be displayed
+    const [contactValue, setContactValue] = useState(undefined) // identifier if a specific contact should be displayed
     const [isError, setIsError] = useState(false)
     const [contacts, setContacts] = useState([])
 
@@ -49,8 +49,8 @@ const Main = ({ username }) => {
                 break
             case AppState.NEW:
                 setShouldDisplayForm(true)
-                if (editContactId !== -1) {
-                    setEditContactId(-1)
+                if (contactValue !== undefined) {
+                    setContactValue(undefined)
                 }
                 break
             case AppState.UPDATE:
@@ -111,13 +111,37 @@ const Main = ({ username }) => {
         }
     }
 
+    /**
+     * Function to close popup form.
+     */
+    const closeModal = () => {
+        setContactValue(undefined)
+        setShouldDisplayForm(false)
+        setAppState(AppState.MY_CONTACTS)
+    }
+
+    /**
+     * function to start editing a contact.
+     * @param {Contact} contact
+     */
+    const editContact = (contact) => {
+        setContactValue(contact)
+        setAppState(AppState.UPDATE)
+    }
+
     console.log(contacts)
 
     return (
         <div id="mapscreen" className="map-screen modal">
             {isLoading && <Loading />}
             {isError && <Error />}
-            {shouldDisplayForm && <ContactForm username={username} />}
+            {shouldDisplayForm && (
+                <ContactForm
+                    username={username}
+                    contactValues={contactValue}
+                    closeModal={closeModal}
+                />
+            )}
             <div className="container">
                 <h1>Hello, {username}!</h1>
                 <div className="buttons">
@@ -147,7 +171,12 @@ const Main = ({ username }) => {
                         />
                         Show all contacts
                     </button>
-                    <button className="secondary">
+                    <button
+                        className="secondary"
+                        onClick={() => {
+                            setAppState(AppState.NEW)
+                        }}
+                    >
                         <span
                             className="iconify"
                             data-icon="eva:person-add-fill"
@@ -155,7 +184,7 @@ const Main = ({ username }) => {
                         />
                         Add new contact
                     </button>
-                    <button className="others">
+                    <button className="others" onClick={logout}>
                         <span
                             className="iconify"
                             data-icon="eva:log-in-outline"
@@ -171,7 +200,11 @@ const Main = ({ username }) => {
                                 ? 'My contacts'
                                 : 'All contacts'}
                         </h4>
-                        <ContactList username={username} contacts={contacts} />
+                        <ContactList
+                            username={username}
+                            contacts={contacts}
+                            editContact={editContact}
+                        />
                     </div>
                 </div>
             </div>
@@ -179,45 +212,9 @@ const Main = ({ username }) => {
     )
 }
 
-/**
- * <section id="mapscreen" class="map-screen modal">
-    <div class="container">
-      <h1>Hello, <span id="username-greeting"></span>!</h1>
-      <div class="buttons">
-        <button id="showminebtn" type="button" class='primary'> <span class="iconify" data-icon="eva:person-fill" data-inline="false"></span>Show my contacts</button>
-        <button id="showallbtn" type="button" class='primary'> <span class="iconify" data-icon="eva:globe-2-fill" data-inline="false"></span>Show all contacts</button>
-        <button id="addnewbtn" type="button" class='secondary'> <span class="iconify" data-icon="eva:person-add-fill" data-inline="false"></span>Add new contact</button>
-        <button id="logoutbtn" type="button" class='others'> <span class="iconify" data-icon="eva:log-in-outline" data-inline="false"></span>Log out </span></button>
-      </div>
-      <div class="flex-container">
-        <ul id="contactlist">
-        </ul>
-        <div id="map"></div>
-        <script>
-          map = L.map('map').setView({ lon: 13.39293, lat: 52.54181 }, 10); //the last number is the zoomlevel. took me forever to find it
-          // add the OpenStreetMap tiles
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-          }).addTo(map);
-
-          // show the scale bar on the lower left corner
-          L.control.scale().addTo(map);
-        </script>
-      </div>
-    </div>
-    </div>
-    <div id="modal">
-      <div id="error">
-        <h1>Oops, something went wrong</h1>
-        <button class='others'>Go back</button>
-      </div>
-    </div>
-  </section>
- */
-
 Main.propTypes = {
     username: PropTypes.string.isRequired,
+    logout: PropTypes.func.isRequired,
 }
 
 export { Main }

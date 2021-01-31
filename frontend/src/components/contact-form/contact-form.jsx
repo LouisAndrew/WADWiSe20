@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 
+import Loading from '../loading'
 import contactType from '../../types/contact'
 import './index.scss'
 
@@ -11,8 +12,25 @@ import './index.scss'
  * Reusable form component to add a new or update an existing user.
  * Using React Portal in this document..
  */
-const ContactForm = ({ contactValues = undefined, username }) => {
+const ContactForm = ({ contactValues = undefined, username, closeModal }) => {
     const [errMsg, setErrMsg] = useState('')
+    const [successMsg, setSuccessMsg] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+
+    // covering all posibilities here. User should be able to update a contact if:
+    const canUpdate =
+        username === 'admina' || // it is an admin
+        contactValues?.contactOf === username || // the contact is his/ her own contact
+        contactValues?.contactOf === undefined // same as above, but older data(s) may not have contactOf attribute
+
+    useEffect(() => {
+        if (successMsg) {
+            // When an operation is succesful, wait for 1 second, then close modal
+            setTimeout(() => {
+                closeModal()
+            }, 1000)
+        }
+    }, [successMsg])
 
     /**
      * Assigning default Values of the form fields with the provided values from contactValues
@@ -41,7 +59,17 @@ const ContactForm = ({ contactValues = undefined, username }) => {
      * @param {} data
      */
     const onSubmit = async (data) => {
-        const { street, city, country, zip } = data
+        const {
+            title,
+            gender,
+            street,
+            city,
+            country,
+            zip,
+            email,
+            others,
+            private: isPrivate,
+        } = data
 
         const { lat = undefined, lon = undefined } = await getLatLon(
             street,
@@ -54,12 +82,92 @@ const ContactForm = ({ contactValues = undefined, username }) => {
             return
         }
 
+        const contact = await {
+            gender,
+            street,
+            city,
+            country,
+            zip,
+            email,
+            others,
+            firstName: data['first-name'],
+            lastname: data['last-name'],
+            isPrivate,
+            lat,
+            lon,
+            titel: title,
+        }
+
         const isUpdating = contactValues !== undefined
+        if (isUpdating) {
+            updateContact(contact, contactValues._id)
+        } else {
+            addContact(contact, data['contact-of'])
+        }
     }
 
-    const updateContact = async () => {}
-    const addContact = async () => {}
-    const deleteContact = async () => {}
+    /**
+     * Function to actually update a contact from a user by calling it to the database. Called when user clicks on the update button.
+     * @param {Contact} contact
+     * @param {String} contactId
+     */
+    const updateContact = async (contact, contactId) => {
+        setIsLoading(true)
+
+        try {
+            const url = '/adviz/contacts'
+            await axios.put(`${url}/${contactId}`, contact)
+            await setSuccessMsg('Update contact successful')
+            await setErrMsg('')
+        } catch (e) {
+            setErrMsg('Error while updating the contact')
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    /**
+     * Add a contact into the given user's contact list by calling an endpoint from the database (POST /adviz/contacts)
+     * @param {Contact} contact
+     * @param {String} user
+     */
+    const addContact = async (contact, user) => {
+        setIsLoading(true)
+        const body = {
+            ...contact,
+            userId: user,
+        }
+
+        try {
+            await axios.post(`/adviz/contacts`, body)
+            await setSuccessMsg('Added contact succesfully')
+            await setErrMsg('')
+        } catch (e) {
+            console.error(e)
+            setErrMsg('Error adding the contact')
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    /**
+     * Function to delete a contact from a user contacts by calling the REST endpoint on the backend
+     * @param {String} contactId
+     */
+    const deleteContact = async (contactId) => {
+        setIsLoading(true)
+
+        try {
+            await axios.delete(`/adviz/contacts/${contactId}`)
+            await setSuccessMsg('Deleted contact successfully')
+            await setErrMsg('')
+        } catch (e) {
+            console.error(e)
+            setErrMsg('Error deleting the contact')
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     /**
      * Function to get the lat lon values of the given address data.
@@ -70,6 +178,7 @@ const ContactForm = ({ contactValues = undefined, username }) => {
      */
     const getLatLon = async (street, city, country, zip) => {
         const url = 'https://nominatim.geocoding.ai/search?'
+        setIsLoading(true)
 
         try {
             const { data } = await axios.get(
@@ -80,17 +189,20 @@ const ContactForm = ({ contactValues = undefined, username }) => {
                 const { lat, lon } = await data[0]
                 return await { lat, lon }
             } else {
-                setErrMsg('😢 Please enter a valid address')
+                setErrMsg('Please enter a valid address')
                 return {} // return an empty object
             }
         } catch (e) {
             console.error(e)
-            setErrMsg('😢 Please enter a valid address')
+            setErrMsg('Please enter a valid address')
+        } finally {
+            setIsLoading(false)
         }
     }
 
     const Element = (
         <div className="portal-container">
+            {isLoading && <Loading />}
             <div className="container modal" id="contact-form">
                 <form
                     className="address-form styled"
@@ -241,24 +353,33 @@ const ContactForm = ({ contactValues = undefined, username }) => {
 
                     {errMsg && (
                         <div id="addaddress-error" className="error">
-                            {errMsg}
+                            😢 {errMsg}
                         </div>
+                    )}
+
+                    {successMsg && (
+                        <div className="success">😊 {successMsg}</div>
                     )}
 
                     <div className="buttons">
                         {contactValues ? (
-                            <>
-                                <button id="updatebtn" className="primary">
-                                    Update
-                                </button>
-                                <button
-                                    id="deletebtn"
-                                    className="others"
-                                    type="button"
-                                >
-                                    Delete
-                                </button>
-                            </>
+                            canUpdate && (
+                                <>
+                                    <button id="updatebtn" className="primary">
+                                        Update
+                                    </button>
+                                    <button
+                                        id="deletebtn"
+                                        className="others"
+                                        type="button"
+                                        onClick={() => {
+                                            deleteContact(contactValues._id)
+                                        }}
+                                    >
+                                        Delete
+                                    </button>
+                                </>
+                            )
                         ) : (
                             <button id="addbtn" className="primary">
                                 Add
@@ -268,6 +389,7 @@ const ContactForm = ({ contactValues = undefined, username }) => {
                             id="cancelbtn"
                             className="secondary"
                             type="button"
+                            onClick={closeModal}
                         >
                             Cancel
                         </button>
@@ -289,6 +411,10 @@ ContactForm.propTypes = {
      * Current logged-in user.
      */
     username: PropTypes.string.isRequired,
+    /**
+     * Function to close the form modal
+     */
+    closeModal: PropTypes.func.isRequired,
 }
 
 export { ContactForm }

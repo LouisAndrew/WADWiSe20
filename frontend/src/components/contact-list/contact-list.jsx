@@ -7,15 +7,7 @@ import ContactButton from './contact-button/contact-button'
 /**
  * Container component that wraps all of the "to-be rendered" contacts and handles contact click event!
  */
-const ContactList = ({ contacts, username }) => {
-    /**
-     * Function to respond to click event on contact-button
-     * @param {Contact} contact
-     */
-    const handleClickContact = (contact) => {
-        console.log(contact)
-    }
-
+const ContactList = ({ contacts, username, editContact }) => {
     return (
         <li id="contactlist">
             {contacts.map((ct) => (
@@ -23,7 +15,7 @@ const ContactList = ({ contacts, username }) => {
                     key={`${ct.firstName}-${ct.lastName}-${ct.lat}`}
                     contact={ct}
                     username={username}
-                    handleClick={handleClickContact}
+                    handleClick={editContact}
                 />
             ))}
         </li>
@@ -39,6 +31,10 @@ ContactList.propTypes = {
      * username of current loggedin user.
      */
     username: PropTypes.string,
+    /**
+     * function to start editing a contact.
+     */
+    editContact: PropTypes.func.isRequired,
 }
 
 export { ContactList }
