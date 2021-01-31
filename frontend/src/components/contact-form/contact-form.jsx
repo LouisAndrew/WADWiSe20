@@ -31,7 +31,6 @@ const ContactForm = ({ contactValues = undefined, username, closeModal }) => {
             }, 1000)
         }
     }, [successMsg])
-
     /**
      * Assigning default Values of the form fields with the provided values from contactValues
      */
