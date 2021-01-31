@@ -4,7 +4,8 @@ import axios from 'axios'
 
 import Loading from '../loading'
 import Error from '../error'
-import { ContactList } from '../contact-list/contact-list'
+import ContactList from '../contact-list'
+import ContactForm from '../contact-form'
 
 /**
  * Available states of the adviz main component.
@@ -27,7 +28,7 @@ const Main = ({ username }) => {
     const [appState, setAppState] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
-    const [shouldDisplayForm, setShouldDisplayForm] = useState(false) // identifier if contact form should be displayed.
+    const [shouldDisplayForm, setShouldDisplayForm] = useState(true) // identifier if contact form should be displayed.
     const [editContactId, setEditContactId] = useState(-1) // identifier if a specific contact should be displayed
     const [isError, setIsError] = useState(false)
     const [contacts, setContacts] = useState([])
@@ -116,6 +117,7 @@ const Main = ({ username }) => {
         <div id="mapscreen" className="map-screen modal">
             {isLoading && <Loading />}
             {isError && <Error />}
+            {shouldDisplayForm && <ContactForm username={username} />}
             <div className="container">
                 <h1>Hello, {username}!</h1>
                 <div className="buttons">
@@ -164,7 +166,7 @@ const Main = ({ username }) => {
                 </div>
                 <div className="flex-container">
                     <div className="contact-list-wrapper">
-                        <h4>
+                        <h4 style={{ margin: 0, marginBottom: 16 }}>
                             {appState === AppState.MY_CONTACTS
                                 ? 'My contacts'
                                 : 'All contacts'}

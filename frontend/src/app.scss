@@ -23,6 +23,7 @@ button {
     cursor: pointer;
     font-weight: 700;
     border: 1px solid transparent;
+    transition: 0.2s;
 
     svg {
         height: 18px;
@@ -42,9 +43,13 @@ button {
     }
 
     &.secondary {
-        color: #000;
+        color: $primary;
         background-color: $shade;
         border-color: $primary;
+    }
+
+    &:hover {
+        transform: scale(0.98);
     }
 }
 
@@ -100,35 +105,32 @@ form.styled {
     }
 }
 
-// add-new-address => remove from this file when ready!
-#addnewaddress {
-    margin-top: 32px;
-
-    .container {
-        width: fit-content;
+#contact-form {
+    &.modal {
+        width: 50vw;
     }
 
-    form {
-        button {
-            // default: set display of all buttons to none.
-            display: none;
+    .form-fields {
+        display: flex;
+        flex-direction: column;
+
+        max-height: 50vh;
+        flex-wrap: wrap;
+
+        label {
+            margin-right: 16px;
+            margin-left: 16px;
         }
     }
-}
 
-#updatedeleteaddress {
-    margin-top: 32px;
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 8px;
 
-    .container {
-        width: fit-content;
-
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-
-            & button {
-                width: 45%;
-            }
+        & button {
+            width: 100%;
+            margin: 0 4px;
         }
     }
 }
@@ -137,11 +139,12 @@ form.styled {
     color: $error;
 }
 
-body {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.App {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #fafafa;
 }
 
@@ -191,7 +194,7 @@ body {
         justify-content: space-between;
 
         width: 60vw;
-        padding: 16px 0 32px;
+        padding: 16px 0;
 
         button {
             width: 100%;
@@ -269,25 +272,6 @@ body {
                     }
                 }
             }
-        }
-    }
-}
-
-#addnewaddress {
-    .modal {
-        width: 50vw;
-    }
-
-    .form-fields {
-        display: flex;
-        flex-direction: column;
-
-        max-height: 50vh;
-        flex-wrap: wrap;
-
-        label {
-            margin-right: 16px;
-            margin-left: 16px;
         }
     }
 }
