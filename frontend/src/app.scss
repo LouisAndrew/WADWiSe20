@@ -9,6 +9,9 @@ $primary: #5e7ce2;
 $shade: #eef1fc;
 $accent: #fdf0d5;
 
+$admina-color: #ff6961;
+$normalo-color: #77dd77;
+
 button {
     border: none;
     border-radius: 4px;
@@ -207,7 +210,7 @@ body {
         }
 
         .contact-list-wrapper {
-            width: calc(10vw - 32px);
+            width: calc(12vw - 32px);
             #contactlist {
                 list-style: none;
                 margin-left: 0;
@@ -237,6 +240,10 @@ body {
 
                     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
 
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
                     &:first-child {
                         margin-top: 0;
                     }
@@ -245,6 +252,20 @@ body {
                         color: #000;
                         background-color: $shade;
                         border-color: $primary;
+                    }
+
+                    .identifier {
+                        height: 8px;
+                        width: 8px;
+                        border-radius: 50%;
+
+                        &.admina {
+                            background-color: $admina-color;
+                        }
+
+                        &.normalo {
+                            background-color: $normalo-color;
+                        }
                     }
                 }
             }

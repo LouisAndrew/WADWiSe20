@@ -4,6 +4,7 @@ import axios from 'axios'
 
 import Loading from '../loading'
 import Error from '../error'
+import { ContactList } from '../contact-list/contact-list'
 
 /**
  * Available states of the adviz main component.
@@ -112,7 +113,7 @@ const Main = ({ username }) => {
     console.log(contacts)
 
     return (
-        <div id="mapscreen" className="map-screen-modal">
+        <div id="mapscreen" className="map-screen modal">
             {isLoading && <Loading />}
             {isError && <Error />}
             <div className="container">
@@ -168,6 +169,7 @@ const Main = ({ username }) => {
                                 ? 'My contacts'
                                 : 'All contacts'}
                         </h4>
+                        <ContactList username={username} contacts={contacts} />
                     </div>
                 </div>
             </div>
