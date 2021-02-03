@@ -7,7 +7,7 @@
         "develop": "nodemon backend/src",
         "start": "node backend/src",
         "build": "cd frontend && react-scripts build",
-        "heroku-prebuild": "cd frontend && npm install && cd ../backend && npm install"
+        "heroku-prebuild": "cd frontend && yarn && cd ../backend && yarn"
     },
     "repository": {
         "type": "git",
