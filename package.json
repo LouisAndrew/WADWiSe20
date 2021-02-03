@@ -6,7 +6,7 @@
     "scripts": {
         "develop": "nodemon backend/src",
         "start": "node backend/src",
-        "build": "cd frontend && react-scripts build",
+        "build": "cd frontend && yarn build",
         "heroku-prebuild": "cd frontend && yarn && cd ../backend && yarn"
     },
     "repository": {
