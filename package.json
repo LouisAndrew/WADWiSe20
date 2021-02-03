@@ -5,7 +5,9 @@
     "main": "backend/src/index.js",
     "scripts": {
         "develop": "nodemon backend/src",
-        "start": "node backend/src"
+        "start": "node backend/src",
+        "build": "cd frontend && react-scripts build",
+        "heroku-prebuild": "cd frontend && npm install && cd ../backend && npm install"
     },
     "repository": {
         "type": "git",
