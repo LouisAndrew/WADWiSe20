@@ -45,8 +45,7 @@ const Login = ({ onSuccess }) => {
                 userId: username,
                 password,
             })
-
-            await onSuccess(username)
+	    // if everything is going as expected, continue to finally block.
         } catch (e) {
             console.error(e)
             setError(true)
