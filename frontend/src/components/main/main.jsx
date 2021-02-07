@@ -132,8 +132,6 @@ const Main = ({ username, logout }) => {
         setAppState(AppState.UPDATE)
     }
 
-    console.log(contacts)
-
     return (
         <div id="mapscreen" className="map-screen modal">
             {isLoading && <Loading />}
