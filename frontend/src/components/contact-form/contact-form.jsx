@@ -31,6 +31,7 @@ const ContactForm = ({ contactValues = undefined, username, closeModal }) => {
             }, 1000)
         }
     }, [successMsg])
+
     /**
      * Assigning default Values of the form fields with the provided values from contactValues
      */
@@ -69,6 +70,8 @@ const ContactForm = ({ contactValues = undefined, username, closeModal }) => {
             others,
             private: isPrivate,
         } = data
+
+        console.log({ data })
 
         const { lat = undefined, lon = undefined } = await getLatLon(
             street,
@@ -345,7 +348,7 @@ const ContactForm = ({ contactValues = undefined, username, closeModal }) => {
                                 type="checkbox"
                                 name="private"
                                 id="private"
-                                defaultChecked
+                                ref={register}
                             />
                         </label>
                     </div>

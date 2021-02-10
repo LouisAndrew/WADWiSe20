@@ -15,8 +15,6 @@ import 'leaflet/dist/leaflet.css' // import leaflet css
  * Map component where the markers would then be placed.
  */
 const Map = ({ contacts, username }) => {
-    console.log({ contacts, username })
-
     // https://github.com/PaulLeCam/react-leaflet/issues/48
     return (
         <div id="map">
