@@ -1,4 +1,5 @@
 # WADWiSe20
+> Project is no longer active as the MongoDB database is deleted by its owner.
 
 ## Now moving to React ! ⚛
 
